@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaca Muerta — Intelligence Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:        #080a0c;
+  --bg2:       #0e1215;
+  --bg3:       #141820;
+  --border:    #1e2530;
+  --border2:   #2a3340;
+  --text:      #dce4ef;
+  --text2:     #7a8a9e;
+  --text3:     #3d4d60;
+  --accent:    #e8651a;
+  --accent2:   #1a7ee8;
+  --green:     #1acd6e;
+  --red:       #e8411a;
+  --amber:     #e8a81a;
+  --gold:      #c8a84a;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: .5;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(8,10,12,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 52px;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-logo {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.topbar-title span { color: var(--accent); }
+
+.topbar-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.topbar-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.topbar-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text2);
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .3; }
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  padding: 120px 40px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(232,101,26,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: 10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(26,126,232,.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp .6s .1s forwards;
+}
+
+.eyebrow-line {
+  width: 32px; height: 1px;
+  background: var(--accent);
+}
+
+.eyebrow-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(42px, 6vw, 78px);
+  line-height: 1.0;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp .6s .2s forwards;
+}
+
+.hero-title .highlight {
+  color: var(--accent);
+  position: relative;
+}
+
+.hero-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 400;
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: var(--text2);
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp .6s .3s forwards;
+}
+
+/* ── KPI HERO ── */
+.hero-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 780px;
+  opacity: 0;
+  animation: fadeUp .6s .4s forwards;
+}
+
+.hero-kpi {
+  background: var(--bg2);
+  padding: 28px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: background .2s;
+}
+
+.hero-kpi:hover { background: var(--bg3); }
+
+.hero-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+}
+
+.hero-kpi:hover::before { transform: scaleX(1); }
+
+.kpi-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+
+.kpi-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 1;
+  color: var(--text);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi-number .unit {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text2);
+  margin-left: 4px;
+}
+
+.kpi-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.kpi-delta.up   { color: var(--green); background: rgba(26,205,110,.08); }
+.kpi-delta.down { color: var(--red);   background: rgba(232,65,26,.08); }
+.kpi-delta.flat { color: var(--amber); background: rgba(232,168,26,.08); }
+
+/* ── SECTIONS ── */
+.section {
+  padding: 80px 40px;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-number {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .15em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.section-insight {
+  max-width: 400px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.65;
+  text-align: right;
+}
+
+/* ── INSIGHT CALLOUT ── */
+.callout {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.callout strong { color: var(--text); }
+.callout .accent { color: var(--accent); font-weight: 600; }
+.callout .green  { color: var(--green); font-weight: 600; }
+.callout .red    { color: var(--red); font-weight: 600; }
+
+/* ── GRID LAYOUTS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-65 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 20px;
+}
+
+.chart-box { position: relative; width: 100%; }
+
+/* ── TABLA RANKING ── */
+.rank-table { width: 100%; border-collapse: collapse; }
+.rank-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.rank-table td {
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(30,37,48,.6);
+  font-size: 13px;
+  color: var(--text);
+  vertical-align: middle;
+}
+.rank-table tr:last-child td { border-bottom: none; }
+.rank-table tr:hover td { background: rgba(255,255,255,.02); }
+
+.rank-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  width: 28px;
+}
+
+.emp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.emp-dot {
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.score-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.score-bar-bg {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .6s ease;
+}
+
+.score-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── RISK MATRIX ── */
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.risk-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+}
+
+.risk-card.critical { border-color: rgba(232,65,26,.4); background: rgba(232,65,26,.04); }
+.risk-card.warning  { border-color: rgba(232,168,26,.3); background: rgba(232,168,26,.03); }
+.risk-card.healthy  { border-color: rgba(26,205,110,.3); background: rgba(26,205,110,.03); }
+
+.risk-indicator {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  position: absolute;
+  top: 14px; right: 14px;
+}
+.risk-card.critical .risk-indicator { background: var(--red); }
+.risk-card.warning  .risk-indicator { background: var(--amber); }
+.risk-card.healthy  .risk-indicator { background: var(--green); }
+
+.risk-emp { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+.risk-wc  { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; margin-bottom: 2px; }
+.risk-card.critical .risk-wc { color: var(--red); }
+.risk-card.warning  .risk-wc { color: var(--amber); }
+.risk-card.healthy  .risk-wc { color: var(--green); }
+.risk-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); text-transform: uppercase; letter-spacing: .1em; }
+
+/* ── TREND STRIP ── */
+.trend-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+
+.trend-cell {
+  background: var(--bg2);
+  padding: 16px 20px;
+  text-align: center;
+}
+
+.trend-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 6px;
+  letter-spacing: .08em;
+}
+
+.trend-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.trend-chg {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.trend-chg.up   { color: var(--green); }
+.trend-chg.down { color: var(--red); }
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-author {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--text);
+}
+
+.footer-role {
+  font-size: 12px;
+  color: var(--text2);
+}
+
+.footer-links {
+  display: flex;
+  gap: 16px;
+}
+
+.footer-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border2);
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+}
+
+.footer-link:hover { color: var(--accent); border-color: var(--accent); }
+
+.footer-source {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  text-align: right;
+  line-height: 1.8;
+}
+
+/* ── LOADING ── */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 9999;
+  transition: opacity .4s, visibility .4s;
+}
+
+.loader.hidden { opacity: 0; visibility: hidden; }
+
+.loader-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -.02em;
+  color: var(--text);
+}
+
+.loader-logo span { color: var(--accent); }
+
+.loader-bar {
+  width: 200px; height: 2px;
+  background: var(--border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.loader-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 1px;
+  width: 0%;
+  animation: load-progress 1.4s ease forwards;
+}
+
+@keyframes load-progress { to { width: 100%; } }
+
+.loader-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+/* ── SEPARADOR ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2), transparent);
+  margin: 0;
+}
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero { padding: 100px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .hero-kpis { grid-template-columns: 1fr; }
+  .grid-2, .grid-3, .grid-65 { grid-template-columns: 1fr; }
+  .topbar { padding: 0 20px; }
+  .footer { padding: 32px 20px; }
+  .topbar-meta { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-logo">VACA <span>MUERTA</span></div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Cargando datos de producción...</div>
+</div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo"></div>
+    <div class="topbar-title">Vaca Muerta <span>Intelligence</span></div>
+  </div>
+  <div class="topbar-meta">
+    <span class="topbar-tag" id="tb-periodo">—</span>
+    <div class="topbar-status">
+      <div class="status-dot"></div>
+      <span id="tb-status">Conectando...</span>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <div class="eyebrow-line"></div>
+    <div class="eyebrow-text">Energy Intelligence Report · Argentina</div>
+  </div>
+  <h1 class="hero-title">
+    Vaca Muerta<br>
+    <span class="highlight">Production</span><br>
+    Analytics
+  </h1>
+  <p class="hero-subtitle">Análisis de producción no convencional — Cuenca Neuquina</p>
+
+  <div class="hero-kpis" id="hero-kpis">
+    <div class="hero-kpi">
+      <div class="kpi-label">Producción acumulada</div>
+      <div class="kpi-number" id="h-pet">—<span class="unit">m³</span></div>
+      <div class="kpi-delta" id="h-pet-d">—</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="kpi-label">Operadoras activas</div>
+      <div class="kpi-number" id="h-emp">—</div>
+      <div class="kpi-delta" id="h-emp-d">—</div>
+    </div>
+    <div class="hero-kpi">
+      <div class="kpi-label">Eficiencia promedio</div>
+      <div class="kpi-number" id="h-efic">—<span class="unit">m³/pozo</span></div>
+      <div class="kpi-delta" id="h-efic-d">—</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S1: DOMINIO ════════ -->
+<section class="section reveal" id="s1">
+  <div class="section-header">
+    <div>
+      <div class="section-number">01 — Estructura de mercado</div>
+      <h2 class="section-title">¿Quién domina<br>Vaca Muerta?</h2>
+    </div>
+    <div class="section-insight" id="s1-insight">—</div>
+  </div>
+
+  <div class="callout" id="s1-callout">Cargando análisis...</div>
+
+  <div class="grid-65" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Producción anual por operadora — m³ petróleo</div>
+      <div class="chart-box" style="height:320px">
+        <canvas id="c-produccion" role="img" aria-label="Producción por empresa"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Market share BOE — año de referencia</div>
+      <div class="chart-box" style="height:320px">
+        <canvas id="c-ms" role="img" aria-label="Market share"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Ranking integrado — score producción · eficiencia · crecimiento</div>
+    <table class="rank-table" id="t-ranking"></table>
+  </div>
+</section>
+
+<!-- ════════ S2: TENDENCIA ════════ -->
+<section class="section reveal" id="s2">
+  <div class="section-header">
+    <div>
+      <div class="section-number">02 — Dinámica temporal</div>
+      <h2 class="section-title">¿Hacia dónde<br>va la producción?</h2>
+    </div>
+    <div class="section-insight" id="s2-insight">—</div>
+  </div>
+
+  <div class="callout" id="s2-callout">Cargando análisis...</div>
+
+  <div id="trend-strip" class="trend-strip" style="margin-bottom:24px"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Evolución mensual — últimos 36 meses · top 5 operadoras</div>
+      <div class="chart-box" style="height:260px">
+        <canvas id="c-evol" role="img" aria-label="Evolución mensual de producción"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Nuevos pozos perforados por mes — proxy de inversión</div>
+      <div class="chart-box" style="height:260px">
+        <canvas id="c-pozos" role="img" aria-label="Nuevos pozos por mes"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S3: RIESGO ════════ -->
+<section class="section reveal" id="s3">
+  <div class="section-header">
+    <div>
+      <div class="section-number">03 — Mapa de riesgo operativo</div>
+      <h2 class="section-title">¿Dónde está<br>el riesgo?</h2>
+    </div>
+    <div class="section-insight" id="s3-insight">—</div>
+  </div>
+
+  <div class="callout" id="s3-callout">Cargando análisis...</div>
+
+  <div class="risk-grid" id="risk-grid" style="margin-bottom:24px"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Distribución water cut — etapa operativa de los pozos</div>
+      <div class="chart-box" style="height:240px">
+        <canvas id="c-etapas" role="img" aria-label="Etapas operativas de pozos"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Water cut promedio por operadora — benchmark cuenca</div>
+      <div class="chart-box" style="height:240px">
+        <canvas id="c-wc" role="img" aria-label="Water cut por empresa"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ S4: CONCLUSIÓN ════════ -->
+<section class="section reveal" id="s4">
+  <div class="section-header">
+    <div>
+      <div class="section-number">04 — Conclusión ejecutiva</div>
+      <h2 class="section-title">Tres cosas que<br>debe saber un CEO</h2>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:40px" id="ceo-cards"></div>
+
+  <div class="card" style="border-color:rgba(232,101,26,.2)">
+    <div class="card-title">Nota metodológica</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.8" id="metodologia">—</div>
+  </div>
+</section>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="footer">
+  <div class="footer-author">
+    <div class="footer-name">Claudio Butassi</div>
+    <div class="footer-role">Data Analyst · Business Intelligence</div>
+  </div>
+  <div class="footer-links">
+    <a class="footer-link" href="https://github.com/chavobutassi/vaca-muerta-analytics" target="_blank">GitHub</a>
+    <a class="footer-link" href="https://chavobutassi.github.io/vaca-muerta-analytics/" target="_blank">Dashboard Técnico</a>
+    <a class="footer-link" href="https://argo-dashboard.onrender.com" target="_blank">Argo</a>
+  </div>
+  <div class="footer-source">
+    Fuente: Secretaría de Energía — datos.energia.gob.ar<br>
+    Actualización automática semanal · Datos abiertos del Estado Nacional
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+const DATA = {
+  prod:     './data/01_vm_produccion_mensual.csv',
+  ms:       './data/05_vm_market_share.csv',
+  efic:     './data/04_vm_eficiencia_pozos.csv',
+  nuevos:   './data/06_vm_nuevos_pozos.csv',
+};
+
+const COLORS = {
+  'YPF':'#0a6fd4','Shell':'#d4a80a','TotalEnergies':'#d4200a',
+  'Vista Energy':'#0ab4d4','Tecpetrol':'#e8651a','Equinor':'#d42050',
+  'Wintershall':'#8a50d4','Pan American Energy':'#0ad46a',
+  'Pluspetrol':'#d4d40a','Pampa Energía':'#50d4a8',
+  'Chevron':'#d46a0a','ExxonMobil':'#0a50d4','Capex':'#a8d40a',
+  'Otra':'#3d4d60'
+};
+const col = e => COLORS[e] || '#3d4d60';
+
+const fmt = n => {
+  n = +n||0;
+  return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(Math.round(n));
+};
+
+// Chart defaults
+Chart.defaults.font.family = "'DM Mono', monospace";
+Chart.defaults.color = '#3d4d60';
+Chart.defaults.borderColor = '#1e2530';
+
+const charts = {};
+function mkChart(id, cfg) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  if (!cfg.options) cfg.options = {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  cfg.options.resizeDelay = 200;
+  charts[id] = new Chart(ctx, cfg);
+}
+
+// CSV parser
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  const hdr = lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).filter(l=>l.trim()).map(l=>{
+    const v = l.split(',');
+    const o = {};
+    hdr.forEach((h,i)=>o[h]=(v[i]||'').trim().replace(/^"|"$/g,''));
+    return o;
+  });
+}
+
+async function load(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`${r.status} — ${url}`);
+  return parseCSV(await r.text());
+}
+
+// ═══════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════
+async function init() {
+  try {
+    const [prod, ms, efic, nuevos] = await Promise.all([
+      load(DATA.prod), load(DATA.ms), load(DATA.efic), load(DATA.nuevos)
+    ]);
+
+    // Año ref
+    const anios = [...new Set(prod.map(r=>+r.anio))].sort();
+    const ultAnio = anios[anios.length-1];
+    const mesesUlt = new Set(prod.filter(r=>+r.anio===ultAnio).map(r=>r.anio_mes)).size;
+    const anioRef = mesesUlt < 10 ? anios[anios.length-2] : ultAnio;
+    const anioAnt = anioRef - 1;
+
+    document.getElementById('tb-periodo').textContent =
+      prod.map(r=>r.anio_mes).sort()[0] + ' — ' + prod.map(r=>r.anio_mes).sort().pop();
+    document.getElementById('tb-status').textContent = 'Live · SE Argentina';
+
+    // ── Métricas por empresa ───────────────────────────────────────────
+    const emps = [...new Set(prod.map(r=>r.empresa_grupo))];
+    const byEmp = emps.map(e=>{
+      const pR = prod.filter(r=>r.empresa_grupo===e&&+r.anio===anioRef);
+      const pA = prod.filter(r=>r.empresa_grupo===e&&+r.anio===anioAnt);
+      const pet  = pR.reduce((s,r)=>s+(+r.petroleo_m3||0),0);
+      const petA = pA.reduce((s,r)=>s+(+r.petroleo_m3||0),0);
+      const poz  = Math.max(...pR.map(r=>+r.pozos_activos||0),1);
+      const ef   = efic.filter(r=>r.empresa_grupo===e);
+      const wc   = ef.length ? ef.reduce((s,r)=>s+(+r.water_cut_prom||0),0)/ef.length : 50;
+      const crec = petA>0?(pet-petA)/petA*100:0;
+      const msR  = ms.find(r=>r.empresa_grupo===e&&+r.anio===anioRef);
+      const share= msR?+(msR.market_share_pct)||0:0;
+      const maxP = Math.max(...emps.map(x=>prod.filter(r=>r.empresa_grupo===x&&+r.anio===anioRef).reduce((s,r)=>s+(+r.petroleo_m3||0),0)));
+      const score= Math.round((maxP>0?pet/maxP*40:0) + ((100-wc)/100*30) + Math.max(0,Math.min(30,(crec+20)/40*30)));
+      return {e,pet,petA,poz,wc,crec,share,score,m3poz:pet/poz};
+    }).filter(e=>e.pet>0).sort((a,b)=>b.pet-a.pet);
+
+    const totRef = byEmp.reduce((s,e)=>s+e.pet,0);
+    const totAnt = byEmp.reduce((s,e)=>s+e.petA,0);
+    const crecTotal = totAnt>0?(totRef-totAnt)/totAnt*100:0;
+    const wcAvg = byEmp.reduce((s,e)=>s+e.wc,0)/byEmp.length;
+    const meses = [...new Set(prod.map(r=>r.anio_mes))].sort();
+    const ultMes = meses[meses.length-1];
+    const ultMesRows = prod.filter(r=>r.anio_mes===ultMes);
+    const eficUlt = ultMesRows.reduce((s,r)=>s+(+r.petroleo_m3||0),0) /
+                    Math.max(ultMesRows.reduce((s,r)=>s+(+r.pozos_activos||0),0),1);
+
+    // ── HERO KPIs ─────────────────────────────────────────────────────
+    document.getElementById('h-pet').innerHTML = fmt(totRef)+'<span class="unit">m³</span>';
+    document.getElementById('h-emp').textContent = byEmp.length;
+    document.getElementById('h-efic').innerHTML = fmt(eficUlt)+'<span class="unit">m³/pozo</span>';
+
+    const setDelta = (id, val, suffix='') => {
+      const el = document.getElementById(id);
+      const up = val >= 0;
+      el.textContent = (up?'▲ +':'▼ ')+Math.abs(val).toFixed(1)+suffix;
+      el.className = 'kpi-delta '+(up?'up':'down');
+    };
+    setDelta('h-pet-d', crecTotal, '% vs año anterior');
+    document.getElementById('h-emp-d').textContent = 'operadoras en '+anioRef;
+    document.getElementById('h-emp-d').className = 'kpi-delta flat';
+    setDelta('h-efic-d', 0, ' · '+ultMes);
+
+    // ── S1: DOMINIO ───────────────────────────────────────────────────
+    const top8 = byEmp.slice(0,8);
+    const lider = byEmp[0];
+    const top3share = byEmp.slice(0,3).reduce((s,e)=>s+e.share,0);
+
+    document.getElementById('s1-insight').textContent =
+      `Top 3 operadoras concentran el ${top3share.toFixed(0)}% de la producción. ${lider.e} mantiene posición dominante con ${lider.share.toFixed(1)}% del mercado en ${anioRef}.`;
+
+    document.getElementById('s1-callout').innerHTML =
+      `<strong>${lider.e}</strong> lidera con <span class="accent">${fmt(lider.pet)} m³</span> de petróleo en ${anioRef} — representando el <span class="accent">${lider.share.toFixed(1)}%</span> del total en BOE. ` +
+      `El crecimiento interanual de la cuenca es <span class="${crecTotal>=0?'green':'red'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</span>. ` +
+      `Las top 3 operadoras (${byEmp.slice(0,3).map(e=>e.e).join(', ')}) controlan el <strong>${top3share.toFixed(0)}%</strong> de la producción.`;
+
+    // Gráfico producción
+    mkChart('c-produccion',{
+      type:'bar',
+      data:{labels:top8.map(e=>e.e),datasets:[{
+        data:top8.map(e=>e.pet),
+        backgroundColor:top8.map(e=>col(e.e)+'cc'),
+        borderColor:top8.map(e=>col(e.e)),
+        borderWidth:0,
+        borderRadius:3,
+      }]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},
+          tooltip:{callbacks:{label:c=>' '+fmt(c.raw)+' m³'}}},
+        scales:{
+          x:{ticks:{callback:v=>fmt(v),font:{size:9}},grid:{color:'rgba(30,37,48,.6)'}},
+          y:{ticks:{font:{size:10}},grid:{display:false}},
+        }}
+    });
+
+    // Market share donut
+    const msUlt = ms.filter(r=>+r.anio===anioRef&&+(r.market_share_pct)||0>0.5);
+    mkChart('c-ms',{
+      type:'doughnut',
+      data:{
+        labels:msUlt.map(r=>r.empresa_grupo),
+        datasets:[{
+          data:msUlt.map(r=>+(r.market_share_pct)||0),
+          backgroundColor:msUlt.map(r=>col(r.empresa_grupo)),
+          borderColor:'#080a0c',
+          borderWidth:3,
+          hoverOffset:6,
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        cutout:'68%',
+        plugins:{
+          legend:{position:'right',labels:{font:{size:9},boxWidth:8,padding:8,color:'#7a8a9e'}},
+          tooltip:{callbacks:{label:c=>` ${c.label}: ${(+c.raw).toFixed(1)}%`}},
+        }}
+    });
+
+    // Ranking tabla
+    const maxScore = byEmp[0]?.score||1;
+    document.getElementById('t-ranking').innerHTML =
+      `<thead><tr>
+        <th style="width:32px">#</th>
+        <th>Operadora</th>
+        <th>Producción</th>
+        <th>Crec. YoY</th>
+        <th>Water Cut</th>
+        <th style="width:160px">Score</th>
+      </tr></thead><tbody>` +
+      byEmp.slice(0,10).map((e,i)=>{
+        const sc = e.score>=70?'var(--green)':e.score>=45?'var(--amber)':'var(--red)';
+        const wcC= e.wc>60?'var(--red)':e.wc>30?'var(--amber)':'var(--green)';
+        const cC = e.crec>=0?'var(--green)':'var(--red)';
+        return `<tr>
+          <td class="rank-num">${i+1}</td>
+          <td><span class="emp-chip"><span class="emp-dot" style="background:${col(e.e)}"></span>${e.e}</span></td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px">${fmt(e.pet)} m³</td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px;color:${cC}">${e.crec>=0?'+':''}${e.crec.toFixed(1)}%</td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px;color:${wcC}">${e.wc.toFixed(1)}%</td>
+          <td><div class="score-bar-wrap">
+            <div class="score-bar-bg"><div class="score-bar-fill" style="width:${Math.round(e.score/maxScore*100)}%;background:${sc}"></div></div>
+            <span class="score-val" style="color:${sc}">${e.score}</span>
+          </div></td>
+        </tr>`;
+      }).join('')+'</tbody>';
+
+    // ── S2: TENDENCIA ─────────────────────────────────────────────────
+    const anioProd = anios.slice(-6);
+    const prodByAnio = anioProd.map(a=>({a, v:prod.filter(r=>+r.anio===a).reduce((s,r)=>s+(+r.petroleo_m3||0),0)}));
+
+    document.getElementById('trend-strip').innerHTML = prodByAnio.map((p,i)=>{
+      const prev = prodByAnio[i-1];
+      const chg  = prev&&prev.v>0?(p.v-prev.v)/prev.v*100:null;
+      const cls  = chg===null?'':chg>=0?'up':'down';
+      return `<div class="trend-cell">
+        <div class="trend-year">${p.a}</div>
+        <div class="trend-val">${fmt(p.v)}</div>
+        ${chg!==null?`<div class="trend-chg ${cls}">${chg>=0?'+':''}${chg.toFixed(1)}%</div>`:'<div class="trend-chg"> </div>'}
+      </div>`;
+    }).join('');
+
+    const tendencia = crecTotal>=8?'fuerte expansión':crecTotal>=3?'crecimiento moderado':
+                      crecTotal>=-3?'estabilización':crecTotal>=-8?'leve contracción':'contracción significativa';
+
+    document.getElementById('s2-insight').textContent =
+      `La cuenca muestra ${tendencia} con ${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}% interanual. ` +
+      `La actividad de perforación se mantiene como indicador adelantado clave.`;
+
+    document.getElementById('s2-callout').innerHTML =
+      `La producción acumulada en ${anioRef} fue de <span class="accent">${fmt(totRef)} m³</span>, con una variación de ` +
+      `<span class="${crecTotal>=0?'green':'red'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</span> respecto a ${anioAnt}. ` +
+      `El ritmo de perforación de nuevos pozos actúa como proxy de <strong>inversión y expansión futura</strong> de la cuenca.`;
+
+    // Evolución mensual
+    const m36  = meses.slice(-36);
+    const top5 = byEmp.slice(0,5);
+    mkChart('c-evol',{
+      type:'line',
+      data:{labels:m36,datasets:top5.map(e=>({
+        label:e.e,
+        data:m36.map(m=>prod.filter(r=>r.anio_mes===m&&r.empresa_grupo===e.e).reduce((s,r)=>s+(+r.petroleo_m3||0),0)),
+        borderColor:col(e.e),backgroundColor:'transparent',
+        borderWidth:1.5,pointRadius:0,tension:0.3,
+      }))},
+      options:{responsive:true,maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{position:'bottom',labels:{font:{size:9},boxWidth:8,padding:10}},
+          tooltip:{callbacks:{label:c=>' '+c.dataset.label+': '+fmt(c.raw)+' m³'}}
+        },
+        scales:{
+          x:{ticks:{maxTicksLimit:9,font:{size:9}},grid:{color:'rgba(30,37,48,.6)'}},
+          y:{ticks:{callback:v=>fmt(v),font:{size:9}},grid:{color:'rgba(30,37,48,.6)'}},
+        }}
+    });
+
+    // Nuevos pozos
+    const np24 = nuevos.slice(-24);
+    const npAvg= np24.reduce((s,r)=>s+(+r.pozos_nuevos||0),0)/np24.length;
+    mkChart('c-pozos',{
+      type:'bar',
+      data:{labels:np24.map(r=>r.anio_mes_inicio||''),datasets:[
+        {label:'Nuevos pozos',data:np24.map(r=>+(r.pozos_nuevos)||0),
+         backgroundColor:np24.map(r=>(+r.pozos_nuevos||0)>npAvg?col('Tecpetrol')+'cc':col('Tecpetrol')+'44'),
+         borderColor:'transparent',borderRadius:2},
+        {label:'Media',data:np24.map(()=>Math.round(npAvg)),type:'line',
+         borderColor:'rgba(255,255,255,.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?' '+c.raw+' pozos':' Media: '+c.raw}}},
+        scales:{
+          x:{ticks:{maxTicksLimit:8,font:{size:9}},grid:{display:false}},
+          y:{ticks:{font:{size:9}},grid:{color:'rgba(30,37,48,.6)'}},
+        }}
+    });
+
+    // ── S3: RIESGO ────────────────────────────────────────────────────
+    const nCrit = efic.filter(r=>+r.water_cut_prom>60).length;
+    const nTot  = efic.length;
+
+    document.getElementById('s3-insight').textContent =
+      `${nCrit} pozos (${(nCrit/nTot*100).toFixed(0)}% del total) con water cut >60% son candidatos a intervención. ` +
+      `Water cut promedio de la cuenca: ${wcAvg.toFixed(1)}%.`;
+
+    document.getElementById('s3-callout').innerHTML =
+      `El water cut es el indicador más crítico de madurez operativa. Un pozo con WC <span class="red">>60%</span> produce más agua que petróleo — ` +
+      `señal de agotamiento de presión o comunicación con acuíferos. Actualmente <span class="red">${nCrit} pozos</span> superan ese umbral ` +
+      `sobre un universo de <strong>${nTot.toLocaleString()} pozos</strong> analizados.`;
+
+    // Risk cards
+    document.getElementById('risk-grid').innerHTML = byEmp.slice(0,12).map(e=>{
+      const cls = e.wc>60?'critical':e.wc>30?'warning':'healthy';
+      return `<div class="risk-card ${cls}">
+        <div class="risk-indicator"></div>
+        <div class="risk-emp">${e.e}</div>
+        <div class="risk-wc">${e.wc.toFixed(1)}%</div>
+        <div class="risk-label">Water cut prom.</div>
+      </div>`;
+    }).join('');
+
+    // Donut etapas
+    const etapas={T:0,I:0,M:0};
+    efic.forEach(r=>{
+      const w=+r.water_cut_prom;
+      if(w<30)etapas.T++;else if(w<60)etapas.I++;else etapas.M++;
+    });
+    mkChart('c-etapas',{
+      type:'doughnut',
+      data:{
+        labels:['Temprano <30%','Intermedio 30-60%','Maduro >60%'],
+        datasets:[{
+          data:[etapas.T,etapas.I,etapas.M],
+          backgroundColor:['#1acd6e','#e8a81a','#e8411a'],
+          borderColor:'#080a0c',borderWidth:3,hoverOffset:6,
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+        plugins:{
+          legend:{position:'bottom',labels:{font:{size:9},boxWidth:8,padding:8}},
+          tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw} pozos (${(c.raw/nTot*100).toFixed(1)}%)`}}
+        }}
+    });
+
+    // WC por empresa
+    const wcBy = byEmp.slice(0,8).sort((a,b)=>a.wc-b.wc);
+    mkChart('c-wc',{
+      type:'bar',
+      data:{labels:wcBy.map(e=>e.e),datasets:[
+        {label:'Water cut %',data:wcBy.map(e=>+e.wc.toFixed(1)),
+         backgroundColor:wcBy.map(e=>e.wc>60?'#e8411a88':e.wc>30?'#e8a81a88':'#1acd6e88'),
+         borderColor:wcBy.map(e=>e.wc>60?'#e8411a':e.wc>30?'#e8a81a':'#1acd6e'),
+         borderWidth:1,borderRadius:3},
+        {label:'Promedio',data:wcBy.map(()=>+wcAvg.toFixed(1)),type:'line',
+         borderColor:'rgba(255,255,255,.25)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+      ]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?' WC: '+c.raw+'%':' Prom: '+c.raw+'%'}}},
+        scales:{
+          x:{ticks:{callback:v=>v+'%',font:{size:9}},grid:{color:'rgba(30,37,48,.6)'},max:100},
+          y:{ticks:{font:{size:10}},grid:{display:false}},
+        }}
+    });
+
+    // ── S4: CEO CARDS ─────────────────────────────────────────────────
+    const eficiente = [...byEmp].sort((a,b)=>a.wc-b.wc)[0];
+    const creciente = [...byEmp].sort((a,b)=>b.crec-a.crec)[0];
+
+    const ceoData = [
+      {
+        n:'01',
+        titulo:'El mercado está concentrado',
+        body:`Las 3 principales operadoras (${byEmp.slice(0,3).map(e=>`<strong style="color:var(--text)">${e.e}</strong>`).join(', ')}) controlan el <strong style="color:var(--accent)">${top3share.toFixed(0)}%</strong> de la producción en BOE. ${lider.e} es el actor dominante con ${lider.share.toFixed(1)}% de participación.`,
+        color:'var(--accent2)'
+      },
+      {
+        n:'02',
+        titulo:'La cuenca está ${tendencia}',
+        body:`Crecimiento interanual de <strong style="color:${crecTotal>=0?'var(--green)':'var(--red)'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</strong>. ${creciente.e} lidera el crecimiento con +${creciente.crec.toFixed(1)}% vs año anterior. La perforación de nuevos pozos sostiene la expansión.`,
+        color:'var(--green)'
+      },
+      {
+        n:'03',
+        titulo:'El riesgo operativo es gestionable',
+        body:`<strong style="color:var(--red)">${nCrit} pozos</strong> (${(nCrit/nTot*100).toFixed(0)}%) superan el umbral crítico de water cut >60%. ${eficiente.e} opera con el menor WC de la cuenca (${eficiente.wc.toFixed(1)}%), siendo el benchmark de eficiencia operativa.`,
+        color:'var(--amber)'
+      },
+    ];
+
+    document.getElementById('ceo-cards').innerHTML = ceoData.map(c=>`
+      <div class="card" style="border-color:${c.color}22">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.15em;color:${c.color};margin-bottom:12px;text-transform:uppercase">${c.n}</div>
+        <div style="font-family:'Syne',sans-serif;font-weight:600;font-size:15px;color:var(--text);margin-bottom:10px;line-height:1.3">${c.titulo.replace('${tendencia}',tendencia)}</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7">${c.body}</div>
+      </div>`).join('');
+
+    document.getElementById('metodologia').innerHTML =
+      `Fuente: Secretaría de Energía de Argentina (datos.energia.gob.ar) — datos abiertos del Estado Nacional. ` +
+      `Período analizado: ${meses[0]} → ${meses[meses.length-1]}. ` +
+      `Año de referencia para comparación: <strong style="color:var(--text)">${anioRef}</strong>${mesesUlt<10?' ('+ultAnio+' excluido por ser año parcial con '+mesesUlt+' meses)':''}. ` +
+      `Score integrado de operadoras = 40% producción relativa + 30% inverso water cut + 30% crecimiento interanual. ` +
+      `Análisis desarrollado por <strong style="color:var(--text)">Claudio Butassi</strong> — pipeline Python (Pandas) + visualización Chart.js + automatización GitHub Actions. ` +
+      `Este reporte no constituye asesoramiento de inversión.`;
+
+    // Ocultar loader
+    setTimeout(()=>document.getElementById('loader').classList.add('hidden'), 1500);
+
+  } catch(err) {
+    console.error(err);
+    document.getElementById('tb-status').textContent = 'Error al cargar datos';
+    document.getElementById('loader').classList.add('hidden');
+  }
+}
+
+// ── Scroll reveal ─────────────────────────────────────
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+init();
+</script>
+</body>
+</html>
