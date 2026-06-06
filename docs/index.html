@@ -76,6 +76,7 @@ tr:hover td{background:#1c2128}
 
 .source{font-size:11px;color:#484f58;margin-top:24px;text-align:center;padding-bottom:24px}
 @media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}}
+canvas{display:block;max-width:100%}
 </style>
 </head>
 <body>
@@ -370,9 +371,14 @@ const pct = n => ((+n)||0).toFixed(1)+'%';
 
 const charts = {};
 function makeChart(id, cfg) {
-  if (charts[id]) charts[id].destroy();
+  if (charts[id]) { charts[id].destroy(); delete charts[id]; }
   const ctx = document.getElementById(id);
-  if (ctx) charts[id] = new Chart(ctx, cfg);
+  if (!ctx) return;
+  if (!cfg.options) cfg.options = {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  cfg.options.resizeDelay = 200;
+  charts[id] = new Chart(ctx, cfg);
 }
 
 function showPage(id, btn) {
