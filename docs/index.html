@@ -29,7 +29,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf
 .kpi-value{font-size:26px;font-weight:600;color:#e6edf3;line-height:1.1}
 .kpi-sub{font-size:12px;color:#3fb950;margin-top:4px}
 .kpi-sub.neg{color:#f78166}
-.kpi-spark{margin-top:10px;height:36px;width:100%}
+.kpi-spark{margin-top:10px;height:36px;width:100%;display:block;max-height:36px}
 
 /* Grids */
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
@@ -37,7 +37,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf
 .chart-grid.tri{grid-template-columns:1fr 1fr 1fr}
 .card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
 .card h3{font-size:11px;font-weight:500;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:.6px}
-.chart-wrap{position:relative;width:100%}
+.chart-wrap{position:relative;width:100%;min-height:0;overflow:hidden}
 .legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:#8b949e}
 .legend span{display:flex;align-items:center;gap:5px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:background .15s}
 .legend span:hover{background:#21262d}
