@@ -97,6 +97,9 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p4',this)">Eficiencia</button>
   <button onclick="showPage('p5',this)">Declinación</button>
   <button onclick="showPage('p6',this)">SITREP</button>
+  <a href="./report.html" target="_blank" style="display:flex;align-items:center;margin-left:auto;padding:0 16px;font-size:12px;color:#f78166;text-decoration:none;border-left:1px solid #30363d;white-space:nowrap;gap:6px;letter-spacing:.02em;font-family:'Segoe UI',sans-serif" title="Ver reporte ejecutivo">
+    ↗ Executive Report
+  </a>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -1344,10 +1347,15 @@ function renderSITREP() {
 init();
 </script>
 
-<p class="source">
-  Fuente: Secretaría de Energía — datos.energia.gob.ar &nbsp;·&nbsp;
-  Actualización automática semanal vía GitHub Actions &nbsp;·&nbsp;
-  Claudio Butassi
-</p>
+<div style="border-top:1px solid #1e2530;margin-top:8px;padding:24px 24px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;max-width:1200px;margin-left:auto;margin-right:auto">
+  <p class="source" style="margin:0;text-align:left">
+    Fuente: Secretaría de Energía — datos.energia.gob.ar &nbsp;·&nbsp;
+    Actualización automática semanal vía GitHub Actions &nbsp;·&nbsp;
+    <strong style="color:#8b949e">Claudio Butassi</strong>
+  </p>
+  <a href="./report.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#f7816610;border:1px solid #f7816640;color:#f78166;text-decoration:none;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:500;transition:background .2s;white-space:nowrap">
+    ↗ Ver Executive Report
+  </a>
+</div>
 </body>
 </html>
