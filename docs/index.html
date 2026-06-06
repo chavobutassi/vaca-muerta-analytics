@@ -96,6 +96,7 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p3',this)">Pozos</button>
   <button onclick="showPage('p4',this)">Eficiencia</button>
   <button onclick="showPage('p5',this)">Declinación</button>
+  <button onclick="showPage('p6',this)">SITREP</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -345,6 +346,71 @@ canvas{display:block;max-width:100%}
     </div>
   </div>
 </div>
+
+<!-- ═══ PAGE 6 — SITREP ═══ -->
+<div class="page" id="p6">
+  <div id="p6-loading" class="loading"><span class="spinner"></span>Analizando datos...</div>
+  <div id="p6-content" style="display:none">
+
+    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Situational Report — Vaca Muerta</div>
+        <div style="font-size:15px;font-weight:600;color:#e6edf3">Análisis ejecutivo integrado</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span id="sitrep-fecha" style="font-size:12px;color:#8b949e"></span>
+        <span id="sitrep-alerta" class="badge"></span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px" id="sitrep-semaforo"></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="card">
+        <h3>Ranking operadoras — score integrado</h3>
+        <div style="font-size:11px;color:#484f58;margin-bottom:12px">Producción × eficiencia × crecimiento × water cut</div>
+        <div id="sitrep-ranking"></div>
+      </div>
+      <div class="card">
+        <h3>Recomendación de inversión / operación</h3>
+        <div id="sitrep-recomendacion"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Pozos prioritarios para intervención <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— water cut > 60% ordenados por potencial de recupero</span></h3>
+      <table>
+        <thead><tr>
+          <th>Prioridad</th><th>Pozo</th><th>Empresa</th><th>Yacimiento</th>
+          <th>Water cut %</th><th>GOR</th><th>Meses activo</th><th>Acción sugerida</th>
+        </tr></thead>
+        <tbody id="sitrep-intervenciones"></tbody>
+      </table>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px">
+      <div class="card">
+        <h3>Benchmark producción/pozo</h3>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-bench-prod" role="img" aria-label="Benchmark producción por pozo"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Benchmark water cut</h3>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-bench-wc" role="img" aria-label="Benchmark water cut"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Tendencia producción total VM</h3>
+        <div class="chart-wrap" style="height:220px"><canvas id="chart-sitrep-trend" role="img" aria-label="Tendencia producción Vaca Muerta"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Conclusión ejecutiva</h3>
+      <div id="sitrep-conclusion" style="font-size:13px;line-height:1.8;color:#8b949e"></div>
+    </div>
+
+  </div>
+</div>
+
 
 <script>
 const DATA = {
@@ -1047,6 +1113,10 @@ async function init() {
     document.getElementById('p5-loading').style.display='none';
     document.getElementById('p5-content').style.display='block';
 
+    renderSITREP();
+    document.getElementById('p6-loading').style.display='none';
+    document.getElementById('p6-content').style.display='block';
+
     setEstado('✅ Datos cargados', 'ok');
   } catch(err) {
     console.error(err);
@@ -1056,6 +1126,220 @@ async function init() {
     });
   }
 }
+
+
+// ════════════════════════════════════════════
+// PÁGINA 6 — SITREP
+// ════════════════════════════════════════════
+function renderSITREP() {
+  const prod = _prod, efic = _efic, ms = _ms, tp = _topPozos;
+  if (!prod.length || !efic.length) return;
+
+  const anios = [...new Set(prod.map(r=>+r.anio))].sort();
+  const ultAnio = anios[anios.length-1];
+  const mesesUlt = new Set(prod.filter(r=>+r.anio===ultAnio).map(r=>r.anio_mes)).size;
+  const anioRef = mesesUlt < 10 ? anios[anios.length-2] : ultAnio;
+
+  document.getElementById('sitrep-fecha').textContent =
+    'Referencia: ' + anioRef + ' · Datos a ' + prod.map(r=>r.anio_mes).sort().pop();
+
+  const empresas = [...new Set(prod.map(r=>r.empresa_grupo))];
+
+  const byEmp = empresas.map(e => {
+    const pRef  = prod.filter(r=>r.empresa_grupo===e&&+r.anio===anioRef);
+    const pAnt  = prod.filter(r=>r.empresa_grupo===e&&+r.anio===anioRef-1);
+    const petRef = pRef.reduce((s,r)=>s+(+r.petroleo_m3||0),0);
+    const petAnt = pAnt.reduce((s,r)=>s+(+r.petroleo_m3||0),0);
+    const pozRef = Math.max(...pRef.map(r=>+r.pozos_activos||0), 1);
+    const eficE  = efic.filter(r=>r.empresa_grupo===e);
+    const wcProm = eficE.length ? eficE.reduce((s,r)=>s+(+r.water_cut_prom||0),0)/eficE.length : 50;
+    const crecYoY= petAnt>0 ? (petRef-petAnt)/petAnt*100 : 0;
+    const m3Pozo = petRef/pozRef;
+    const msRef  = ms.find(r=>r.empresa_grupo===e&&+r.anio===anioRef);
+    const share  = msRef ? +(msRef.market_share_pct)||0 : 0;
+    const maxPet = Math.max(...empresas.map(x=>prod.filter(r=>r.empresa_grupo===x&&+r.anio===anioRef).reduce((s,r)=>s+(+r.petroleo_m3||0),0)));
+    const scoreProd = maxPet>0?(petRef/maxPet)*40:0;
+    const scoreEfic = ((100-wcProm)/100)*30;
+    const scoreCrec = Math.max(0,Math.min(30,(crecYoY+20)/40*30));
+    const score = Math.round(scoreProd+scoreEfic+scoreCrec);
+    return {e,petRef,petAnt,pozRef,wcProm,crecYoY,m3Pozo,share,score};
+  }).filter(e=>e.petRef>0).sort((a,b)=>b.score-a.score);
+
+  const totalPetRef = byEmp.reduce((s,e)=>s+e.petRef,0);
+  const totalPetAnt = byEmp.reduce((s,e)=>s+e.petAnt,0);
+  const crecTotal   = totalPetAnt>0?(totalPetRef-totalPetAnt)/totalPetAnt*100:0;
+  const wcTotal     = byEmp.reduce((s,e)=>s+e.wcProm,0)/byEmp.length;
+  const nCriticos   = efic.filter(r=>+r.water_cut_prom>60).length;
+  const nTotal      = efic.length;
+
+  const semaforos = [
+    {label:'Crecimiento YoY',valor:(crecTotal>=0?'+':'')+crecTotal.toFixed(1)+'%',
+     estado:crecTotal>=5?'ok':crecTotal>=-5?'warn':'danger',
+     desc:crecTotal>=5?'Cuenca en expansión':crecTotal>=-5?'Producción estable':'Contracción detectada'},
+    {label:'Salud de pozos',valor:((nTotal-nCriticos)/nTotal*100).toFixed(0)+'% sanos',
+     estado:nCriticos/nTotal<0.2?'ok':nCriticos/nTotal<0.4?'warn':'danger',
+     desc:nCriticos+' pozos con WC>60% de '+nTotal+' totales'},
+    {label:'Eficiencia promedio',valor:wcTotal.toFixed(1)+'% WC',
+     estado:wcTotal<30?'ok':wcTotal<50?'warn':'danger',
+     desc:wcTotal<30?'Water cut controlado':wcTotal<50?'WC moderado':'WC elevado en la cuenca'},
+    {label:'Actividad perforación',valor:byEmp.filter(e=>e.crecYoY>0).length+'/'+byEmp.length+' emp.',
+     estado:byEmp.filter(e=>e.crecYoY>0).length/byEmp.length>0.6?'ok':'warn',
+     desc:byEmp.filter(e=>e.crecYoY>0).length+' empresas con crecimiento interanual'},
+  ];
+
+  const colorSem={ok:'#3fb950',warn:'#e3b341',danger:'#f78166'};
+  const bgSem   ={ok:'#3fb95015',warn:'#e3b34115',danger:'#f7816615'};
+  const bordSem ={ok:'#3fb95040',warn:'#e3b34140',danger:'#f7816640'};
+
+  document.getElementById('sitrep-semaforo').innerHTML = semaforos.map(s=>`
+    <div style="background:${bgSem[s.estado]};border:1px solid ${bordSem[s.estado]};border-radius:8px;padding:14px 16px">
+      <div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px">${s.label}</div>
+      <div style="font-size:22px;font-weight:600;color:${colorSem[s.estado]};margin-bottom:4px">${s.valor}</div>
+      <div style="font-size:12px;color:#8b949e">${s.desc}</div>
+    </div>`).join('');
+
+  const nDanger=semaforos.filter(s=>s.estado==='danger').length;
+  const ab=document.getElementById('sitrep-alerta');
+  if(nDanger===0){ab.textContent='✅ Cuenca saludable';ab.className='badge ok';}
+  else if(nDanger===1){ab.textContent='⚡ Atención requerida';ab.className='badge warn';}
+  else{ab.textContent='⚠ Alerta operativa';ab.className='badge warn';}
+
+  const top8=byEmp.slice(0,8);
+  const maxScore=top8[0]?.score||1;
+  document.getElementById('sitrep-ranking').innerHTML=top8.map((e,i)=>{
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+    const bc=e.score>=70?'#3fb950':e.score>=45?'#e3b341':'#f78166';
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;min-width:24px">${medal}</span>
+          <span class="emp-badge" style="background:${col(e.e)}22;color:${col(e.e)}">${e.e}</span>
+        </div>
+        <span style="font-size:13px;font-weight:600;color:${bc}">${e.score}/100</span>
+      </div>
+      <div style="height:4px;background:#21262d;border-radius:2px">
+        <div style="height:4px;width:${Math.round(e.score/maxScore*100)}%;background:${bc};border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;color:#484f58;margin-top:3px">
+        WC ${e.wcProm.toFixed(1)}% · ${(e.crecYoY>=0?'+':'')+e.crecYoY.toFixed(1)}% YoY · ${e.share.toFixed(1)}% mercado
+      </div>
+    </div>`;
+  }).join('');
+
+  const lider=byEmp[0];
+  const eficiente=[...byEmp].sort((a,b)=>a.wcProm-b.wcProm)[0];
+  const creciente=[...byEmp].sort((a,b)=>b.crecYoY-a.crecYoY)[0];
+  const riesgosa=[...byEmp].sort((a,b)=>b.wcProm-a.wcProm)[0];
+
+  document.getElementById('sitrep-recomendacion').innerHTML=`
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="padding:12px;background:#3fb95010;border:1px solid #3fb95030;border-radius:6px">
+        <div style="font-size:11px;color:#3fb950;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">▲ Mayor potencial</div>
+        <div style="font-size:13px;color:#e6edf3;font-weight:500">${lider.e}</div>
+        <div style="font-size:12px;color:#8b949e;margin-top:2px">Score ${lider.score}/100 · Líder con ${lider.share.toFixed(1)}% del mercado</div>
+      </div>
+      <div style="padding:12px;background:#1f6feb10;border:1px solid #1f6feb30;border-radius:6px">
+        <div style="font-size:11px;color:#79c0ff;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">⚡ Más eficiente</div>
+        <div style="font-size:13px;color:#e6edf3;font-weight:500">${eficiente.e}</div>
+        <div style="font-size:12px;color:#8b949e;margin-top:2px">Water cut ${eficiente.wcProm.toFixed(1)}% — mejor calidad de fluido</div>
+      </div>
+      <div style="padding:12px;background:#e3b34110;border:1px solid #e3b34130;border-radius:6px">
+        <div style="font-size:11px;color:#e3b341;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">📈 Mayor crecimiento</div>
+        <div style="font-size:13px;color:#e6edf3;font-weight:500">${creciente.e}</div>
+        <div style="font-size:12px;color:#8b949e;margin-top:2px">${creciente.crecYoY>=0?'+':''}${creciente.crecYoY.toFixed(1)}% vs año anterior</div>
+      </div>
+      <div style="padding:12px;background:#f7816610;border:1px solid #f7816630;border-radius:6px">
+        <div style="font-size:11px;color:#f78166;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">⚠ Mayor riesgo operativo</div>
+        <div style="font-size:13px;color:#e6edf3;font-weight:500">${riesgosa.e}</div>
+        <div style="font-size:12px;color:#8b949e;margin-top:2px">Water cut ${riesgosa.wcProm.toFixed(1)}% — requiere intervención</div>
+      </div>
+    </div>`;
+
+  const criticos=efic.filter(r=>+r.water_cut_prom>60)
+    .map(r=>({...r,pri:(+r.water_cut_prom||0)*0.6+Math.min(50,(+r.gor_prom||0)/20)+Math.max(0,30-(+r.meses||0)/2)}))
+    .sort((a,b)=>b.pri-a.pri).slice(0,12);
+  document.getElementById('sitrep-intervenciones').innerHTML=criticos.map((r,i)=>{
+    const wc=+r.water_cut_prom, gor=+r.gor_prom||0, meses=+r.meses||0;
+    const cls=wc>80?'status-danger':'status-warn';
+    const accion=wc>85?'Workover urgente':wc>70&&gor>500?'Evaluar cierre + reinyección':wc>70?'Workover programado':meses<24?'Tratamiento temprano':'Monitoreo intensivo';
+    return `<tr>
+      <td style="font-weight:600;color:${wc>80?'#f78166':'#e3b341'}">${i+1}</td>
+      <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
+      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#8b949e">${r.yacimiento||'—'}</td>
+      <td class="${cls}" style="font-weight:600">${wc.toFixed(1)}%</td>
+      <td style="font-size:12px">${gor>0?gor.toFixed(0):'—'}</td>
+      <td style="font-size:12px">${meses>0?meses:'—'} m</td>
+      <td style="font-size:12px;color:${wc>85?'#f78166':'#e3b341'}">${accion}</td>
+    </tr>`;
+  }).join('');
+
+  const bench8=byEmp.slice(0,8);
+  const avgM3=bench8.reduce((s,e)=>s+e.m3Pozo,0)/bench8.length;
+  makeChart('chart-bench-prod',{type:'bar',
+    data:{labels:bench8.map(e=>e.e),datasets:[
+      {label:'m³/pozo',data:bench8.map(e=>Math.round(e.m3Pozo)),
+       backgroundColor:bench8.map(e=>e.m3Pozo>avgM3?'#3fb95088':'#f7816688'),
+       borderColor:bench8.map(e=>e.m3Pozo>avgM3?'#3fb950':'#f78166'),borderWidth:1},
+      {label:'Promedio',data:bench8.map(()=>Math.round(avgM3)),type:'line',
+       borderColor:'#e3b341',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?fmt(c.raw)+' m³/pozo':'Prom: '+fmt(c.raw)}}},
+      scales:{x:{ticks:{color:'#8b949e',font:{size:9},maxRotation:35},grid:{color:'#21262d'}},
+              y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:10}},grid:{color:'#21262d'}}}}
+  });
+
+  const avgWC=bench8.reduce((s,e)=>s+e.wcProm,0)/bench8.length;
+  makeChart('chart-bench-wc',{type:'bar',
+    data:{labels:bench8.map(e=>e.e),datasets:[
+      {label:'Water cut %',data:bench8.map(e=>+e.wcProm.toFixed(1)),
+       backgroundColor:bench8.map(e=>e.wcProm>60?'#f7816688':e.wcProm>30?'#e3b34188':'#3fb95088'),
+       borderColor:bench8.map(e=>e.wcProm>60?'#f78166':e.wcProm>30?'#e3b341':'#3fb950'),borderWidth:1},
+      {label:'Promedio',data:bench8.map(()=>+avgWC.toFixed(1)),type:'line',
+       borderColor:'#79c0ff',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?'WC: '+c.raw+'%':'Prom: '+c.raw+'%'}}},
+      scales:{x:{ticks:{color:'#8b949e',font:{size:9},maxRotation:35},grid:{color:'#21262d'}},
+              y:{ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:10}},grid:{color:'#21262d'},max:100}}}
+  });
+
+  const meses24=[...new Set(prod.map(r=>r.anio_mes))].sort().slice(-24);
+  const totVM=meses24.map(m=>prod.filter(r=>r.anio_mes===m).reduce((s,r)=>s+(+r.petroleo_m3||0),0));
+  const avgVM=totVM.reduce((s,v)=>s+v,0)/totVM.length;
+  makeChart('chart-sitrep-trend',{type:'line',
+    data:{labels:meses24,datasets:[
+      {label:'Producción VM',data:totVM,borderColor:'#f78166',backgroundColor:'#f7816622',borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+      {label:'Media 24m',data:totVM.map(()=>Math.round(avgVM)),borderColor:'#484f58',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?fmt(c.raw)+' m³':'Media: '+fmt(c.raw)}}},
+      scales:{x:{ticks:{color:'#8b949e',maxTicksLimit:6,font:{size:10}},grid:{color:'#21262d'}},
+              y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:10}},grid:{color:'#21262d'}}}}
+  });
+
+  const tendencia=crecTotal>=5?'expansión sostenida':crecTotal>=-5?'estabilización':'contracción leve';
+  document.getElementById('sitrep-conclusion').innerHTML=`
+    <p style="margin-bottom:10px">
+      Vaca Muerta muestra una tendencia de <strong style="color:#e6edf3">${tendencia}</strong>
+      con una variación interanual de <strong style="color:${crecTotal>=0?'#3fb950':'#f78166'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</strong>
+      en producción de petróleo al cierre de ${anioRef}.
+      El mercado está concentrado: <strong style="color:${col(lider.e)}">${lider.e}</strong> lidera con el ${lider.share.toFixed(1)}% del total en BOE.
+    </p>
+    <p style="margin-bottom:10px">
+      En términos de eficiencia operativa, <strong style="color:${col(eficiente.e)}">${eficiente.e}</strong> opera con el menor water cut
+      (${eficiente.wcProm.toFixed(1)}%), mientras que el promedio general se ubica en
+      <strong style="color:${wcTotal>50?'#f78166':wcTotal>30?'#e3b341':'#3fb950'}">${wcTotal.toFixed(1)}%</strong>.
+      Existen <strong style="color:#f78166">${nCriticos} pozos con water cut superior al 60%</strong>
+      que representan candidatos prioritarios para workover o intervención.
+    </p>
+    <p style="color:#484f58;font-size:12px">
+      ⚠ Análisis basado en datos abiertos de la Secretaría de Energía Argentina. No constituye asesoramiento de inversión.
+      Los datos de ${ultAnio} son parciales (${mesesUlt} meses disponibles).
+    </p>`;
+}
+
 
 init();
 </script>
