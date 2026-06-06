@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaca Muerta Analytics</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header h1{font-size:18px;font-weight:600;color:#e6edf3}
+.header h1 span{color:#f78166;font-weight:400}
+.badges{display:flex;gap:8px;flex-wrap:wrap}
+.badge{background:#1f6feb22;border:1px solid #1f6feb66;color:#79c0ff;font-size:11px;padding:3px 10px;border-radius:20px}
+.badge.ok{background:#3fb95022;border-color:#3fb95066;color:#3fb950}
+.badge.warn{background:#e3b34122;border-color:#e3b34166;color:#e3b341}
+.nav{background:#161b22;border-bottom:1px solid #30363d;padding:0 24px;display:flex;gap:0;overflow-x:auto}
+.nav button{background:none;border:none;color:#8b949e;font-size:13px;padding:12px 16px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.nav button.active{color:#f78166;border-bottom-color:#f78166}
+.nav button:hover:not(.active){color:#e6edf3}
+.page{display:none;padding:24px;max-width:1200px;margin:0 auto}
+.page.active{display:block}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:24px}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px}
+.kpi-label{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:600;color:#e6edf3}
+.kpi-sub{font-size:12px;color:#3fb950;margin-top:4px}
+.kpi-sub.neg{color:#f78166}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.chart-grid.full{grid-template-columns:1fr}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
+.card h3{font-size:11px;font-weight:500;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:.6px}
+.chart-wrap{position:relative;width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:#8b949e}
+.legend span{display:flex;align-items:center;gap:5px}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 12px;font-size:11px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #30363d}
+td{padding:9px 12px;border-bottom:1px solid #21262d;color:#e6edf3}
+tr:hover td{background:#1c2128}
+.emp-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.bar-inline{height:5px;border-radius:3px;display:inline-block;vertical-align:middle;margin-left:8px}
+.filter-bar{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
+.filter-bar select{background:#21262d;border:1px solid #30363d;color:#e6edf3;padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer}
+.filter-bar label{font-size:13px;color:#8b949e}
+.status-ok{color:#3fb950}
+.status-warn{color:#e3b341}
+.status-danger{color:#f78166}
+.loading{text-align:center;padding:60px 20px;color:#8b949e;font-size:14px}
+.spinner{display:inline-block;width:20px;height:20px;border:2px solid #30363d;border-top-color:#f78166;border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.source{font-size:11px;color:#484f58;margin-top:24px;text-align:center;padding-bottom:24px}
+@media(max-width:680px){.chart-grid{grid-template-columns:1fr}.kpi-value{font-size:20px}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🛢️ Vaca Muerta <span>Analytics</span></h1>
+  <div class="badges">
+    <span class="badge">datos.energia.gob.ar</span>
+    <span class="badge" id="badge-periodo">Cargando...</span>
+    <span class="badge" id="badge-estado">⏳ Iniciando</span>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="active" onclick="showPage('p1',this)">Visión General</button>
+  <button onclick="showPage('p2',this)">Por Empresa</button>
+  <button onclick="showPage('p3',this)">Pozos</button>
+  <button onclick="showPage('p4',this)">Eficiencia</button>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <div id="p1-loading" class="loading"><span class="spinner"></span>Cargando datos...</div>
+  <div id="p1-content" style="display:none">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Petróleo acumulado</div><div class="kpi-value" id="k-pet">—</div><div class="kpi-sub" id="k-pet-sub"></div></div>
+      <div class="kpi"><div class="kpi-label">Gas acumulado</div><div class="kpi-value" id="k-gas">—</div><div class="kpi-sub">Mm³ totales</div></div>
+      <div class="kpi"><div class="kpi-label">Pozos únicos</div><div class="kpi-value" id="k-pozos">—</div><div class="kpi-sub">en el dataset</div></div>
+      <div class="kpi"><div class="kpi-label">Operadoras</div><div class="kpi-value" id="k-empresas">—</div><div class="kpi-sub">grupos identificados</div></div>
+    </div>
+    <div class="chart-grid full">
+      <div class="card">
+        <h3>Producción mensual — petróleo (m³)</h3>
+        <div class="legend" id="legend-prod"></div>
+        <div class="chart-wrap" style="height:280px"><canvas id="chart-prod" role="img" aria-label="Producción mensual de petróleo por empresa"></canvas></div>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Market share BOE — último año disponible</h3>
+        <div class="chart-wrap" style="height:240px"><canvas id="chart-ms" role="img" aria-label="Market share por empresa en BOE"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Nuevos pozos por mes</h3>
+        <div class="chart-wrap" style="height:240px"><canvas id="chart-np" role="img" aria-label="Nuevos pozos por mes"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <div id="p2-loading" class="loading"><span class="spinner"></span>Cargando datos...</div>
+  <div id="p2-content" style="display:none">
+    <div class="filter-bar">
+      <label>Año:</label>
+      <select id="sel-anio" onchange="renderP2()"><option value="all">Todos</option></select>
+    </div>
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Producción por empresa (m³ petróleo)</h3>
+        <div class="chart-wrap" style="height:300px"><canvas id="chart-emp" role="img" aria-label="Producción de petróleo por empresa"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Evolución market share (%)</h3>
+        <div class="chart-wrap" style="height:300px"><canvas id="chart-ms-evol" role="img" aria-label="Evolución del market share por empresa"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Ranking por empresa</h3>
+      <table><thead><tr><th>#</th><th>Empresa</th><th>Petróleo m³</th><th>Gas Mm³</th><th>BOE</th><th>Pozos</th></tr></thead>
+      <tbody id="tb-empresas"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <div id="p3-loading" class="loading"><span class="spinner"></span>Cargando datos...</div>
+  <div id="p3-content" style="display:none">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Total pozos ranking</div><div class="kpi-value" id="k-total-pozos">—</div></div>
+      <div class="kpi"><div class="kpi-label">Meses activo promedio</div><div class="kpi-value" id="k-meses-prom">—</div></div>
+      <div class="kpi"><div class="kpi-label">Mayor BOE acumulado</div><div class="kpi-value" id="k-top-boe">—</div></div>
+    </div>
+    <div class="card">
+      <h3>Top 20 pozos por BOE acumulado</h3>
+      <table><thead><tr><th>Rank</th><th>Pozo</th><th>Empresa</th><th>Yacimiento</th><th>BOE acum.</th><th>Meses</th></tr></thead>
+      <tbody id="tb-pozos"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <div id="p4-loading" class="loading"><span class="spinner"></span>Cargando datos...</div>
+  <div id="p4-content" style="display:none">
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-label">Water cut promedio</div><div class="kpi-value" id="k-wc">—</div><div class="kpi-sub">% agua en producción</div></div>
+      <div class="kpi"><div class="kpi-label">Pozos maduros >60%</div><div class="kpi-value" id="k-maduros">—</div><div class="kpi-sub neg">candidatos a intervención</div></div>
+      <div class="kpi"><div class="kpi-label">Pozos tempranos <30%</div><div class="kpi-value" id="k-tempranos">—</div><div class="kpi-sub">alta eficiencia</div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Distribución por etapa del pozo</h3>
+        <div class="chart-wrap" style="height:260px"><canvas id="chart-etapa" role="img" aria-label="Distribución de pozos por etapa"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Water cut promedio por empresa</h3>
+        <div class="chart-wrap" style="height:260px"><canvas id="chart-wc-emp" role="img" aria-label="Water cut promedio por empresa"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Pozos críticos — water cut > 60%</h3>
+      <table><thead><tr><th>Pozo</th><th>Empresa</th><th>Yacimiento</th><th>Water cut %</th><th>GOR prom</th><th>Estado</th></tr></thead>
+      <tbody id="tb-criticos"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// URLs — relativas a docs/data/ (GitHub Pages)
+// ═══════════════════════════════════════════
+const DATA = {
+  prod:     './data/01_vm_produccion_mensual.csv',
+  yac:      './data/02_vm_por_yacimiento.csv',
+  topPozos: './data/03_vm_top_pozos.csv',
+  efic:     './data/04_vm_eficiencia_pozos.csv',
+  ms:       './data/05_vm_market_share.csv',
+  nuevos:   './data/06_vm_nuevos_pozos.csv',
+};
+
+const COLORS = {
+  'YPF':'#0055A5','Shell':'#FFCC00','TotalEnergies':'#E11C24',
+  'Vista Energy':'#4dabf7','Tecpetrol':'#FF6B35','Equinor':'#EE2B31',
+  'Wintershall':'#9775fa','Pan American Energy':'#51cf66','Pluspetrol':'#ffd43b','Otra':'#868e96'
+};
+const col = e => COLORS[e] || '#868e96';
+const fmt = n => n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(Math.round(n||0));
+const charts = {};
+
+function makeChart(id, cfg) {
+  if (charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id);
+  if (ctx) charts[id] = new Chart(ctx, cfg);
+}
+
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// CSV parser simple
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const vals = line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = (vals[i] || '').trim().replace(/^"|"$/g, ''));
+    return obj;
+  });
+}
+
+async function fetchCSV(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} — ${url}`);
+  return parseCSV(await r.text());
+}
+
+// ═══════════════════════════════════════════
+// PÁGINA 1
+// ═══════════════════════════════════════════
+let _prod = [], _ms = [];
+
+function renderP1(prod, ms, nuevos) {
+  const totalPet = prod.reduce((s, r) => s + (+r.petroleo_m3 || 0), 0);
+  const totalGas = prod.reduce((s, r) => s + (+r.gas_mm3 || 0), 0);
+  const empresas = [...new Set(prod.map(r => r.empresa_grupo))];
+  const anios    = [...new Set(prod.map(r => +r.anio))].sort();
+  const ult = anios[anios.length - 1], ant = ult - 1;
+  const p1 = prod.filter(r => +r.anio === ult).reduce((s, r) => s + (+r.petroleo_m3 || 0), 0);
+  const p0 = prod.filter(r => +r.anio === ant).reduce((s, r) => s + (+r.petroleo_m3 || 0), 0);
+  const yoy = p0 > 0 ? ((p1 - p0) / p0 * 100).toFixed(1) : 0;
+
+  document.getElementById('k-pet').textContent      = fmt(totalPet) + ' m³';
+  document.getElementById('k-gas').textContent      = fmt(totalGas);
+  document.getElementById('k-pozos').textContent    = prod.reduce((s, r) => s + (+r.pozos_activos || 0), 0) > 0
+    ? fmt(prod.reduce((s, r) => Math.max(s, +r.pozos_activos || 0), 0)) : '—';
+  document.getElementById('k-empresas').textContent = empresas.length;
+
+  const sub = document.getElementById('k-pet-sub');
+  sub.textContent = (yoy >= 0 ? '▲ +' : '▼ ') + yoy + '% vs año anterior';
+  sub.className = 'kpi-sub' + (yoy < 0 ? ' neg' : '');
+
+  const periodos = prod.map(r => r.anio_mes).sort();
+  document.getElementById('badge-periodo').textContent = periodos[0] + ' → ' + periodos[periodos.length-1];
+
+  // Gráfico producción mensual — últimos 36 meses, top 5 empresas
+  const meses = [...new Set(prod.map(r => r.anio_mes))].sort().slice(-36);
+  const top5  = empresas.slice(0, 5);
+  const datasets = top5.map(e => ({
+    label: e,
+    data: meses.map(m => prod.filter(r => r.anio_mes === m && r.empresa_grupo === e)
+                            .reduce((s, r) => s + (+r.petroleo_m3 || 0), 0)),
+    borderColor: col(e), backgroundColor: col(e) + '33',
+    borderWidth: 2, pointRadius: 0, fill: false, tension: 0.3,
+  }));
+
+  document.getElementById('legend-prod').innerHTML = top5.map(e =>
+    `<span><span class="legend-dot" style="background:${col(e)}"></span>${e}</span>`).join('');
+
+  makeChart('chart-prod', {
+    type: 'line', data: { labels: meses, datasets },
+    options: { responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.raw)} m³` } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', maxTicksLimit: 12, font: { size: 11 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', callback: v => fmt(v), font: { size: 11 } }, grid: { color: '#21262d' } },
+      }
+    }
+  });
+
+  // Market share donut — último año
+  const msUlt  = ms.filter(r => +r.anio === ult);
+  const msEmps = msUlt.map(r => r.empresa_grupo);
+  const msPct  = msUlt.map(r => +(r.market_share_pct) || 0);
+  makeChart('chart-ms', {
+    type: 'doughnut',
+    data: { labels: msEmps, datasets: [{ data: msPct, backgroundColor: msEmps.map(col), borderWidth: 0, hoverOffset: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 12, padding: 8 } },
+                 tooltip: { callbacks: { label: c => `${c.label}: ${(+c.raw).toFixed(1)}%` } } } }
+  });
+
+  // Nuevos pozos — últimos 24 meses
+  const np24   = nuevos.slice(-24);
+  const npMes  = np24.map(r => r.anio_mes_inicio || r.anio_mes || '');
+  const npVals = np24.map(r => +(r.pozos_nuevos) || 0);
+  makeChart('chart-np', {
+    type: 'bar',
+    data: { labels: npMes, datasets: [{ label: 'Nuevos pozos', data: npVals, backgroundColor: '#1f6feb88', borderColor: '#1f6feb', borderWidth: 1 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#8b949e', maxTicksLimit: 8, font: { size: 10 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════
+// PÁGINA 2
+// ═══════════════════════════════════════════
+function populateAnios(prod) {
+  const sel   = document.getElementById('sel-anio');
+  const anios = [...new Set(prod.map(r => r.anio))].sort().reverse();
+  anios.forEach(a => { const o = document.createElement('option'); o.value = a; o.textContent = a; sel.appendChild(o); });
+}
+
+function renderP2() {
+  const anio = document.getElementById('sel-anio').value;
+  const prod = anio === 'all' ? _prod : _prod.filter(r => r.anio == anio);
+  const empresas = [...new Set(prod.map(r => r.empresa_grupo))];
+  const byEmp = empresas.map(e => ({
+    e,
+    pet:  prod.filter(r => r.empresa_grupo === e).reduce((s, r) => s + (+r.petroleo_m3 || 0), 0),
+    gas:  prod.filter(r => r.empresa_grupo === e).reduce((s, r) => s + (+r.gas_mm3 || 0), 0),
+    boe:  prod.filter(r => r.empresa_grupo === e).reduce((s, r) => s + (+r.boe || 0), 0),
+    pozos: Math.max(...prod.filter(r => r.empresa_grupo === e).map(r => +r.pozos_activos || 0)),
+  })).sort((a, b) => b.pet - a.pet);
+  const maxPet = byEmp[0]?.pet || 1;
+
+  makeChart('chart-emp', {
+    type: 'bar',
+    data: { labels: byEmp.map(r => r.e), datasets: [{
+      label: 'Petróleo m³', data: byEmp.map(r => r.pet),
+      backgroundColor: byEmp.map(r => col(r.e) + 'aa'), borderColor: byEmp.map(r => col(r.e)), borderWidth: 1,
+    }]},
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${fmt(c.raw)} m³` } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', callback: v => fmt(v), font: { size: 11 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 12 } }, grid: { display: false } },
+      }
+    }
+  });
+
+  // Evolución market share
+  const anios  = [...new Set(_ms.map(r => r.anio))].sort();
+  const top5ms = byEmp.slice(0, 5).map(r => r.e);
+  makeChart('chart-ms-evol', {
+    type: 'line',
+    data: { labels: anios, datasets: top5ms.map(e => ({
+      label: e,
+      data: anios.map(a => { const f = _ms.find(r => r.empresa_grupo === e && r.anio == a); return f ? +(f.market_share_pct) || 0 : 0; }),
+      borderColor: col(e), backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, tension: 0.3,
+    }))},
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 10, padding: 8 } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', callback: v => v + '%', font: { size: 11 } }, grid: { color: '#21262d' } },
+      }
+    }
+  });
+
+  // Tabla ranking
+  document.getElementById('tb-empresas').innerHTML = byEmp.map((r, i) => `
+    <tr>
+      <td style="color:#8b949e;font-size:12px">${i+1}</td>
+      <td><span class="emp-badge" style="background:${col(r.e)}22;color:${col(r.e)}">${r.e}</span></td>
+      <td>${fmt(r.pet)}</td><td>${fmt(r.gas)}</td><td>${fmt(r.boe)}</td><td>${r.pozos.toLocaleString()}</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// PÁGINA 3
+// ═══════════════════════════════════════════
+function renderP3(topPozos) {
+  document.getElementById('k-total-pozos').textContent = topPozos.length.toLocaleString();
+  const promMeses = topPozos.reduce((s, r) => s + (+r.meses_activo || 0), 0) / topPozos.length;
+  document.getElementById('k-meses-prom').textContent = promMeses.toFixed(0) + ' m';
+  document.getElementById('k-top-boe').textContent    = fmt(topPozos[0]?.boe_acumulado || 0);
+  const maxBoe = +(topPozos[0]?.boe_acumulado) || 1;
+  document.getElementById('tb-pozos').innerHTML = topPozos.slice(0, 20).map(r => `
+    <tr>
+      <td style="color:#8b949e;font-size:12px">${r.rank}</td>
+      <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
+      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#8b949e">${r.yacimiento || '—'}</td>
+      <td>${fmt(r.boe_acumulado)}<span class="bar-inline" style="width:${Math.round((+r.boe_acumulado/maxBoe)*60)}px;background:${col(r.empresa_grupo)}88"></span></td>
+      <td>${r.meses_activo} m</td>
+    </tr>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// PÁGINA 4
+// ═══════════════════════════════════════════
+function renderP4(efic) {
+  const wcs = efic.filter(r => r.water_cut_prom != null && r.water_cut_prom !== '');
+  const wcProm    = wcs.reduce((s, r) => s + (+r.water_cut_prom || 0), 0) / (wcs.length || 1);
+  const maduros   = wcs.filter(r => +r.water_cut_prom > 60).length;
+  const tempranos = wcs.filter(r => +r.water_cut_prom < 30).length;
+  document.getElementById('k-wc').textContent       = wcProm.toFixed(1) + '%';
+  document.getElementById('k-maduros').textContent  = maduros.toLocaleString();
+  document.getElementById('k-tempranos').textContent= tempranos.toLocaleString();
+
+  const etapas = { 'Temprano (<30%)': 0, 'Intermedio (30-60%)': 0, 'Maduro (>60%)': 0 };
+  wcs.forEach(r => { if (etapas[r.etapa_pozo] !== undefined) etapas[r.etapa_pozo]++; });
+  makeChart('chart-etapa', {
+    type: 'doughnut',
+    data: { labels: Object.keys(etapas), datasets: [{ data: Object.values(etapas), backgroundColor: ['#3fb950', '#e3b341', '#f78166'], borderWidth: 0, hoverOffset: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { color: '#8b949e', font: { size: 11 }, boxWidth: 10, padding: 10 } } } }
+  });
+
+  const empresas = [...new Set(wcs.map(r => r.empresa_grupo))];
+  const wcByEmp  = empresas.map(e => ({
+    e, wc: wcs.filter(r => r.empresa_grupo === e).reduce((s, r, _, a) => s + (+r.water_cut_prom) / a.length, 0)
+  })).sort((a, b) => b.wc - a.wc);
+  makeChart('chart-wc-emp', {
+    type: 'bar',
+    data: { labels: wcByEmp.map(r => r.e), datasets: [{ label: 'Water cut %', data: wcByEmp.map(r => +r.wc.toFixed(1)),
+      backgroundColor: wcByEmp.map(r => +r.wc > 60 ? '#f7816688' : +r.wc > 30 ? '#e3b34188' : '#3fb95088'),
+      borderColor:     wcByEmp.map(r => +r.wc > 60 ? '#f78166'   : +r.wc > 30 ? '#e3b341'   : '#3fb950'),
+      borderWidth: 1,
+    }]},
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${(+c.raw).toFixed(1)}%` } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', callback: v => v + '%', font: { size: 11 } }, grid: { color: '#21262d' }, max: 100 },
+        y: { ticks: { color: '#8b949e', font: { size: 12 } }, grid: { display: false } },
+      }
+    }
+  });
+
+  const criticos = wcs.filter(r => +r.water_cut_prom > 60).sort((a, b) => +b.water_cut_prom - +a.water_cut_prom).slice(0, 15);
+  document.getElementById('tb-criticos').innerHTML = criticos.map(r => {
+    const wc  = +r.water_cut_prom;
+    const cls = wc > 80 ? 'status-danger' : 'status-warn';
+    return `<tr>
+      <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
+      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#8b949e">${r.yacimiento || '—'}</td>
+      <td class="${cls}" style="font-weight:500">${wc.toFixed(1)}%</td>
+      <td style="font-size:12px">${r.gor_prom || '—'}</td>
+      <td class="${cls}">${wc > 80 ? '⚠ Crítico' : '⚡ Atención'}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════
+// INIT — carga todos los CSVs en paralelo
+// ═══════════════════════════════════════════
+function setEstado(txt, tipo = '') {
+  const b = document.getElementById('badge-estado');
+  b.textContent = txt;
+  b.className   = 'badge' + (tipo ? ' ' + tipo : '');
+}
+
+async function init() {
+  setEstado('⏳ Cargando datos...');
+  try {
+    const [prod, ms, topPozos, efic, nuevos] = await Promise.all([
+      fetchCSV(DATA.prod), fetchCSV(DATA.ms), fetchCSV(DATA.topPozos),
+      fetchCSV(DATA.efic), fetchCSV(DATA.nuevos),
+    ]);
+    _prod = prod; _ms = ms;
+
+    // P1
+    renderP1(prod, ms, nuevos);
+    document.getElementById('p1-loading').style.display = 'none';
+    document.getElementById('p1-content').style.display = 'block';
+
+    // P2
+    populateAnios(prod);
+    renderP2();
+    document.getElementById('p2-loading').style.display = 'none';
+    document.getElementById('p2-content').style.display = 'block';
+
+    // P3
+    renderP3(topPozos);
+    document.getElementById('p3-loading').style.display = 'none';
+    document.getElementById('p3-content').style.display = 'block';
+
+    // P4
+    renderP4(efic);
+    document.getElementById('p4-loading').style.display = 'none';
+    document.getElementById('p4-content').style.display = 'block';
+
+    setEstado('✅ Datos cargados', 'ok');
+  } catch (err) {
+    console.error(err);
+    setEstado('⚠ Error al cargar datos', 'warn');
+    document.querySelectorAll('[id$="-loading"]').forEach(el => {
+      el.innerHTML = `<span style="color:#f78166">⚠ No se pudieron cargar los datos.<br><small>${err.message}</small></span>`;
+    });
+  }
+}
+
+init();
+</script>
+
+<p class="source">
+  Fuente: Secretaría de Energía — datos.energia.gob.ar &nbsp;·&nbsp;
+  Actualización automática semanal vía GitHub Actions &nbsp;·&nbsp;
+  Autor: Claudio Butassi
+</p>
+
+</body>
+</html>

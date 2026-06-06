@@ -1,0 +1,5 @@
+﻿cache_csv/
+output/
+docs/data/07_vm_raw_filtrado.csv
+__pycache__/
+*.pyc

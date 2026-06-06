@@ -1,0 +1,33 @@
+name: Actualizar datos Vaca Muerta
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Cada lunes 6am UTC (3am Argentina)
+  workflow_dispatch:        # Permite correrlo manualmente desde GitHub
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repo
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install pandas requests tqdm openpyxl
+
+      - name: Correr pipeline
+        run: python vaca_muerta_pipeline.py
+
+      - name: Commit y push de datos actualizados
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/
+          git diff --staged --quiet || git commit -m "datos: actualización automática $(date '+%Y-%m-%d')"
+          git push

@@ -1,0 +1,612 @@
+﻿anio_mes_inicio,empresa_grupo,pozos_nuevos
+2006-01,Tecpetrol,1
+2006-01,Vista Energy,5
+2006-01,YPF,94
+2006-02,Vista Energy,1
+2007-07,Capex,1
+2007-08,TotalEnergies,1
+2008-03,YPF,2
+2008-04,YPF,1
+2008-05,YPF,1
+2010-06,Wintershall,7
+2011-01,Pluspetrol,1
+2011-02,TotalEnergies,1
+2011-02,Vaca,1
+2011-05,Roch,1
+2011-06,YPF,1
+2011-10,YPF,1
+2012-01,Pluspetrol,1
+2012-03,Pan American Energy,2
+2012-04,YPF,1
+2012-04,Capex,4
+2012-04,Pluspetrol,1
+2012-05,Pluspetrol,2
+2012-05,TotalEnergies,1
+2012-05,YPF,1
+2012-06,Patagonia,1
+2012-07,Pluspetrol,1
+2012-08,Shell,1
+2012-09,Tecpetrol,1
+2012-09,Pluspetrol,1
+2012-10,YPF,1
+2012-12,Pluspetrol,1
+2012-12,Vaca,1
+2012-12,Vista Energy,1
+2013-01,Energicon,1
+2013-01,TotalEnergies,1
+2013-01,YPF,1
+2013-02,Pluspetrol,2
+2013-03,YPF,1
+2013-03,Patagonia,1
+2013-04,Chevron,1
+2013-05,Petrobras,1
+2013-05,Shell,1
+2013-05,TotalEnergies,1
+2013-05,YPF,1
+2013-07,Petrobras,1
+2013-07,Ysur,2
+2013-08,Chevron,1
+2013-08,Vista Energy,1
+2013-09,TotalEnergies,2
+2013-10,Pluspetrol,1
+2013-10,Vaca,1
+2013-10,YPF,19
+2013-11,Chevron,1
+2013-11,Vista Energy,1
+2013-11,YPF,17
+2013-12,YPF,8
+2013-12,TotalEnergies,1
+2014-01,Argenta,1
+2014-01,Chevron,1
+2014-01,TotalEnergies,1
+2014-01,YPF,38
+2014-02,YPF,15
+2014-03,Shell,1
+2014-03,YPF,12
+2014-04,YPF,12
+2014-05,YPF,15
+2014-05,Tecpetrol,1
+2014-06,Vista Energy,1
+2014-06,YPF,21
+2014-07,Vaca,1
+2014-07,YPF,16
+2014-08,Pluspetrol,1
+2014-08,YPF,17
+2014-09,Pluspetrol,1
+2014-09,YPF,14
+2014-10,YPF,15
+2014-10,TotalEnergies,3
+2014-11,Pluspetrol,1
+2014-11,Vista Energy,1
+2014-12,Venoil,1
+2015-01,Roch,1
+2015-01,YPF,9
+2015-02,Roch,1
+2015-02,YPF,17
+2015-03,YPF,13
+2015-03,TotalEnergies,1
+2015-04,TotalEnergies,1
+2015-04,YPF,14
+2015-05,YPF,16
+2015-06,Shell,2
+2015-06,Vaca,1
+2015-06,YPF,15
+2015-07,TotalEnergies,3
+2015-07,YPF,12
+2015-08,YPF,9
+2015-09,YPF,14
+2015-09,Shell,3
+2015-10,YPF,12
+2015-11,YPF,15
+2015-12,TotalEnergies,1
+2015-12,YPF,15
+2016-01,Capex,1
+2016-01,YPF,6
+2016-02,YPF,10
+2016-03,YPF,18
+2016-03,Vaca,1
+2016-04,Vaca,1
+2016-04,YPF,6
+2016-05,TotalEnergies,1
+2016-05,Vaca,2
+2016-05,YPF,6
+2016-06,YPF,11
+2016-07,YPF,5
+2016-08,YPF,10
+2016-09,YPF,11
+2016-09,Vaca,1
+2016-10,Shell,1
+2016-10,YPF,2
+2016-11,YPF,10
+2016-12,Tecpetrol,1
+2016-12,YPF,7
+2017-01,Pan American Energy,2
+2017-01,Tecpetrol,1
+2017-02,Tecpetrol,2
+2017-02,YPF,2
+2017-03,Tecpetrol,1
+2017-03,Wintershall,1
+2017-03,YPF,12
+2017-04,Capex,1
+2017-04,Shell,1
+2017-04,YPF,6
+2017-05,Shell,1
+2017-05,YPF,9
+2017-05,Pluspetrol,2
+2017-06,Pan American Energy,1
+2017-06,YPF,7
+2017-07,Tecpetrol,3
+2017-07,YPF,4
+2017-08,Petrolera,2
+2017-08,YPF,4
+2017-09,Shell,3
+2017-09,Pan American Energy,3
+2017-09,Vaca,2
+2017-09,YPF,11
+2017-10,Pan American Energy,1
+2017-10,YPF,5
+2017-11,Petrobras,1
+2017-11,Pluspetrol,1
+2017-12,TotalEnergies,2
+2017-12,Pluspetrol,1
+2017-12,YPF,8
+2018-01,YPF,7
+2018-01,Tecpetrol,13
+2018-01,Pluspetrol,1
+2018-01,Pan American Energy,1
+2018-02,Pan American Energy,1
+2018-02,Shell,4
+2018-02,Tecpetrol,2
+2018-02,TotalEnergies,2
+2018-02,YPF,2
+2018-03,YPF,5
+2018-03,TotalEnergies,2
+2018-03,Pan American Energy,2
+2018-03,Tecpetrol,1
+2018-04,Pan American Energy,1
+2018-04,Pluspetrol,1
+2018-04,Shell,1
+2018-04,Tecpetrol,1
+2018-04,YPF,9
+2018-05,YPF,2
+2018-05,Wintershall,3
+2018-05,Tecpetrol,4
+2018-05,Pan American Energy,3
+2018-05,TotalEnergies,3
+2018-06,Pan American Energy,1
+2018-06,Tecpetrol,7
+2018-06,TotalEnergies,1
+2018-06,Vaca,2
+2018-06,YPF,10
+2018-07,Pan American Energy,2
+2018-07,Tecpetrol,5
+2018-07,TotalEnergies,1
+2018-07,YPF,8
+2018-08,YPF,7
+2018-08,Pan American Energy,2
+2018-08,Tecpetrol,6
+2018-08,TotalEnergies,2
+2018-09,TotalEnergies,1
+2018-09,YPF,9
+2018-09,Pan American Energy,2
+2018-09,Tecpetrol,5
+2018-10,Pan American Energy,2
+2018-10,Petrolera,4
+2018-10,Tecpetrol,18
+2018-10,TotalEnergies,5
+2018-10,YPF,9
+2018-11,Pan American Energy,1
+2018-11,YPF,3
+2018-12,YPF,9
+2018-12,TotalEnergies,2
+2018-12,Petrolera,1
+2019-01,YPF,6
+2019-01,Pan American Energy,3
+2019-01,Petrolera,1
+2019-01,Pluspetrol,3
+2019-01,Tecpetrol,1
+2019-01,Vaca,1
+2019-02,YPF,1
+2019-02,Vista Energy,4
+2019-02,Tecpetrol,1
+2019-03,Pan American Energy,1
+2019-03,Tecpetrol,3
+2019-03,YPF,8
+2019-04,YPF,12
+2019-04,Pan American Energy,2
+2019-04,Shell,5
+2019-04,Tecpetrol,7
+2019-04,TotalEnergies,2
+2019-05,YPF,8
+2019-05,Shell,1
+2019-05,TotalEnergies,4
+2019-06,Vista Energy,4
+2019-06,Petrolera,1
+2019-06,Shell,4
+2019-06,Tecpetrol,2
+2019-06,YPF,9
+2019-07,YPF,10
+2019-07,Shell,2
+2019-07,Vaca,2
+2019-07,Pluspetrol,9
+2019-07,Pan American Energy,2
+2019-08,Pampa,3
+2019-08,Pan American Energy,3
+2019-08,Pluspetrol,1
+2019-08,TotalEnergies,2
+2019-08,Wintershall,2
+2019-08,YPF,7
+2019-09,YPF,5
+2019-09,Pluspetrol,7
+2019-09,Pan American Energy,3
+2019-09,Petrolera,2
+2019-10,Petrolera,1
+2019-10,Pluspetrol,2
+2019-10,YPF,14
+2019-11,Pan American Energy,1
+2019-11,Shell,1
+2019-11,YPF,5
+2019-12,Vaca,2
+2019-12,YPF,5
+2019-12,TotalEnergies,4
+2019-12,Pan American Energy,2
+2019-12,Pampa,1
+2019-12,Shell,3
+2020-01,Pan American Energy,4
+2020-01,Vista Energy,4
+2020-01,YPF,6
+2020-02,Pan American Energy,2
+2020-02,Shell,4
+2020-02,YPF,8
+2020-03,YPF,5
+2020-05,Pan American Energy,1
+2020-06,Pan American Energy,1
+2020-06,TotalEnergies,4
+2020-07,Shell,4
+2020-09,Vista Energy,4
+2020-09,Chevron,5
+2020-10,Shell,4
+2020-11,YPF,10
+2020-11,Vista Energy,4
+2020-12,Vista Energy,4
+2020-12,YPF,8
+2021-01,Pluspetrol,2
+2021-01,Tecpetrol,4
+2021-01,YPF,6
+2021-02,Tecpetrol,2
+2021-02,Vista Energy,4
+2021-02,YPF,1
+2021-03,YPF,26
+2021-03,Shell,13
+2021-03,Pan American Energy,3
+2021-03,Pluspetrol,12
+2021-04,Pan American Energy,2
+2021-04,Shell,4
+2021-05,Vista Energy,4
+2021-05,YPF,5
+2021-05,Tecpetrol,6
+2021-05,Pluspetrol,3
+2021-05,Pan American Energy,2
+2021-05,Chevron,4
+2021-05,Shell,4
+2021-06,Pan American Energy,2
+2021-06,Shell,6
+2021-06,Tecpetrol,2
+2021-06,YPF,13
+2021-07,Pampa,1
+2021-07,Pluspetrol,3
+2021-07,YPF,11
+2021-08,YPF,20
+2021-08,Pan American Energy,2
+2021-08,Tecpetrol,4
+2021-08,Vista Energy,4
+2021-09,TotalEnergies,2
+2021-09,YPF,18
+2021-09,Shell,4
+2021-09,Tecpetrol,3
+2021-10,YPF,8
+2021-10,Pan American Energy,5
+2021-10,Tecpetrol,1
+2021-11,Pan American Energy,7
+2021-11,TotalEnergies,2
+2021-11,Vista Energy,4
+2021-11,YPF,25
+2021-12,Pan American Energy,2
+2021-12,Petrolera,1
+2021-12,YPF,18
+2022-01,YPF,13
+2022-01,Vista Energy,2
+2022-01,Pan American Energy,2
+2022-01,Petrolera,1
+2022-01,Tecpetrol,4
+2022-02,YPF,4
+2022-02,Shell,12
+2022-02,TotalEnergies,2
+2022-03,YPF,10
+2022-03,Tecpetrol,9
+2022-03,Pan American Energy,3
+2022-04,Capex,1
+2022-04,Pan American Energy,3
+2022-04,Pluspetrol,3
+2022-04,Tecpetrol,1
+2022-04,Vista Energy,4
+2022-04,YPF,10
+2022-05,YPF,9
+2022-05,Vista Energy,25
+2022-05,Pluspetrol,1
+2022-05,Pan American Energy,5
+2022-05,TotalEnergies,2
+2022-06,Shell,7
+2022-06,Tecpetrol,4
+2022-06,YPF,13
+2022-07,YPF,12
+2022-07,TotalEnergies,2
+2022-07,Tecpetrol,3
+2022-07,Pluspetrol,3
+2022-07,Petrolera,3
+2022-07,Pan American Energy,3
+2022-08,Pan American Energy,2
+2022-08,Pluspetrol,6
+2022-08,Tecpetrol,3
+2022-08,TotalEnergies,2
+2022-08,YPF,5
+2022-09,YPF,18
+2022-09,Petrolera,3
+2022-09,Pluspetrol,9
+2022-10,Pampa,2
+2022-10,Pan American Energy,3
+2022-10,Tecpetrol,3
+2022-10,YPF,11
+2022-11,TotalEnergies,2
+2022-11,YPF,7
+2022-11,Tecpetrol,5
+2022-11,Pluspetrol,3
+2022-11,Petrolera,3
+2022-11,Pan American Energy,2
+2022-12,Pampa,3
+2022-12,Pan American Energy,3
+2022-12,Pluspetrol,3
+2022-12,Tecpetrol,1
+2022-12,YPF,30
+2023-01,YPF,13
+2023-01,Tecpetrol,1
+2023-01,Shell,4
+2023-02,Capex,1
+2023-02,Pan American Energy,3
+2023-02,Pluspetrol,3
+2023-02,Shell,3
+2023-02,Tecpetrol,3
+2023-02,Vaca,1
+2023-02,YPF,12
+2023-03,YPF,5
+2023-03,TotalEnergies,2
+2023-03,Vista Energy,5
+2023-03,Pan American Energy,3
+2023-03,Tecpetrol,3
+2023-04,Pampa,3
+2023-04,Pan American Energy,3
+2023-04,Tecpetrol,4
+2023-04,TotalEnergies,3
+2023-04,Vaca,2
+2023-04,YPF,5
+2023-05,Capex,1
+2023-05,Pampa,3
+2023-05,Pan American Energy,2
+2023-05,Pluspetrol,3
+2023-05,Shell,4
+2023-05,Vista Energy,4
+2023-05,YPF,9
+2023-06,YPF,20
+2023-06,TotalEnergies,3
+2023-06,Shell,5
+2023-06,Petrolera,4
+2023-06,Pampa,3
+2023-06,Pluspetrol,6
+2023-07,Pan American Energy,2
+2023-07,Pluspetrol,2
+2023-07,Tecpetrol,5
+2023-07,Vista Energy,4
+2023-07,YPF,8
+2023-08,Chevron,4
+2023-08,Pan American Energy,4
+2023-08,Pluspetrol,3
+2023-08,TotalEnergies,2
+2023-08,Vista Energy,4
+2023-08,YPF,16
+2023-09,YPF,17
+2023-09,Pluspetrol,1
+2023-09,Vista Energy,4
+2023-09,Pan American Energy,2
+2023-09,Pampa,2
+2023-09,Petrolera,4
+2023-10,YPF,11
+2023-10,Vista Energy,3
+2023-10,Shell,4
+2023-10,Pampa,1
+2023-10,Pan American Energy,4
+2023-10,Pluspetrol,1
+2023-11,Chevron,4
+2023-11,Pampa,3
+2023-11,Pan American Energy,2
+2023-11,Pluspetrol,3
+2023-11,Tecpetrol,3
+2023-11,Vista Energy,4
+2023-11,YPF,26
+2023-12,YPF,6
+2023-12,TotalEnergies,3
+2023-12,Shell,12
+2023-12,Petrolera,4
+2023-12,Pampa,3
+2023-12,Pluspetrol,15
+2024-01,Roch,1
+2024-01,Vista Energy,6
+2024-01,Venoil,3
+2024-01,TotalEnergies,3
+2024-01,Tecpetrol,3
+2024-01,Shell,5
+2024-01,Pluspetrol,19
+2024-01,Argenta,2
+2024-01,Pan American Energy,10
+2024-01,Pampa,3
+2024-01,Oilstone,7
+2024-01,Kilwer,1
+2024-01,Exxonmobil,3
+2024-01,YPF,199
+2024-01,Petrolera,2
+2024-02,Tecpetrol,4
+2024-02,Shell,5
+2024-02,YPF,11
+2024-02,Vista Energy,5
+2024-02,Pluspetrol,1
+2024-02,Pan American Energy,3
+2024-02,Pampa,1
+2024-02,Capex,4
+2024-02,Petrolera,3
+2024-03,Pluspetrol,2
+2024-03,Shell,4
+2024-03,Tecpetrol,6
+2024-03,Vista Energy,7
+2024-03,YPF,20
+2024-04,Chevron,4
+2024-04,Pan American Energy,3
+2024-04,Shell,4
+2024-04,Tecpetrol,4
+2024-04,YPF,14
+2024-05,Tecpetrol,4
+2024-05,YPF,17
+2024-05,Vista Energy,7
+2024-05,Pluspetrol,1
+2024-05,Pampa,3
+2024-05,TotalEnergies,3
+2024-06,Pan American Energy,3
+2024-06,Pluspetrol,2
+2024-06,Tecpetrol,5
+2024-06,Vista Energy,4
+2024-06,YPF,14
+2024-07,Vista Energy,5
+2024-07,Pan American Energy,4
+2024-07,Petrolera,4
+2024-07,Tecpetrol,3
+2024-07,YPF,25
+2024-08,YPF,19
+2024-08,TotalEnergies,3
+2024-08,Shell,4
+2024-08,Vista Energy,7
+2024-08,Pan American Energy,2
+2024-08,Pampa,3
+2024-08,Pluspetrol,5
+2024-08,Chevron,4
+2024-09,Pan American Energy,6
+2024-09,Vista Energy,3
+2024-09,YPF,24
+2024-10,YPF,18
+2024-10,Shell,4
+2024-10,Vista Energy,4
+2024-10,Pan American Energy,1
+2024-10,Petrolera,3
+2024-11,Vista Energy,8
+2024-11,YPF,20
+2024-12,Pan American Energy,3
+2024-12,Tecpetrol,4
+2024-12,Vaca,2
+2024-12,YPF,6
+2025-01,Vista Energy,2
+2025-01,YPF,20
+2025-01,Tecpetrol,4
+2025-01,Pan American Energy,3
+2025-01,Petrolera,4
+2025-01,Pluspetrol,6
+2025-02,Chevron,4
+2025-02,Pan American Energy,3
+2025-02,Pluspetrol,2
+2025-02,Tecpetrol,8
+2025-02,TotalEnergies,3
+2025-02,Vista Energy,8
+2025-02,YPF,15
+2025-03,Vista Energy,4
+2025-03,Oilstone,3
+2025-03,Pampa,4
+2025-03,Pan American Energy,4
+2025-03,Pluspetrol,1
+2025-03,Tecpetrol,4
+2025-03,YPF,12
+2025-04,Pluspetrol,4
+2025-04,YPF,26
+2025-04,Vista Energy,5
+2025-04,Pan American Energy,2
+2025-04,Tecpetrol,4
+2025-04,TotalEnergies,3
+2025-05,Capex,5
+2025-05,Pampa,4
+2025-05,Pan American Energy,3
+2025-05,Petrolera,4
+2025-05,Pluspetrol,3
+2025-05,Shell,8
+2025-05,Vista Energy,4
+2025-05,YPF,24
+2025-06,YPF,18
+2025-06,Tecpetrol,2
+2025-06,Pluspetrol,1
+2025-06,TotalEnergies,3
+2025-06,Pampa,10
+2025-06,Chevron,4
+2025-06,Pan American Energy,5
+2025-07,Vista Energy,5
+2025-07,Tecpetrol,5
+2025-07,YPF,23
+2025-07,Pan American Energy,1
+2025-07,Hattrick,1
+2025-07,Pluspetrol,3
+2025-08,Chevron,4
+2025-08,Hattrick,1
+2025-08,Pampa,3
+2025-08,Pan American Energy,4
+2025-08,Pluspetrol,3
+2025-08,Vista Energy,10
+2025-08,YPF,28
+2025-09,YPF,18
+2025-09,Shell,6
+2025-09,Vista Energy,3
+2025-09,Pan American Energy,2
+2025-09,Pampa,1
+2025-09,Pluspetrol,3
+2025-10,Pampa,4
+2025-10,Petrolera,5
+2025-10,Pluspetrol,2
+2025-10,Shell,4
+2025-10,Vista Energy,5
+2025-10,YPF,23
+2025-11,Pluspetrol,8
+2025-11,Shell,1
+2025-11,Vista Energy,4
+2025-11,YPF,14
+2025-12,Vista Energy,3
+2025-12,Vaca,2
+2025-12,YPF,22
+2025-12,Pampa,6
+2025-12,Pluspetrol,3
+2026-01,Chevron,4
+2026-01,Pampa,3
+2026-01,Petrolera,4
+2026-01,Pluspetrol,2
+2026-01,Tecpetrol,9
+2026-01,Vista Energy,9
+2026-01,YPF,5
+2026-02,YPF,25
+2026-02,Vista Energy,4
+2026-02,Pampa,7
+2026-02,Tecpetrol,2
+2026-02,TotalEnergies,4
+2026-03,Vista Energy,4
+2026-03,Pan American Energy,7
+2026-03,Pluspetrol,3
+2026-03,Tecpetrol,6
+2026-03,TotalEnergies,3
+2026-03,YPF,15
+2026-04,Tecpetrol,4
+2026-04,Pluspetrol,7
+2026-04,Vista Energy,4
+2026-04,Pan American Energy,4
+2026-04,Pampa,11
+2026-04,Phoenix,4
+2026-04,YPF,18
