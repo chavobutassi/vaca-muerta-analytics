@@ -3,25 +3,29 @@
   VACA MUERTA — Pipeline de datos para dashboard Power BI
   Fuente: Secretaría de Energía — datos.energia.gob.ar
   Autor: Claudio Butassi
-  Versión: 2.0
+  Versión: 2.1
 =============================================================
 
 DESCRIPCIÓN:
     Pipeline ETL que descarga, normaliza, filtra y transforma
     datos de producción de pozos no convencionales de Vaca Muerta,
-    exportando 7 tablas analíticas listas para Power BI.
+    exportando tablas analíticas listas para Power BI, un reporte
+    de calidad de datos y metadatos de trazabilidad del run.
 
 REQUISITOS:
     pip install pandas requests tqdm openpyxl
 
 OUTPUTS (carpeta ./output/):
-    01_vm_produccion_mensual.csv   → producción mensual por empresa
-    02_vm_por_yacimiento.csv       → producción por yacimiento y año
-    03_vm_top_pozos.csv            → ranking de pozos por producción acumulada
-    04_vm_eficiencia_pozos.csv     → water cut y GOR por pozo
-    05_vm_market_share.csv         → participación de mercado por empresa
-    06_vm_nuevos_pozos.csv         → pozos nuevos por mes (proxy de perforación)
-    07_vm_raw_filtrado.csv         → dataset completo Vaca Muerta
+    01_vm_produccion_mensual.csv     → producción mensual por empresa
+    02_vm_por_yacimiento.csv         → producción por yacimiento y año
+    03_vm_top_pozos.csv              → ranking de pozos por producción acumulada
+    04_vm_eficiencia_pozos.csv       → water cut y GOR por pozo
+    05_vm_market_share.csv           → participación de mercado por empresa
+    06_vm_nuevos_pozos.csv           → pozos nuevos por mes (proxy de perforación)
+    07_vm_raw_filtrado.csv           → dataset completo Vaca Muerta
+    08_vm_declinacion_cohortes.csv   → curvas de declinación por cohorte (vintage)
+    09_vm_data_quality.csv           → reporte de chequeos de calidad de datos
+    _metadata.json                   → trazabilidad del run (fecha, período, filas)
 =============================================================
 """
 
@@ -29,10 +33,12 @@ from __future__ import annotations
 
 import os
 import sys
+import json
 import shutil
 import logging
 import requests
 import pandas as pd
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 from tqdm import tqdm
@@ -61,15 +67,38 @@ CARPETA_DOCS   = Path("docs/data")   # GitHub Pages sirve desde acá
 
 # Grupos de empresa: clave = nombre canónico, valores = patrones a detectar
 GRUPOS: dict[str, list[str]] = {
-    "YPF":                ["YPF"],
-    "Shell":              ["SHELL"],
-    "TotalEnergies":      ["TOTAL"],
-    "Vista Energy":       ["VISTA"],
-    "Tecpetrol":          ["TECPETROL"],
-    "Equinor":            ["EQUINOR", "STATOIL"],
-    "Wintershall":        ["WINTERSHALL"],
-    "Pan American Energy":["PAN AMERICAN", "PANAMERICAN"],
-    "Pluspetrol":         ["PLUSPETROL"],
+    "YPF":                 ["YPF", "YSUR"],
+    "Shell":               ["SHELL"],
+    "TotalEnergies":       ["TOTAL AUSTRAL", "TOTALENERGIES", "TOTAL E&P", "TOTAL S.A"],
+    "Vista Energy":        ["VISTA"],
+    "Tecpetrol":           ["TECPETROL"],
+    "Equinor":             ["EQUINOR", "STATOIL"],
+    "Wintershall":         ["WINTERSHALL"],
+    "Pan American Energy": ["PAN AMERICAN", "PANAMERICAN"],
+    "Pluspetrol":          ["PLUSPETROL"],
+    "Pampa Energía":       ["PAMPA"],
+    "Chevron":             ["CHEVRON"],
+    "ExxonMobil":          ["EXXONMOBIL", "EXXON MOBIL", "ESSO"],
+    "Capex":               ["CAPEX"],
+    "Geopark":             ["GEOPARK"],
+    "Phoenix":             ["PHOENIX"],
+    "Kilwer":              ["KILWER"],
+    "Petrolera El Trébol": ["PETROLERA EL TREBOL", "EL TREBOL"],
+    "Petrobras":           ["PETROBRAS"],
+    "O&G Developments":    ["O&G DEVELOPMENTS", "O&G DEV"],
+    "Grecoil":             ["GRECOIL"],
+    "Medanito":            ["MEDANITO"],
+    "Americas Petrogas":   ["AMERICAS PETROGAS", "AMERICAS"],
+    "APCO":                ["APCO"],
+    "Apache":              ["APACHE"],
+    "Madalena":            ["MADALENA"],
+    "Quintana":            ["QUINTANA"],
+    "Roch":                ["ROCH"],
+    "Continental":         ["CONTINENTAL"],
+    "Hattrick":            ["HATTRICK"],
+    "Argenta":             ["ARGENTA"],
+    "Bentia":              ["BENTIA"],
+    "Gas y Petróleo Nqn":  ["GAS Y PETROLEO", "G Y P "],
 }
 
 # Mapeo canónico de nombres de columna
@@ -260,6 +289,98 @@ def enriquecer(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+# ─── VALIDACIÓN DE CALIDAD DE DATOS ──────────────────────────────────────────
+
+def validar(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Ejecuta chequeos de calidad sobre el dataset consolidado.
+
+    Cada chequeo cuenta cuántos registros violan una regla de negocio.
+    No modifica los datos: solo informa. La decisión de qué hacer con
+    los registros problemáticos queda explícita y documentada.
+
+    Chequeos implementados:
+        1. produccion_negativa  → petróleo, gas o agua < 0 (imposible físicamente)
+        2. fecha_futura         → registros con fecha posterior a hoy
+        3. fecha_invalida       → registros donde no se pudo parsear la fecha
+        4. sin_empresa          → registros sin operadora identificable
+        5. sin_pozo_id          → registros sin identificador de pozo
+        6. water_cut_invalido   → corte de agua fuera del rango [0, 100]
+        7. salto_mensual_brusco → meses donde la producción total varía ±50%
+                                  vs. el mes anterior (posible carga incompleta)
+
+    Returns:
+        DataFrame con columnas: chequeo, registros_afectados, pct_del_total,
+        severidad, descripcion. Se exporta como 09_vm_data_quality.csv.
+    """
+    n = len(df)
+    resultados: list[dict] = []
+
+    def _check(nombre: str, cant: int, severidad: str, desc: str) -> None:
+        resultados.append({
+            "chequeo": nombre,
+            "registros_afectados": int(cant),
+            "pct_del_total": round(cant / n * 100, 3) if n else 0.0,
+            "severidad": severidad,
+            "descripcion": desc,
+        })
+
+    # 1. Producción negativa
+    neg = 0
+    for col in ["petroleo_m3", "gas_mm3", "agua_m3"]:
+        if col in df.columns:
+            neg += int((df[col] < 0).sum())
+    _check("produccion_negativa", neg, "alta",
+           "Valores de producción menores a cero (imposible físicamente)")
+
+    # 2 y 3. Fechas
+    if "fecha" in df.columns:
+        hoy = pd.Timestamp.now().normalize()
+        _check("fecha_futura", int((df["fecha"] > hoy).sum()), "alta",
+               "Registros con período posterior a la fecha actual")
+        _check("fecha_invalida", int(df["fecha"].isna().sum()), "media",
+               "Registros donde el período no pudo parsearse a fecha")
+
+    # 4. Sin empresa
+    if "empresa" in df.columns:
+        sin_emp = int(df["empresa"].isin(["", "NAN", "NONE"]).sum()
+                      + df["empresa"].isna().sum())
+        _check("sin_empresa", sin_emp, "media",
+               "Registros sin operadora identificable (afecta market share)")
+
+    # 5. Sin pozo_id
+    if "pozo_id" in df.columns:
+        _check("sin_pozo_id", int(df["pozo_id"].isna().sum()), "alta",
+               "Registros sin identificador de pozo (afecta deduplicación y rankings)")
+
+    # 6. Water cut fuera de rango
+    if "water_cut_pct" in df.columns:
+        wc = df["water_cut_pct"]
+        _check("water_cut_invalido", int(((wc < 0) | (wc > 100)).sum()), "baja",
+               "Corte de agua fuera del rango físico 0-100%")
+
+    # 7. Saltos bruscos en la producción mensual total
+    if {"anio_mes", "boe"}.issubset(df.columns):
+        serie = df.groupby("anio_mes")["boe"].sum().sort_index()
+        var = serie.pct_change().abs()
+        saltos = int((var > 0.5).sum())
+        _check("salto_mensual_brusco", saltos, "media",
+               "Meses cuya producción total varía más de ±50% vs. el mes anterior "
+               "(posible mes con carga incompleta en la fuente)")
+
+    reporte = pd.DataFrame(resultados)
+
+    # Log resumido en consola
+    problemas = reporte[reporte["registros_afectados"] > 0]
+    if problemas.empty:
+        log.info("  ✓ Calidad de datos: todos los chequeos OK")
+    else:
+        for _, r in problemas.iterrows():
+            log.warning("  ⚠ %s: %s registros (%s%%)",
+                        r["chequeo"], f"{r['registros_afectados']:,}", r["pct_del_total"])
+
+    return reporte
+
 # ─── TABLAS ANALÍTICAS ───────────────────────────────────────────────────────
 
 def t_produccion_mensual(df: pd.DataFrame) -> pd.DataFrame:
@@ -328,10 +449,16 @@ def t_eficiencia(df: pd.DataFrame) -> pd.DataFrame:
     return g
 
 def t_market_share(df: pd.DataFrame) -> pd.DataFrame:
-    """Participación de mercado anual por empresa expresada en BOE."""
+    """Participación de mercado anual por empresa expresada en BOE.
+    Si el año más reciente tiene menos de 10 meses de datos, se marca como parcial
+    pero se incluye igual — el dashboard lo filtra por año completo.
+    """
     a = df.groupby(["anio", "empresa_grupo"], observed=True)["boe"].sum().reset_index()
     total_anio = a.groupby("anio")["boe"].transform("sum")
     a["market_share_pct"] = (a["boe"] / total_anio * 100).round(2)
+    # Marcar año parcial (menos de 10 meses de datos en el dataset)
+    meses_por_anio = df.groupby("anio")["anio_mes"].nunique()
+    a["anio_parcial"] = a["anio"].map(lambda x: meses_por_anio.get(x, 0) < 10)
     return a.sort_values(["anio", "market_share_pct"], ascending=[True, False])
 
 def t_nuevos_pozos(df: pd.DataFrame) -> pd.DataFrame:
@@ -353,6 +480,71 @@ def t_nuevos_pozos(df: pd.DataFrame) -> pd.DataFrame:
         .sort_values("anio_mes_inicio")
     )
 
+def t_declinacion_cohortes(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Curvas de declinación tipo (type curves) por cohorte de pozos.
+
+    Concepto:
+        Una "cohorte" agrupa todos los pozos que iniciaron producción el mismo
+        año (vintage). Para cada pozo se calcula su "mes de vida": el mes 0 es
+        su primer mes con producción, el mes 1 el siguiente, etc. Promediando
+        la producción de todos los pozos de una cohorte en cada mes de vida se
+        obtiene la curva de declinación típica de esa camada.
+
+    Para qué sirve:
+        - Comparar cohortes responde la pregunta clave del shale: ¿los pozos
+          que se perforan hoy son mejores que los de hace 5 años?
+        - Si la curva 2024 está por encima de la 2019 en cada mes de vida,
+          hubo mejora real (mejor diseño de fractura, ramas más largas, etc.)
+          y no solo más pozos.
+        - El pico inicial (mes 0-3) y la velocidad de caída posterior son la
+          firma característica de los no convencionales: declinan 60-70% el
+          primer año, a diferencia de los convencionales.
+
+    Detalles de implementación:
+        - mes_vida se calcula en meses calendario: (año*12+mes) actual menos
+          (año*12+mes) del primer mes del pozo.
+        - Se promedia por pozo activo (no se suma) para que la curva refleje
+          el pozo "típico" y no la cantidad de pozos de la cohorte.
+        - Se descartan cohortes con menos de 5 pozos (poca representatividad)
+          y meses de vida > 120 (colas con muy pocos pozos generan ruido).
+
+    Returns:
+        DataFrame con: cohorte, mes_vida, pozos_en_muestra,
+        petroleo_prom_m3, gas_prom_mm3, boe_prom.
+        Se exporta como 08_vm_declinacion_cohortes.csv.
+    """
+    req = {"pozo_id", "fecha", "boe"}
+    if not req.issubset(df.columns):
+        return pd.DataFrame()
+
+    d = df[df["fecha"].notna()].copy()
+
+    # Primer mes de producción de cada pozo → define su cohorte
+    primer = d.groupby("pozo_id")["fecha"].transform("min")
+    d["cohorte"] = primer.dt.year
+
+    # Mes de vida del pozo (0 = primer mes con producción)
+    d["mes_vida"] = (
+        (d["fecha"].dt.year - primer.dt.year) * 12
+        + (d["fecha"].dt.month - primer.dt.month)
+    )
+
+    g = d.groupby(["cohorte", "mes_vida"], observed=True).agg(
+        pozos_en_muestra=("pozo_id", "nunique"),
+        petroleo_prom_m3=("petroleo_m3", "mean"),
+        gas_prom_mm3=("gas_mm3", "mean"),
+        boe_prom=("boe", "mean"),
+    ).reset_index()
+
+    # Filtros de representatividad
+    g = g[(g["pozos_en_muestra"] >= 5) & (g["mes_vida"] <= 120)]
+
+    for col in ["petroleo_prom_m3", "gas_prom_mm3", "boe_prom"]:
+        g[col] = g[col].round(1)
+
+    return g.sort_values(["cohorte", "mes_vida"])
+
 # ─── PERSISTENCIA ────────────────────────────────────────────────────────────
 
 def guardar(df: pd.DataFrame, nombre: str) -> None:
@@ -361,6 +553,33 @@ def guardar(df: pd.DataFrame, nombre: str) -> None:
     ruta = CARPETA_OUTPUT / nombre
     df.to_csv(ruta, index=False, encoding="utf-8-sig")
     log.info("✓ %s  (%s filas)", nombre, f"{len(df):,}")
+
+def generar_metadata(df: pd.DataFrame, filas_por_tabla: dict[str, int]) -> None:
+    """
+    Escribe _metadata.json con la trazabilidad del run.
+
+    Permite que el dashboard muestre "Datos actualizados al ..." y deja
+    registro auditable de qué se procesó en cada ejecución:
+        - fecha y hora UTC de ejecución
+        - período cubierto por los datos (primer y último mes)
+        - totales: registros, pozos, empresas, yacimientos
+        - cantidad de filas exportadas en cada tabla
+    """
+    meta = {
+        "ejecutado_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "periodo_desde": df["fecha"].min().strftime("%Y-%m") if "fecha" in df.columns else None,
+        "periodo_hasta": df["fecha"].max().strftime("%Y-%m") if "fecha" in df.columns else None,
+        "registros": int(len(df)),
+        "pozos": int(df["pozo_id"].nunique()) if "pozo_id" in df.columns else None,
+        "empresas": int(df["empresa_grupo"].nunique()) if "empresa_grupo" in df.columns else None,
+        "yacimientos": int(df["yacimiento"].nunique()) if "yacimiento" in df.columns else None,
+        "tablas": filas_por_tabla,
+        "fuente": "Secretaría de Energía — datos.energia.gob.ar",
+    }
+    ruta = CARPETA_OUTPUT / "_metadata.json"
+    with open(ruta, "w", encoding="utf-8") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+    log.info("✓ _metadata.json  (run %s)", meta["ejecutado_utc"])
 
 # ─── PUBLICACIÓN GITHUB PAGES ────────────────────────────────────────────────
 
@@ -371,20 +590,21 @@ def copiar_a_docs() -> None:
     """
     CARPETA_DOCS.mkdir(parents=True, exist_ok=True)
     copiados = 0
-    for csv in CARPETA_OUTPUT.glob("*.csv"):
-        shutil.copy2(csv, CARPETA_DOCS / csv.name)
+    for archivo in list(CARPETA_OUTPUT.glob("*.csv")) + list(CARPETA_OUTPUT.glob("*.json")):
+        shutil.copy2(archivo, CARPETA_DOCS / archivo.name)
         copiados += 1
-    log.info("✓ %s CSVs copiados a %s/", copiados, CARPETA_DOCS)
+    log.info("✓ %s archivos copiados a %s/", copiados, CARPETA_DOCS)
 
 # ─── MAIN ────────────────────────────────────────────────────────────────────
 
 TABLAS: list[tuple] = [
-    (t_produccion_mensual, "01_vm_produccion_mensual.csv"),
-    (t_por_yacimiento,     "02_vm_por_yacimiento.csv"),
-    (t_top_pozos,          "03_vm_top_pozos.csv"),
-    (t_eficiencia,         "04_vm_eficiencia_pozos.csv"),
-    (t_market_share,       "05_vm_market_share.csv"),
-    (t_nuevos_pozos,       "06_vm_nuevos_pozos.csv"),
+    (t_produccion_mensual,    "01_vm_produccion_mensual.csv"),
+    (t_por_yacimiento,        "02_vm_por_yacimiento.csv"),
+    (t_top_pozos,             "03_vm_top_pozos.csv"),
+    (t_eficiencia,            "04_vm_eficiencia_pozos.csv"),
+    (t_market_share,          "05_vm_market_share.csv"),
+    (t_nuevos_pozos,          "06_vm_nuevos_pozos.csv"),
+    (t_declinacion_cohortes,  "08_vm_declinacion_cohortes.csv"),
 ]
 
 def main() -> None:
@@ -393,7 +613,7 @@ def main() -> None:
     log.info("=" * 55)
 
     # ── 1. Descarga ──────────────────────────────────────────
-    log.info("[1/4] Descargando fuentes")
+    log.info("[1/5] Descargando fuentes")
     rutas = {k: descargar(v, f"{k}.csv") for k, v in FUENTES.items()}
     rutas = {k: v for k, v in rutas.items() if v is not None}
 
@@ -402,7 +622,7 @@ def main() -> None:
         sys.exit(1)
 
     # ── 2. Carga y filtro ────────────────────────────────────
-    log.info("[2/4] Cargando y filtrando Vaca Muerta")
+    log.info("[2/5] Cargando y filtrando Vaca Muerta")
     frames: list[pd.DataFrame] = []
 
     for nombre, ruta in rutas.items():
@@ -430,7 +650,7 @@ def main() -> None:
         log.info("  Duplicados eliminados: %s", f"{antes - len(df):,}")
 
     # ── 3. Enriquecimiento ───────────────────────────────────
-    log.info("[3/4] Enriqueciendo dataset")
+    log.info("[3/5] Enriqueciendo dataset")
     df = enriquecer(df)
 
     if "fecha" in df.columns:
@@ -442,15 +662,29 @@ def main() -> None:
     log.info("  Pozos:       %s", f"{df['pozo_id'].nunique():,}" if "pozo_id" in df.columns else "?")
     log.info("  Registros:   %s", f"{len(df):,}")
 
+    # ── 3b. Validación de calidad ────────────────────────────
+    log.info("[3b]  Validando calidad de datos")
+    reporte_calidad = validar(df)
+
     # ── 4. Exportar ──────────────────────────────────────────
-    log.info("[4/4] Exportando tablas para Power BI")
+    log.info("[4/5] Exportando tablas para Power BI")
+    filas_por_tabla: dict[str, int] = {}
+
     guardar(df, "07_vm_raw_filtrado.csv")
+    filas_por_tabla["07_vm_raw_filtrado.csv"] = len(df)
 
     for fn, label in TABLAS:
         try:
-            guardar(fn(df), label)
+            tabla = fn(df)
+            guardar(tabla, label)
+            filas_por_tabla[label] = len(tabla)
         except Exception as exc:
             log.warning("  ⚠ Error generando %s: %s", label, exc)
+
+    guardar(reporte_calidad, "09_vm_data_quality.csv")
+    filas_por_tabla["09_vm_data_quality.csv"] = len(reporte_calidad)
+
+    generar_metadata(df, filas_por_tabla)
 
     log.info("=" * 55)
     log.info("✅ Pipeline completado. Archivos en: ./%s/", CARPETA_OUTPUT)
