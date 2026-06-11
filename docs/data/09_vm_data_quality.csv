@@ -1,0 +1,8 @@
+﻿chequeo,registros_afectados,pct_del_total,severidad,descripcion
+produccion_negativa,0,0.0,alta,Valores de producción menores a cero (imposible físicamente)
+fecha_futura,0,0.0,alta,Registros con período posterior a la fecha actual
+fecha_invalida,0,0.0,media,Registros donde el período no pudo parsearse a fecha
+sin_empresa,0,0.0,media,Registros sin operadora identificable (afecta market share)
+sin_pozo_id,0,0.0,alta,Registros sin identificador de pozo (afecta deduplicación y rankings)
+water_cut_invalido,0,0.0,baja,Corte de agua fuera del rango físico 0-100%
+salto_mensual_brusco,9,0.004,media,Meses cuya producción total varía más de ±50% vs. el mes anterior (posible mes con carga incompleta en la fuente)
