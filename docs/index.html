@@ -105,6 +105,8 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p4',this)">Eficiencia</button>
   <button onclick="showPage('p5',this)">Declinación</button>
   <button onclick="showPage('p6',this)">SITREP</button>
+  <button onclick="showPage('p7',this)">Cohortes</button>
+  <button onclick="showPage('p8',this)">Calidad</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -419,6 +421,120 @@ canvas{display:block;max-width:100%}
   </div>
 </div>
 
+<!-- ═══ PAGE 7 — COHORTES (TYPE CURVES) ═══ -->
+<div class="page" id="p7">
+  <div id="p7-loading" class="loading"><span class="spinner"></span>Cargando curvas de declinación...</div>
+  <div id="p7-content" style="display:none">
+
+    <div class="kpi-grid" id="cohortes-kpis"></div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Curvas de declinación por cohorte (vintage)
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+          — producción promedio por pozo según mes de vida · cada línea = una camada de pozos del mismo año
+        </span>
+      </h3>
+      <div class="filter-bar">
+        <label>Métrica:</label>
+        <select id="cohortes-metrica" onchange="renderCohortes()">
+          <option value="boe_prom">BOE total</option>
+          <option value="petroleo_prom_m3">Petróleo (m³)</option>
+          <option value="gas_prom_mm3">Gas (MM m³)</option>
+        </select>
+        <label>Cohortes:</label>
+        <select id="cohortes-filtro" onchange="renderCohortes()">
+          <option value="todas">Todas</option>
+          <option value="recientes">Últimas 5</option>
+        </select>
+      </div>
+      <div class="legend" id="cohortes-legend"></div>
+      <div class="chart-wrap" style="height:340px">
+        <canvas id="chart-cohortes" role="img" aria-label="Curvas de declinación por cohorte"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Pico de producción por cohorte (mes 0)
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— BOE promedio primer mes</span>
+        </h3>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-cohortes-pico" role="img" aria-label="Pico por cohorte"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Tasa de declinación al año 1
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— % caída mes 0 → mes 12</span>
+        </h3>
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="chart-cohortes-decl" role="img" aria-label="Tasa de declinación primer año"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Datos por cohorte y mes de vida</h3>
+      <div style="overflow-x:auto;max-height:320px;overflow-y:auto">
+        <table>
+          <thead><tr>
+            <th onclick="sortTable('tb-cohortes',0)">Cohorte</th>
+            <th onclick="sortTable('tb-cohortes',1)">Mes de vida</th>
+            <th onclick="sortTable('tb-cohortes',2)">Pozos en muestra</th>
+            <th onclick="sortTable('tb-cohortes',3)">BOE prom/pozo</th>
+            <th onclick="sortTable('tb-cohortes',4)">Petróleo prom m³</th>
+            <th onclick="sortTable('tb-cohortes',5)">Gas prom MM m³</th>
+          </tr></thead>
+          <tbody id="tb-cohortes"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ PAGE 8 — CALIDAD DE DATOS ═══ -->
+<div class="page" id="p8">
+  <div id="p8-loading" class="loading"><span class="spinner"></span>Verificando calidad...</div>
+  <div id="p8-content" style="display:none">
+
+    <div class="kpi-grid" id="quality-kpis"></div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Reporte de chequeos de calidad
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+          — 7 reglas de negocio evaluadas sobre el dataset consolidado de Vaca Muerta
+        </span>
+      </h3>
+      <table>
+        <thead><tr>
+          <th>Chequeo</th>
+          <th>Registros afectados</th>
+          <th>% del total</th>
+          <th>Severidad</th>
+          <th>Descripción</th>
+        </tr></thead>
+        <tbody id="tb-quality"></tbody>
+      </table>
+    </div>
+
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Distribución de problemas por severidad</h3>
+        <div class="chart-wrap" style="height:220px">
+          <canvas id="chart-quality-sev" role="img" aria-label="Problemas por severidad"></canvas>
+        </div>
+      </div>
+      <div class="card" id="metadata-card">
+        <h3>Trazabilidad del último run</h3>
+        <div id="metadata-content" style="font-size:13px;line-height:2;color:#8b949e">
+          Cargando metadatos...
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 <script>
 const DATA = {
@@ -429,6 +545,9 @@ const DATA = {
   ms:       './data/05_vm_market_share.csv',
   nuevos:   './data/06_vm_nuevos_pozos.csv',
   raw:      './data/07_vm_raw_filtrado.csv',
+  cohortes: './data/08_vm_declinacion_cohortes.csv',
+  quality:  './data/09_vm_data_quality.csv',
+  metadata: './data/_metadata.json',
 };
 
 const COLORS = {
@@ -1082,6 +1201,287 @@ function renderDeclinacion() {
 }
 
 // ════════════════════════════════════════════
+// PÁGINA 7 — COHORTES (TYPE CURVES)
+// ════════════════════════════════════════════
+let _cohortes = [], _chartCohortes = null, _chartPico = null, _chartDecl = null;
+
+const COHORT_PALETTE = [
+  '#f78166','#79c0ff','#3fb950','#e3b341','#d2a8ff',
+  '#ffa657','#56d364','#58a6ff','#ff7b72','#a5d6ff'
+];
+
+function renderCohortes() {
+  if (!_cohortes.length) return;
+  const metrica  = document.getElementById('cohortes-metrica').value;
+  const filtro   = document.getElementById('cohortes-filtro').value;
+
+  const label = { boe_prom:'BOE prom/pozo', petroleo_prom_m3:'Petróleo m³ prom', gas_prom_mm3:'Gas MM m³ prom' };
+
+  let cohortes = [...new Set(_cohortes.map(r => +r.cohorte))].sort();
+  if (filtro === 'recientes') cohortes = cohortes.slice(-5);
+
+  const maxMes = Math.max(..._cohortes.map(r => +r.mes_vida));
+  const meses  = Array.from({length: maxMes + 1}, (_, i) => i);
+
+  // ── KPIs ──────────────────────────────────
+  const kpiEl = document.getElementById('cohortes-kpis');
+  const cohReciente = cohortes[cohortes.length - 1];
+  const cohAnterior = cohortes[cohortes.length - 2];
+  const pico = c => {
+    const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === 0);
+    return r ? +r.boe_prom : null;
+  };
+  const picoR = pico(cohReciente), picoA = pico(cohAnterior);
+  const mejora = picoA ? ((picoR - picoA) / picoA * 100).toFixed(1) : null;
+
+  // Tasa declinación promedio (mes0→mes12) para todas las cohortes con datos suficientes
+  const tasas = cohortes.map(c => {
+    const m0  = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 0);
+    const m12 = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 12);
+    return m0 && m12 ? (1 - +m12.boe_prom / +m0.boe_prom) * 100 : null;
+  }).filter(Boolean);
+  const tasaProm = tasas.length ? (tasas.reduce((a,b)=>a+b,0)/tasas.length).toFixed(0) : '—';
+
+  kpiEl.innerHTML = `
+    <div class="kpi"><div class="kpi-label">Cohortes con datos</div>
+      <div class="kpi-value">${cohortes.length}</div>
+      <div class="kpi-sub">${cohortes[0]} → ${cohortes[cohortes.length-1]}</div></div>
+    <div class="kpi"><div class="kpi-label">Pico cohorte más reciente</div>
+      <div class="kpi-value">${picoR ? fmt(picoR) : '—'}</div>
+      <div class="kpi-sub ${mejora >= 0 ? '' : 'neg'}">${mejora !== null ? (mejora >= 0 ? '▲' : '▼') + Math.abs(mejora) + '% vs ' + cohAnterior : 'Solo una cohorte'}</div></div>
+    <div class="kpi"><div class="kpi-label">Declinación 1er año</div>
+      <div class="kpi-value">${tasaProm}%</div>
+      <div class="kpi-sub">promedio cohortes con 12+ meses</div></div>
+    <div class="kpi"><div class="kpi-label">Mes de vida máximo</div>
+      <div class="kpi-value">${maxMes}</div>
+      <div class="kpi-sub">cohorte más larga: ${cohortes[0]}</div></div>
+  `;
+
+  // ── Leyenda ────────────────────────────────
+  const legEl = document.getElementById('cohortes-legend');
+  legEl.innerHTML = cohortes.map((c, i) =>
+    `<span><span class="legend-dot" style="background:${COHORT_PALETTE[i % COHORT_PALETTE.length]}"></span>${c}</span>`
+  ).join('');
+
+  // ── Gráfico principal ──────────────────────
+  const datasets = cohortes.map((c, i) => ({
+    label: String(c),
+    data: meses.map(m => {
+      const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === m);
+      return r ? +r[metrica] : null;
+    }),
+    borderColor: COHORT_PALETTE[i % COHORT_PALETTE.length],
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    pointRadius: 0,
+    tension: 0.3,
+    spanGaps: false,
+  }));
+
+  const ctx = document.getElementById('chart-cohortes').getContext('2d');
+  if (_chartCohortes) _chartCohortes.destroy();
+  _chartCohortes = new Chart(ctx, {
+    type: 'line',
+    data: { labels: meses.map(m => 'M' + m), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            title: items => 'Mes de vida: ' + items[0].label,
+            label: item => item.dataset.label + ': ' + fmt(item.raw),
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', maxTicksLimit: 20 } },
+        y: {
+          grid: { color: '#21262d' }, ticks: { color: '#8b949e' },
+          title: { display: true, text: label[metrica], color: '#8b949e', font: { size: 11 } }
+        }
+      }
+    }
+  });
+
+  // ── Barras: pico mes 0 ────────────────────
+  const picosData = cohortes.map(c => {
+    const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === 0);
+    return r ? +r.boe_prom : 0;
+  });
+  const ctx2 = document.getElementById('chart-cohortes-pico').getContext('2d');
+  if (_chartPico) _chartPico.destroy();
+  _chartPico = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: cohortes.map(String),
+      datasets: [{ label: 'BOE mes 0', data: picosData,
+        backgroundColor: cohortes.map((_, i) => COHORT_PALETTE[i % COHORT_PALETTE.length] + 'cc') }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
+        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } }
+      }
+    }
+  });
+
+  // ── Barras: declinación año 1 ─────────────
+  const declData = cohortes.map(c => {
+    const m0  = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 0);
+    const m12 = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 12);
+    return m0 && m12 ? +((1 - +m12.boe_prom / +m0.boe_prom) * 100).toFixed(1) : null;
+  });
+  const ctx3 = document.getElementById('chart-cohortes-decl').getContext('2d');
+  if (_chartDecl) _chartDecl.destroy();
+  _chartDecl = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: cohortes.map(String),
+      datasets: [{ label: '% declinación', data: declData,
+        backgroundColor: declData.map(v => v === null ? '#30363d' : v > 70 ? '#f7816699' : v > 55 ? '#e3b34199' : '#3fb95099') }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: i => (i.raw !== null ? i.raw + '% de caída' : 'Sin datos mes 12') } }
+      },
+      scales: {
+        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
+        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', callback: v => v + '%' }, max: 100 }
+      }
+    }
+  });
+
+  // ── Tabla ─────────────────────────────────
+  const tbody = document.getElementById('tb-cohortes');
+  const rows = _cohortes.filter(r => cohortes.includes(+r.cohorte));
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td>${r.cohorte}</td>
+      <td>${r.mes_vida}</td>
+      <td>${r.pozos_en_muestra}</td>
+      <td>${fmt(+r.boe_prom)}</td>
+      <td>${fmt(+r.petroleo_prom_m3)}</td>
+      <td>${(+r.gas_prom_mm3).toFixed(3)}</td>
+    </tr>`).join('');
+}
+
+// ════════════════════════════════════════════
+// PÁGINA 8 — CALIDAD DE DATOS
+// ════════════════════════════════════════════
+let _quality = [], _chartQualSev = null;
+
+function renderQuality() {
+  if (!_quality.length) return;
+
+  const sevColor = { alta: '#f78166', media: '#e3b341', baja: '#3fb950' };
+  const sevBg    = { alta: '#f7816615', media: '#e3b34115', baja: '#3fb95015' };
+  const sevBord  = { alta: '#f7816640', media: '#e3b34140', baja: '#3fb95040' };
+
+  const total      = _quality.reduce((s, r) => s + (+r.registros_afectados || 0), 0);
+  const conProb    = _quality.filter(r => +r.registros_afectados > 0).length;
+  const criticos   = _quality.filter(r => +r.registros_afectados > 0 && r.severidad === 'alta').length;
+  const todoOk     = total === 0;
+
+  // ── KPIs ──────────────────────────────────
+  document.getElementById('quality-kpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Estado general</div>
+      <div class="kpi-value" style="font-size:20px;color:${todoOk?'#3fb950':'#e3b341'}">${todoOk ? '✅ OK' : '⚠ Revisar'}</div>
+      <div class="kpi-sub">${todoOk ? 'Todos los chequeos pasaron' : conProb + ' chequeo(s) con hallazgos'}</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Registros con problemas</div>
+      <div class="kpi-value">${fmt(total)}</div>
+      <div class="kpi-sub ${total > 0 ? 'neg' : ''}">en ${_quality.length} chequeos</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Alertas críticas</div>
+      <div class="kpi-value" style="color:${criticos > 0 ? '#f78166' : '#3fb950'}">${criticos}</div>
+      <div class="kpi-sub">chequeos de severidad alta</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Chequeos OK</div>
+      <div class="kpi-value" style="color:#3fb950">${_quality.length - conProb}</div>
+      <div class="kpi-sub">de ${_quality.length} totales</div>
+    </div>
+  `;
+
+  // ── Tabla ─────────────────────────────────
+  document.getElementById('tb-quality').innerHTML = _quality.map(r => {
+    const n   = +r.registros_afectados || 0;
+    const sev = r.severidad || 'baja';
+    const ico = n === 0 ? '✅' : sev === 'alta' ? '🔴' : sev === 'media' ? '🟡' : '🟢';
+    return `<tr>
+      <td><strong>${r.chequeo}</strong></td>
+      <td style="color:${n > 0 ? sevColor[sev] : '#3fb950'}">${n.toLocaleString()}</td>
+      <td style="color:${n > 0 ? sevColor[sev] : '#3fb950'}">${(+r.pct_del_total || 0).toFixed(3)}%</td>
+      <td>
+        <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;
+          background:${sevBg[sev]};border:1px solid ${sevBord[sev]};color:${sevColor[sev]}">
+          ${ico} ${sev}
+        </span>
+      </td>
+      <td style="color:#8b949e;font-size:12px">${r.descripcion}</td>
+    </tr>`;
+  }).join('');
+
+  // ── Gráfico severidad ──────────────────────
+  const sevCounts = { alta: 0, media: 0, baja: 0 };
+  _quality.filter(r => +r.registros_afectados > 0).forEach(r => {
+    sevCounts[r.severidad] = (sevCounts[r.severidad] || 0) + (+r.registros_afectados);
+  });
+  const ctx = document.getElementById('chart-quality-sev').getContext('2d');
+  if (_chartQualSev) _chartQualSev.destroy();
+  _chartQualSev = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Alta', 'Media', 'Baja'],
+      datasets: [{
+        data: [sevCounts.alta, sevCounts.media, sevCounts.baja],
+        backgroundColor: ['#f7816680', '#e3b34180', '#3fb95080'],
+        borderColor:     ['#f78166',   '#e3b341',   '#3fb950'],
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#8b949e' } },
+        tooltip: { callbacks: { label: i => i.label + ': ' + i.raw.toLocaleString() + ' registros' } }
+      }
+    }
+  });
+}
+
+function renderMetadata(meta) {
+  if (!meta) return;
+  const el = document.getElementById('metadata-content');
+  const fecha = meta.ejecutado_utc
+    ? new Date(meta.ejecutado_utc).toLocaleString('es-AR', {timeZone:'America/Argentina/Buenos_Aires'})
+    : '—';
+  el.innerHTML = `
+    <table style="width:100%;font-size:13px;border-collapse:collapse">
+      <tr><td style="color:#8b949e;padding:4px 0;width:50%">Ejecutado</td><td style="color:#e6edf3">${fecha}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Período</td><td style="color:#e6edf3">${meta.periodo_desde || '—'} → ${meta.periodo_hasta || '—'}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Registros</td><td style="color:#e6edf3">${(meta.registros||0).toLocaleString()}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Pozos</td><td style="color:#e6edf3">${(meta.pozos||0).toLocaleString()}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Empresas</td><td style="color:#e6edf3">${meta.empresas || '—'}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Yacimientos</td><td style="color:#e6edf3">${meta.yacimientos || '—'}</td></tr>
+      <tr><td style="color:#8b949e;padding:4px 0">Fuente</td><td style="color:#e6edf3;font-size:11px">${meta.fuente || '—'}</td></tr>
+    </table>
+  `;
+  // Actualizar badge de período en el header
+  const bp = document.getElementById('badge-periodo');
+  if (bp && meta.periodo_hasta) bp.textContent = 'Hasta ' + meta.periodo_hasta;
+}
+
+// ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
 function setEstado(txt, tipo='') {
@@ -1093,11 +1493,19 @@ function setEstado(txt, tipo='') {
 async function init() {
   setEstado('⏳ Cargando datos...');
   try {
-    const [prod, ms, topPozos, efic, nuevos, yac] = await Promise.all([
+    const [prod, ms, topPozos, efic, nuevos, yac, cohortes, quality] = await Promise.all([
       fetchCSV(DATA.prod), fetchCSV(DATA.ms), fetchCSV(DATA.topPozos),
       fetchCSV(DATA.efic), fetchCSV(DATA.nuevos), fetchCSV(DATA.yac),
+      fetchCSV(DATA.cohortes), fetchCSV(DATA.quality),
     ]);
     _prod=prod; _ms=ms; _topPozos=topPozos; _efic=efic; _nuevos=nuevos; _yac=yac;
+    _cohortes=cohortes; _quality=quality;
+
+    // Cargar metadata (no bloquea si falla)
+    try {
+      const metaResp = await fetch(DATA.metadata);
+      if (metaResp.ok) renderMetadata(await metaResp.json());
+    } catch(e) { console.warn('metadata no disponible', e); }
 
     renderP1();
     document.getElementById('p1-loading').style.display='none';
@@ -1124,6 +1532,14 @@ async function init() {
     renderSITREP();
     document.getElementById('p6-loading').style.display='none';
     document.getElementById('p6-content').style.display='block';
+
+    renderCohortes();
+    document.getElementById('p7-loading').style.display='none';
+    document.getElementById('p7-content').style.display='block';
+
+    renderQuality();
+    document.getElementById('p8-loading').style.display='none';
+    document.getElementById('p8-content').style.display='block';
 
     setEstado('✅ Datos cargados', 'ok');
   } catch(err) {
