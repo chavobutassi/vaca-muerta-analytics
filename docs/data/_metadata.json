@@ -1,14 +1,14 @@
 {
-  "ejecutado_utc": "2026-06-22T11:47:10+00:00",
+  "ejecutado_utc": "2026-06-29T10:36:43+00:00",
   "periodo_desde": "2006-01",
   "periodo_hasta": "2026-05",
-  "registros": 216549,
+  "registros": 216552,
   "pozos": 3531,
   "empresas": 42,
   "yacimientos": null,
   "tablas": {
-    "07_vm_raw_filtrado.csv": 216549,
-    "01_vm_produccion_mensual.csv": 3365,
+    "07_vm_raw_filtrado.csv": 216552,
+    "01_vm_produccion_mensual.csv": 3366,
     "02_vm_por_yacimiento.csv": 323,
     "03_vm_top_pozos.csv": 200,
     "04_vm_eficiencia_pozos.csv": 3285,
