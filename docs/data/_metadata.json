@@ -1,20 +1,20 @@
 {
-  "ejecutado_utc": "2026-07-13T09:02:26+00:00",
+  "ejecutado_utc": "2026-07-20T08:48:39+00:00",
   "periodo_desde": "2006-01",
   "periodo_hasta": "2026-06",
-  "registros": 216577,
-  "pozos": 3531,
+  "registros": 219456,
+  "pozos": 3561,
   "empresas": 42,
   "yacimientos": null,
   "tablas": {
-    "07_vm_raw_filtrado.csv": 216577,
-    "01_vm_produccion_mensual.csv": 3369,
+    "07_vm_raw_filtrado.csv": 219456,
+    "01_vm_produccion_mensual.csv": 3382,
     "02_vm_por_yacimiento.csv": 323,
     "03_vm_top_pozos.csv": 200,
-    "04_vm_eficiencia_pozos.csv": 3285,
+    "04_vm_eficiencia_pozos.csv": 3315,
     "05_vm_market_share.csv": 323,
-    "06_vm_nuevos_pozos.csv": 619,
-    "08_vm_declinacion_cohortes.csv": 1480,
+    "06_vm_nuevos_pozos.csv": 623,
+    "08_vm_declinacion_cohortes.csv": 1489,
     "09_vm_data_quality.csv": 7
   },
   "fuente": "Secretaría de Energía — datos.energia.gob.ar"
