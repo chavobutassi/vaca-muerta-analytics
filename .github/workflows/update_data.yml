@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * 1'   # Cada lunes 6am UTC (3am Argentina)
   workflow_dispatch:        # Permite correrlo manualmente desde GitHub
 
+permissions:
+  contents: write           # Necesario para que el paso de push guarde los datos
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -19,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependencias
-        run: pip install pandas requests tqdm openpyxl
+        run: pip install pandas requests tqdm openpyxl scipy
 
       - name: Correr pipeline
         run: python vaca_muerta_pipeline.py
