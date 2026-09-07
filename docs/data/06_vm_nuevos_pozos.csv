@@ -489,9 +489,9 @@
 2024-07,Vista Energy,5
 2024-07,YPF,25
 2024-08,YPF,19
-2024-08,Vista Energy,7
-2024-08,Shell,4
 2024-08,TotalEnergies,3
+2024-08,Shell,4
+2024-08,Vista Energy,7
 2024-08,Pan American Energy,2
 2024-08,Pampa Energía,3
 2024-08,Chevron,4
@@ -510,32 +510,32 @@
 2024-12,Tecpetrol,4
 2024-12,Vaca,2
 2024-12,YPF,6
-2025-01,YPF,20
 2025-01,Tecpetrol,4
-2025-01,Vista Energy,2
-2025-01,Petrolera El Trébol,4
 2025-01,Pluspetrol,6
+2025-01,YPF,20
 2025-01,Pan American Energy,3
-2025-02,YPF,15
+2025-01,Petrolera El Trébol,4
+2025-01,Vista Energy,2
 2025-02,Chevron,4
 2025-02,Pan American Energy,3
 2025-02,Pluspetrol,2
 2025-02,Tecpetrol,8
 2025-02,TotalEnergies,3
 2025-02,Vista Energy,8
-2025-03,YPF,12
-2025-03,Vista Energy,4
-2025-03,Tecpetrol,4
+2025-02,YPF,15
 2025-03,Oilstone,3
-2025-03,Pan American Energy,4
 2025-03,Pampa Energía,4
+2025-03,Pan American Energy,4
 2025-03,Pluspetrol,1
-2025-04,Vista Energy,5
+2025-03,Tecpetrol,4
+2025-03,Vista Energy,4
+2025-03,YPF,12
 2025-04,YPF,26
+2025-04,Tecpetrol,4
+2025-04,Vista Energy,5
 2025-04,TotalEnergies,3
 2025-04,Pluspetrol,4
 2025-04,Pan American Energy,2
-2025-04,Tecpetrol,4
 2025-05,Vista Energy,4
 2025-05,Shell,8
 2025-05,Pluspetrol,3
@@ -554,9 +554,9 @@
 2025-07,YPF,23
 2025-07,Vista Energy,5
 2025-07,Tecpetrol,5
-2025-07,Pan American Energy,1
-2025-07,Hattrick,1
 2025-07,Pluspetrol,3
+2025-07,Hattrick,1
+2025-07,Pan American Energy,1
 2025-08,Vista Energy,10
 2025-08,Pluspetrol,3
 2025-08,Pan American Energy,4
@@ -625,8 +625,9 @@
 2026-06,Shell,3
 2026-06,Tecpetrol,4
 2026-06,YPF,21
-2026-07,Vista Energy,10
+2026-07,YPF,26
 2026-07,Pan American Energy,4
 2026-07,Phoenix,4
 2026-07,Pluspetrol,3
-2026-07,YPF,26
+2026-07,Vista Energy,10
+2026-08,Geopark,3
