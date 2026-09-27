@@ -30,12 +30,16 @@ REGLAS:
     A02  Atributos obligatorios     el registro vigente del pozo tiene todos sus campos
     A03  Dominio de valores         profundidad plausible, producción ≥ 0, TEF ≤ días del mes
     A04  Coordenadas                presentes y dentro de la Cuenca Neuquina
-    A05  Estado vs. producción      un pozo inactivo no declara producción,
-                                    uno en extracción efectiva no declara todo en cero
+    A05  Abandonado con producción  un pozo abandonado (o a abandonar) no declara producción
+    A09  Estado vs. mes informado   estado inactivo con producción, o extracción efectiva
+                                    con todo en cero (suele ser un cambio de estado dentro
+                                    del mes: se informa como observación menor)
     A06  Estabilidad de atributos   profundidad y yacimiento no cambian mes a mes
     A07  Consistencia entre entregas un mismo pozo-mes informado en dos archivos
                                     con valores distintos (rectificación)
     A08  Continuidad de reporte     pozos en extracción efectiva sin meses faltantes
+                                    (los meses que faltan para muchos pozos a la vez se
+                                    atribuyen a la fuente, no a la operadora)
 
 SEVERIDAD:
     CRITICA  el dato no se puede usar sin corregirlo
@@ -91,6 +95,7 @@ PROFUNDIDAD_MAX_M = 9_000    # rama lateral larga en profundidad medida; más es
 LAT_MIN, LAT_MAX = -41.5, -34.5
 LON_MIN, LON_MAX = -71.5, -66.0
 
+ESTADOS_ABANDONO = {"ABANDONADO", "A ABANDONAR"}
 ESTADOS_INACTIVOS = {
     "ABANDONADO", "A ABANDONAR", "PARADO TRANSITORIAMENTE",
     "EN ESPERA DE REPARACIÓN", "EN ESPERA DE REPARACION",
@@ -106,10 +111,11 @@ REGLAS: dict[str, tuple[str, str]] = {
     "A02": ("Atributos obligatorios",      "MAYOR"),
     "A03": ("Dominio de valores",          "MAYOR"),
     "A04": ("Coordenadas",                 "MAYOR"),
-    "A05": ("Estado vs. producción",       "MAYOR"),
+    "A05": ("Abandonado con producción",   "MAYOR"),
     "A06": ("Estabilidad de atributos",    "MENOR"),
     "A07": ("Consistencia entre entregas", "MAYOR"),
     "A08": ("Continuidad de reporte",      "MENOR"),
+    "A09": ("Estado vs. mes informado",    "MENOR"),
 }
 
 COLS = [
@@ -236,18 +242,28 @@ def a04_coordenadas(d, reg):
     return len(ult), _h(ult[malos], det[malos]), nota
 
 
-def a05_estado_produccion(d, reg):
+def a05_abandono_produccion(d, reg):
+    hc = d["petroleo_m3"].fillna(0) + d["gas_mm3"].fillna(0)
+    mal = d["estado_u"].isin(ESTADOS_ABANDONO) & (hc > 0)
+    g = d[mal].groupby("pozo_id")["tipoestado"].agg(["size", "first"])
+    h = pd.DataFrame({"pozo_id": g.index,
+                      "detalle": [f"{n} mes(es) en estado '{e}' declarando producción" for n, e in zip(g["size"], g["first"])]})
+    return d["pozo_id"].nunique(), h, ""
+
+
+def a09_estado_mes(d, reg):
     hc = d["petroleo_m3"].fillna(0) + d["gas_mm3"].fillna(0)
     total = hc + d["agua_m3"].fillna(0)
-    inactivo_prod = d["estado_u"].isin(ESTADOS_INACTIVOS) & (hc > 0)
+    inactivo_prod = (d["estado_u"].isin(ESTADOS_INACTIVOS - ESTADOS_ABANDONO)) & (hc > 0)
     activo_cero = (d["estado_u"] == ESTADO_PRODUCIENDO) & (total == 0) & (d["tef"].fillna(0) == 0)
     g1 = d[inactivo_prod].groupby("pozo_id")["tipoestado"].agg(["size", "first"])
     h1 = pd.DataFrame({"pozo_id": g1.index,
-                       "detalle": [f"{n} mes(es) en estado '{e}' declarando producción" for n, e in zip(g1["size"], g1["first"])]})
+                       "detalle": [f"{n} mes(es) en estado '{e}' con producción" for n, e in zip(g1["size"], g1["first"])]})
     g2 = d[activo_cero].groupby("pozo_id").size()
     h2 = pd.DataFrame({"pozo_id": g2.index,
                        "detalle": [f"{n} mes(es) en 'Extracción Efectiva' con producción y TEF en cero" for n in g2]})
-    return d["pozo_id"].nunique(), pd.concat([h1, h2], ignore_index=True), ""
+    return d["pozo_id"].nunique(), pd.concat([h1, h2], ignore_index=True), \
+        "Suele reflejar un cambio de estado dentro del mes (el pozo produjo y luego paró, o viceversa): observación, no error."
 
 
 def a06_estabilidad(d, reg):
@@ -281,22 +297,41 @@ def a07_entre_entregas(d, reg):
         "El pipeline conserva el primer valor leído; si difieren, cuál es el vigente queda sin trazabilidad."
 
 
+HUECOS_FUENTE: list[str] = []   # se completa en a08 y se publica en la metadata
+
+
 def a08_continuidad(d, reg):
     activos = reg[reg["estado_u"] == ESTADO_PRODUCIENDO]["pozo_id"]
     sub = d[d["pozo_id"].isin(activos)]
-    g = sub.groupby("pozo_id")["fecha"].agg(["min", "max", "nunique"])
-    esperados = (g["max"].dt.year - g["min"].dt.year) * 12 + (g["max"].dt.month - g["min"].dt.month) + 1
-    faltan = esperados - g["nunique"]
-    malos = faltan[faltan > 0]
-    h = pd.DataFrame({"pozo_id": malos.index,
-                      "detalle": [f"{int(n)} mes(es) sin informar entre su primer y último reporte" for n in malos]})
-    return len(g), h, ""
+    faltantes = []
+    for pid, g in sub.groupby("pozo_id"):
+        meses = pd.period_range(g["fecha"].min(), g["fecha"].max(), freq="M")
+        for m in set(meses) - set(g["fecha"].dt.to_period("M")):
+            faltantes.append((pid, m))
+    f = pd.DataFrame(faltantes, columns=["pozo_id", "mes"])
+    # Mes de la fuente: muchos pozos sin dato en el MISMO mes, muy por encima de
+    # los meses vecinos → carga incompleta del archivo, no omisión de la operadora
+    HUECOS_FUENTE.clear()
+    if len(f):
+        cnt = f["mes"].value_counts().sort_index()
+        rango = pd.period_range(cnt.index.min(), cnt.index.max(), freq="M")
+        cnt = cnt.reindex(rango, fill_value=0)
+        base = cnt.rolling(13, center=True, min_periods=1).median()
+        sistemicos = cnt[(cnt >= 30) & (cnt >= 3 * base.clip(lower=5))].index
+        HUECOS_FUENTE.extend(str(m) for m in sistemicos)
+        f = f[~f["mes"].isin(sistemicos)]
+    por_pozo = f.groupby("pozo_id").size()
+    h = pd.DataFrame({"pozo_id": por_pozo.index,
+                      "detalle": [f"{int(n)} mes(es) sin informar entre su primer y último reporte" for n in por_pozo]})
+    nota = ("Meses sin datos para muchos pozos a la vez (posible carga incompleta de la fuente, "
+            "excluidos de esta regla): " + ", ".join(HUECOS_FUENTE) + ".") if HUECOS_FUENTE else ""
+    return sub["pozo_id"].nunique(), h, nota
 
 
 FUNCIONES = {
     "A01": a01_identificador, "A02": a02_obligatorios, "A03": a03_dominio,
-    "A04": a04_coordenadas,   "A05": a05_estado_produccion, "A06": a06_estabilidad,
-    "A07": a07_entre_entregas, "A08": a08_continuidad,
+    "A04": a04_coordenadas,   "A05": a05_abandono_produccion, "A06": a06_estabilidad,
+    "A07": a07_entre_entregas, "A08": a08_continuidad, "A09": a09_estado_mes,
 }
 
 # ─── EJECUCIÓN ───────────────────────────────────────────────────────────────
@@ -386,6 +421,7 @@ def main() -> None:
         "hallazgos_totales": int(len(hallazgos)),
         "hallazgos_publicados": int(len(muestra)),
         "veredicto": ver,
+        "huecos_fuente": HUECOS_FUENTE,
         "marco": "Requisitos de información y flujo de entrega según IRAM-ISO 19650-1/-2",
         "fuente": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
     }
