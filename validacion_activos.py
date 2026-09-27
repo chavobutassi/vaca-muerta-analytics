@@ -166,10 +166,28 @@ def cargar() -> pd.DataFrame:
 
 
 def registro_vigente(d: pd.DataFrame) -> pd.DataFrame:
-    """Último registro de cada pozo = su estado actual en el registro de activos."""
-    return (d.sort_values(["pozo_id", "fecha"])
+    """Último registro de cada pozo = su estado actual en el registro de activos.
+
+    Las entregas anuales no traen coordenadas, así que la ubicación se toma del
+    último reporte que sí las tiene. Se agregan lat/lon ya orientadas (la fuente
+    documenta x = latitud, pero en los datos la latitud viene en coordenaday) y
+    el grupo empresario, para el mapa del dashboard.
+    """
+    reg = (d.sort_values(["pozo_id", "fecha"])
              .groupby("pozo_id", as_index=False).tail(1)
              .reset_index(drop=True))
+    coords = (d.dropna(subset=["coordenadax", "coordenaday"])
+               .sort_values("fecha").groupby("pozo_id").tail(1)
+               .set_index("pozo_id")[["coordenadax", "coordenaday"]])
+    reg = reg.drop(columns=["coordenadax", "coordenaday"]).join(coords, on="pozo_id")
+    x, y = reg["coordenadax"], reg["coordenaday"]
+    x_es_lat = x.between(LAT_MIN, LAT_MAX).mean() >= y.between(LAT_MIN, LAT_MAX).mean()
+    reg["lat"], reg["lon"] = (x, y) if x_es_lat else (y, x)
+    ok = reg["lat"].between(LAT_MIN, LAT_MAX) & reg["lon"].between(LON_MIN, LON_MAX)
+    reg.loc[~ok, ["lat", "lon"]] = np.nan
+    reg["lat"], reg["lon"] = reg["lat"].round(5), reg["lon"].round(5)
+    reg["empresa_grupo"] = reg["empresa"].astype(str).apply(vm._clasificar_empresa)
+    return reg
 
 # ─── REGLAS ──────────────────────────────────────────────────────────────────
 # Cada regla devuelve (evaluados, DataFrame de hallazgos con pozo_id + detalle, nota)
