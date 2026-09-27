@@ -1,5 +1,5 @@
 {
-  "ejecutado_utc": "2026-09-27T15:15:04+00:00",
+  "ejecutado_utc": "2026-09-27T15:55:00+00:00",
   "periodo_desde": "2006-01",
   "periodo_hasta": "2026-08",
   "registros": 227364,
@@ -11,7 +11,7 @@
     "01_vm_produccion_mensual.csv": 3445,
     "02_vm_por_yacimiento.csv": 1432,
     "03_vm_top_pozos.csv": 200,
-    "04_vm_eficiencia_pozos.csv": 3419,
+    "04_vm_eficiencia_pozos.csv": 3406,
     "05_vm_market_share.csv": 323,
     "06_vm_nuevos_pozos.csv": 637,
     "08_vm_declinacion.csv": 3048,
