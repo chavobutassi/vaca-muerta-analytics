@@ -458,7 +458,7 @@ canvas{display:block;max-width:100%}
         <select id="cohortes-metrica" onchange="renderCohortes()">
           <option value="boe_prom">BOE total</option>
           <option value="petroleo_prom_m3">Petróleo (m³)</option>
-          <option value="gas_prom_mm3">Gas (MM m³)</option>
+          <option value="gas_prom_mm3">Gas (Mm³)</option>
         </select>
         <label>Cohortes:</label>
         <select id="cohortes-filtro" onchange="renderCohortes()">
@@ -474,8 +474,8 @@ canvas{display:block;max-width:100%}
 
     <div class="chart-grid">
       <div class="card">
-        <h3>Pico de producción por cohorte (mes 0)
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— BOE promedio primer mes</span>
+        <h3>Pico de producción por cohorte
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— BOE promedio por pozo en el mes pico (primeros 6 meses)</span>
         </h3>
         <div class="chart-wrap" style="height:240px">
           <canvas id="chart-cohortes-pico" role="img" aria-label="Pico por cohorte"></canvas>
@@ -483,7 +483,7 @@ canvas{display:block;max-width:100%}
       </div>
       <div class="card">
         <h3>Tasa de declinación al año 1
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— % caída mes 0 → mes 12</span>
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— % caída del mes pico a 12 meses después</span>
         </h3>
         <div class="chart-wrap" style="height:240px">
           <canvas id="chart-cohortes-decl" role="img" aria-label="Tasa de declinación primer año"></canvas>
@@ -501,7 +501,7 @@ canvas{display:block;max-width:100%}
             <th onclick="sortTable('tb-cohortes',2)">Pozos en muestra</th>
             <th onclick="sortTable('tb-cohortes',3)">BOE prom/pozo</th>
             <th onclick="sortTable('tb-cohortes',4)">Petróleo prom m³</th>
-            <th onclick="sortTable('tb-cohortes',5)">Gas prom MM m³</th>
+            <th onclick="sortTable('tb-cohortes',5)">Gas prom Mm³</th>
           </tr></thead>
           <tbody id="tb-cohortes"></tbody>
         </table>
@@ -1325,12 +1325,29 @@ function cohortColor(c) {
   return COHORT_RAMP[Math.round(k * (COHORT_RAMP.length - 1))];
 }
 
+// Pico y declinación de una cohorte. El mes 0 suele ser parcial (el pozo arranca
+// a mitad de mes), así que se usa el mes pico (máximo dentro de los primeros 6
+// meses de vida; viene precalculado en mes_pico desde el pipeline v2.3).
+function cohortPeakRow(c) {
+  const rows = _cohortes.filter(r => +r.cohorte === +c && +r.mes_vida <= 6);
+  if (!rows.length) return null;
+  const mp = rows[0].mes_pico !== undefined && rows[0].mes_pico !== '' ? +rows[0].mes_pico : null;
+  return mp !== null ? rows.find(r => +r.mes_vida === mp) || null
+                     : rows.reduce((a, b) => (+b.boe_prom > +a.boe_prom ? b : a));
+}
+function cohortDecl12(c) {
+  const pk = cohortPeakRow(c);
+  if (!pk || !(+pk.boe_prom > 0)) return null;
+  const r12 = _cohortes.find(r => +r.cohorte === +c && +r.mes_vida === +pk.mes_vida + 12);
+  return r12 ? (1 - +r12.boe_prom / +pk.boe_prom) * 100 : null;
+}
+
 function renderCohortes() {
   if (!_cohortes.length) return;
   const metrica  = document.getElementById('cohortes-metrica').value;
   const filtro   = document.getElementById('cohortes-filtro').value;
 
-  const label = { boe_prom:'BOE prom/pozo', petroleo_prom_m3:'Petróleo m³ prom', gas_prom_mm3:'Gas MM m³ prom' };
+  const label = { boe_prom:'BOE prom/pozo', petroleo_prom_m3:'Petróleo m³ prom', gas_prom_mm3:'Gas Mm³ prom' };
 
   let cohortes = [...new Set(_cohortes.map(r => +r.cohorte))].sort();
   if (filtro === 'recientes') cohortes = cohortes.slice(-5);
@@ -1343,17 +1360,15 @@ function renderCohortes() {
   const cohReciente = cohortes[cohortes.length - 1];
   const cohAnterior = cohortes[cohortes.length - 2];
   const pico = c => {
-    const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === 0);
+    const r = cohortPeakRow(c);
     return r ? +r.boe_prom : null;
   };
   const picoR = pico(cohReciente), picoA = pico(cohAnterior);
   const mejora = picoA ? ((picoR - picoA) / picoA * 100).toFixed(1) : null;
 
-  // Tasa declinación promedio (mes0→mes12) para todas las cohortes con datos suficientes
+  // Tasa declinación promedio (pico→pico+12) para todas las cohortes con datos suficientes
   const tasas = cohortes.map(c => {
-    const m0  = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 0);
-    const m12 = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 12);
-    return m0 && m12 ? (1 - +m12.boe_prom / +m0.boe_prom) * 100 : null;
+    return cohortDecl12(c);
   }).filter(Boolean);
   const tasaProm = tasas.length ? (tasas.reduce((a,b)=>a+b,0)/tasas.length).toFixed(0) : '—';
 
@@ -1420,9 +1435,9 @@ function renderCohortes() {
     }
   });
 
-  // ── Barras: pico mes 0 ────────────────────
+  // ── Barras: mes pico ────────────────────
   const picosData = cohortes.map(c => {
-    const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === 0);
+    const r = cohortPeakRow(c);
     return r ? +r.boe_prom : 0;
   });
   const ctx2 = document.getElementById('chart-cohortes-pico').getContext('2d');
@@ -1431,7 +1446,7 @@ function renderCohortes() {
     type: 'bar',
     data: {
       labels: cohortes.map(String),
-      datasets: [{ label: 'BOE mes 0', data: picosData,
+      datasets: [{ label: 'BOE mes pico', data: picosData,
         backgroundColor: cohortes.map(c => cohortColor(c)) }]
     },
     options: {
@@ -1446,9 +1461,8 @@ function renderCohortes() {
 
   // ── Barras: declinación año 1 ─────────────
   const declData = cohortes.map(c => {
-    const m0  = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 0);
-    const m12 = _cohortes.find(r => +r.cohorte === c && +r.mes_vida === 12);
-    return m0 && m12 ? +((1 - +m12.boe_prom / +m0.boe_prom) * 100).toFixed(1) : null;
+    const d = cohortDecl12(c);
+    return d === null ? null : +d.toFixed(1);
   });
   const ctx3 = document.getElementById('chart-cohortes-decl').getContext('2d');
   if (_chartDecl) _chartDecl.destroy();
