@@ -21,6 +21,8 @@ jobs:
         run: pip install pandas requests tqdm openpyxl scipy
       - name: Correr pipeline
         run: python vaca_muerta_pipeline.py
+      - name: Validar registro de activos
+        run: python validacion_activos.py
       - name: Commit y push de datos actualizados
         run: |
           git config user.name  "github-actions[bot]"
