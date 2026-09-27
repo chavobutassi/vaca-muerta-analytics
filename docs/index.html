@@ -12,90 +12,107 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vaca Muerta Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
+:root{
+  --bg:#f3f4f6; --surface:#ffffff; --line:#d3d8df; --line-soft:#e6e9ee;
+  --ink:#14202e; --ink-2:#586474; --ink-3:#8792a2;
+  --navy:#0f2a44; --navy-2:#1f4e79; --accent:#1f5fa6;
+  --ok:#067647; --warn:#b54708; --bad:#b42318;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0d1117;color:#e6edf3;min-height:100vh}
-.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.header h1{font-size:18px;font-weight:600;color:#e6edf3}
-.header h1 span{color:#f78166;font-weight:400}
-.badges{display:flex;gap:8px;flex-wrap:wrap}
-.badge{background:#1f6feb22;border:1px solid #1f6feb66;color:#79c0ff;font-size:11px;padding:3px 10px;border-radius:20px}
-.badge.ok{background:#3fb95022;border-color:#3fb95066;color:#3fb950}
-.badge.warn{background:#e3b34122;border-color:#e3b34166;color:#e3b341}
-.nav{background:#161b22;border-bottom:1px solid #30363d;padding:0 24px;display:flex;gap:0;overflow-x:auto}
-.nav button{background:none;border:none;color:#8b949e;font-size:13px;padding:12px 16px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.nav button.active{color:#f78166;border-bottom-color:#f78166}
-.nav button:hover:not(.active){color:#e6edf3}
+body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
+
+/* Encabezado: barra institucional + rótulo de documento */
+.header{background:var(--navy);color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.header h1{font-size:18px;font-weight:600;letter-spacing:.2px;color:#fff}
+.header-sub{font-size:12px;color:#b8c4d2;margin-top:2px}
+.badges{display:flex;gap:0;flex-wrap:wrap;border:1px solid #3a5573}
+.badge{font-size:11.5px;color:#dfe6ee;padding:6px 12px;border-left:1px solid #3a5573;display:flex;align-items:center;gap:6px;background:none;border-radius:0}
+.badge:first-child{border-left:none}
+.badge b{font-weight:500;color:#8fa3b8;text-transform:uppercase;font-size:10px;letter-spacing:.6px}
+.badge.ok::before,.badge.warn::before{content:'';width:7px;height:7px;border-radius:50%;display:inline-block}
+.badge.ok::before{background:#3ccf8e}
+.badge.warn::before{background:#f5a524}
+
+/* Navegación */
+.nav{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;display:flex;overflow-x:auto}
+.nav button{background:none;border:none;color:var(--ink-2);font:inherit;font-size:13px;padding:12px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.nav button.active{color:var(--navy);font-weight:600;border-bottom-color:var(--navy-2)}
+.nav button:hover:not(.active){color:var(--ink)}
+
 .page{display:none;padding:24px;max-width:1200px;margin:0 auto}
 .page.active{display:block}
 
-/* KPIs con sparkline */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:24px}
-.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px;position:relative;overflow:hidden}
-.kpi-label{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
-.kpi-value{font-size:26px;font-weight:600;color:#e6edf3;line-height:1.1}
-.kpi-sub{font-size:12px;color:#3fb950;margin-top:4px}
-.kpi-sub.neg{color:#f78166}
+/* Indicadores */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--navy-2);padding:14px 16px;position:relative;overflow:hidden}
+.kpi-label{font-size:12px;color:var(--ink-2);margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:600;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi-sub{font-size:12px;color:var(--ok);margin-top:4px}
+.kpi-sub.neg{color:var(--bad)}
 .kpi-spark{margin-top:10px;height:36px;width:100%;display:block;max-height:36px}
 
-/* Grids */
+/* Paneles */
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .chart-grid.full{grid-template-columns:1fr}
 .chart-grid.tri{grid-template-columns:1fr 1fr 1fr}
-.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px}
-.card h3{font-size:11px;font-weight:500;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:.6px}
+.card{background:var(--surface);border:1px solid var(--line);padding:18px 20px;min-width:0}
+.card h3{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--line-soft);text-transform:none;letter-spacing:0}
 .chart-wrap{position:relative;width:100%;min-height:0;overflow:hidden}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:#8b949e}
-.legend span{display:flex;align-items:center;gap:5px;cursor:pointer;padding:2px 6px;border-radius:4px;transition:background .15s}
-.legend span:hover{background:#21262d}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--ink-2)}
+.legend span{display:flex;align-items:center;gap:5px;cursor:pointer;padding:2px 6px}
+.legend span:hover{background:var(--line-soft)}
 .legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 
 /* Tablas */
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:8px 12px;font-size:11px;font-weight:500;color:#8b949e;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #30363d;cursor:pointer;user-select:none}
-th:hover{color:#e6edf3}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th{text-align:left;padding:8px 12px;font-size:11.5px;font-weight:600;color:var(--ink-2);background:#f6f7f9;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+th:hover{color:var(--ink)}
 th.sort-asc::after{content:' ↑'}
 th.sort-desc::after{content:' ↓'}
-td{padding:9px 12px;border-bottom:1px solid #21262d;color:#e6edf3}
-tr:hover td{background:#1c2128}
-.emp-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
-.bar-inline{height:5px;border-radius:3px;display:inline-block;vertical-align:middle;margin-left:8px}
+td{padding:8px 12px;border-bottom:1px solid var(--line-soft);color:var(--ink)}
+tr:hover td{background:#f7f9fb}
+.emp-badge{display:inline-block;padding:1px 7px;font-size:11.5px;font-weight:500;border-radius:2px}
+.bar-inline{height:5px;display:inline-block;vertical-align:middle;margin-left:8px}
 
 /* Filtros */
-.filter-bar{display:flex;gap:12px;margin-bottom:20px;align-items:center;flex-wrap:wrap}
-.filter-bar select{background:#21262d;border:1px solid #30363d;color:#e6edf3;padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer}
-.filter-bar label{font-size:13px;color:#8b949e}
-
-/* Búsqueda */
-.search-box{background:#21262d;border:1px solid #30363d;color:#e6edf3;padding:6px 12px;border-radius:6px;font-size:13px;width:220px}
-.search-box::placeholder{color:#484f58}
+.filter-bar{display:flex;gap:12px;margin-bottom:16px;align-items:center;flex-wrap:wrap}
+.filter-bar select,.search-box{background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:6px 10px;font:inherit;font-size:13px;border-radius:2px}
+.filter-bar select{cursor:pointer}
+.filter-bar label{font-size:13px;color:var(--ink-2)}
+.search-box{width:220px}
+.search-box::placeholder{color:var(--ink-3)}
 
 /* Estados */
-.status-ok{color:#3fb950}
-.status-warn{color:#e3b341}
-.status-danger{color:#f78166}
-.loading{text-align:center;padding:60px 20px;color:#8b949e;font-size:14px}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid #30363d;border-top-color:#f78166;border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;vertical-align:middle}
+.status-ok{color:var(--ok)}
+.status-warn{color:var(--warn)}
+.status-danger{color:var(--bad)}
+.loading{text-align:center;padding:60px 20px;color:var(--ink-2);font-size:14px}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--navy-2);border-radius:50%;animation:spin .8s linear infinite;margin-right:10px;vertical-align:middle}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Anotación en gráfico */
-.chart-annotation{font-size:11px;color:#484f58;text-align:right;margin-top:4px}
-
-.source{font-size:11px;color:#484f58;margin-top:24px;text-align:center;padding-bottom:24px}
-@media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}}
+.chart-annotation{font-size:11px;color:var(--ink-3);text-align:right;margin-top:6px}
+code,.mono,td[style*="monospace"]{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.source{font-size:11.5px;color:var(--ink-3);margin-top:24px;text-align:center;padding:16px 0 24px;border-top:1px solid var(--line);max-width:1200px;margin-left:auto;margin-right:auto}
+@media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}.header{padding:12px 16px}.page{padding:16px}}
 canvas{display:block;max-width:100%}
 #p9 .card{min-width:0}
+.page .badge{color:var(--ink);border:1px solid var(--line);padding:4px 10px}
+
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>🛢️ Vaca Muerta <span>Analytics</span></h1>
+  <div><h1>Vaca Muerta Analytics</h1><div class="header-sub">Producción no convencional · Cuenca Neuquina · Formación Vaca Muerta</div></div>
   <div class="badges">
-    <span class="badge">datos.energia.gob.ar</span>
-    <span class="badge" id="badge-periodo">Cargando...</span>
-    <span class="badge" id="badge-estado">⏳ Iniciando</span>
+    <span class="badge"><b>Fuente</b>Secretaría de Energía</span>
+    <span class="badge" id="badge-periodo">Cargando…</span>
+    <span class="badge" id="badge-estado">Iniciando</span>
   </div>
 </div>
 
@@ -203,7 +220,7 @@ canvas{display:block;max-width:100%}
       </div>
     </div>
     <div class="card">
-      <h3>Ranking por empresa <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">(clic en columna para ordenar)</span></h3>
+      <h3>Ranking por empresa <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">(clic en columna para ordenar)</span></h3>
       <table id="tbl-emp-wrap">
         <thead>
           <tr>
@@ -319,8 +336,8 @@ canvas{display:block;max-width:100%}
 <div class="page" id="p5">
   <div id="p5-loading" class="loading"><span class="spinner"></span>Cargando datos...</div>
   <div id="p5-content" style="display:none">
-    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 20px;margin-bottom:20px;font-size:13px;color:#8b949e;line-height:1.6">
-      La <strong style="color:#e6edf3">curva de declinación</strong> muestra cómo cae la producción de un pozo desde su pico máximo. En Vaca Muerta el patrón típico es declinación exponencial del 60-80% en el primer año. Usamos los datos reales de cada pozo para calcular la tasa de declinación mensual promedio.
+    <div style="background:#ffffff;border:1px solid #d3d8df;border-radius:8px;padding:14px 20px;margin-bottom:20px;font-size:13px;color:#586474;line-height:1.6">
+      La <strong style="color:#14202e">curva de declinación</strong> muestra cómo cae la producción de un pozo desde su pico máximo. En Vaca Muerta el patrón típico es declinación exponencial del 60-80% en el primer año. Usamos los datos reales de cada pozo para calcular la tasa de declinación mensual promedio.
     </div>
     <div class="filter-bar">
       <label>Empresa:</label>
@@ -364,13 +381,13 @@ canvas{display:block;max-width:100%}
   <div id="p6-loading" class="loading"><span class="spinner"></span>Analizando datos...</div>
   <div id="p6-content" style="display:none">
 
-    <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+    <div style="background:#ffffff;border:1px solid #d3d8df;border-radius:8px;padding:18px 24px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
       <div>
-        <div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Situational Report — Vaca Muerta</div>
-        <div style="font-size:15px;font-weight:600;color:#e6edf3">Análisis ejecutivo integrado</div>
+        <div style="font-size:11px;color:#586474;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px">Situational Report — Vaca Muerta</div>
+        <div style="font-size:15px;font-weight:600;color:#14202e">Análisis ejecutivo integrado</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span id="sitrep-fecha" style="font-size:12px;color:#8b949e"></span>
+        <span id="sitrep-fecha" style="font-size:12px;color:#586474"></span>
         <span id="sitrep-alerta" class="badge"></span>
       </div>
     </div>
@@ -380,7 +397,7 @@ canvas{display:block;max-width:100%}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
       <div class="card">
         <h3>Ranking operadoras — score integrado</h3>
-        <div style="font-size:11px;color:#484f58;margin-bottom:12px">Producción × eficiencia × crecimiento × water cut</div>
+        <div style="font-size:11px;color:#8792a2;margin-bottom:12px">Producción × eficiencia × crecimiento × water cut</div>
         <div id="sitrep-ranking"></div>
       </div>
       <div class="card">
@@ -390,7 +407,7 @@ canvas{display:block;max-width:100%}
     </div>
 
     <div class="card" style="margin-bottom:16px">
-      <h3>Pozos prioritarios para intervención <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— water cut > 60% ordenados por potencial de recupero</span></h3>
+      <h3>Pozos prioritarios para intervención <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— water cut > 60% ordenados por potencial de recupero</span></h3>
       <table>
         <thead><tr>
           <th>Prioridad</th><th>Pozo</th><th>Empresa</th><th>Yacimiento</th>
@@ -417,7 +434,7 @@ canvas{display:block;max-width:100%}
 
     <div class="card">
       <h3>Conclusión ejecutiva</h3>
-      <div id="sitrep-conclusion" style="font-size:13px;line-height:1.8;color:#8b949e"></div>
+      <div id="sitrep-conclusion" style="font-size:13px;line-height:1.8;color:#586474"></div>
     </div>
 
   </div>
@@ -432,7 +449,7 @@ canvas{display:block;max-width:100%}
 
     <div class="card" style="margin-bottom:16px">
       <h3>Curvas de declinación por cohorte (vintage)
-        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">
           — producción promedio por pozo según mes de vida · cada línea = una camada de pozos del mismo año
         </span>
       </h3>
@@ -458,7 +475,7 @@ canvas{display:block;max-width:100%}
     <div class="chart-grid">
       <div class="card">
         <h3>Pico de producción por cohorte (mes 0)
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— BOE promedio primer mes</span>
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— BOE promedio primer mes</span>
         </h3>
         <div class="chart-wrap" style="height:240px">
           <canvas id="chart-cohortes-pico" role="img" aria-label="Pico por cohorte"></canvas>
@@ -466,7 +483,7 @@ canvas{display:block;max-width:100%}
       </div>
       <div class="card">
         <h3>Tasa de declinación al año 1
-          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">— % caída mes 0 → mes 12</span>
+          <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">— % caída mes 0 → mes 12</span>
         </h3>
         <div class="chart-wrap" style="height:240px">
           <canvas id="chart-cohortes-decl" role="img" aria-label="Tasa de declinación primer año"></canvas>
@@ -503,7 +520,7 @@ canvas{display:block;max-width:100%}
 
     <div class="card" style="margin-bottom:16px">
       <h3>Reporte de chequeos de calidad
-        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">
           — 7 reglas de negocio evaluadas sobre el dataset consolidado de Vaca Muerta
         </span>
       </h3>
@@ -528,7 +545,7 @@ canvas{display:block;max-width:100%}
       </div>
       <div class="card" id="metadata-card">
         <h3>Trazabilidad del último run</h3>
-        <div id="metadata-content" style="font-size:13px;line-height:2;color:#8b949e">
+        <div id="metadata-content" style="font-size:13px;line-height:2;color:#586474">
           Cargando metadatos...
         </div>
       </div>
@@ -543,20 +560,20 @@ canvas{display:block;max-width:100%}
   <div id="p9-loading" class="loading"><span class="spinner"></span>Validando modelo BIM...</div>
   <div id="p9-content" style="display:none">
 
-    <div class="card" style="margin-bottom:16px;border-left:3px solid #79c0ff">
+    <div class="card" style="margin-bottom:16px;border-left:3px solid #1f5fa6">
       <h3>¿Qué muestra esta página?</h3>
-      <div style="font-size:13px;line-height:1.7;color:#8b949e">
+      <div style="font-size:13px;line-height:1.7;color:#586474">
         <p style="margin-bottom:8px">
-          Un modelo <strong style="color:#e6edf3">BIM</strong> (formato IFC) no es solo un dibujo 3D: cada objeto de la instalación
-          —cabeza de pozo, separador, tanque, bomba, línea— trae <strong style="color:#e6edf3">datos</strong> (tag, estado, fabricante, presión de diseño).
+          Un modelo <strong style="color:#14202e">BIM</strong> (formato IFC) no es solo un dibujo 3D: cada objeto de la instalación
+          —cabeza de pozo, separador, tanque, bomba, línea— trae <strong style="color:#14202e">datos</strong> (tag, estado, fabricante, presión de diseño).
           Esta página valida esos datos con 7 reglas, igual que la página <em>Calidad</em> lo hace con la producción.
         </p>
         <p style="margin-bottom:8px">
-          La regla <strong style="color:#e6edf3">R07</strong> es el puente entre ambos mundos: cada cabeza de pozo del modelo
+          La regla <strong style="color:#14202e">R07</strong> es el puente entre ambos mundos: cada cabeza de pozo del modelo
           debe corresponder a un pozo real del dataset de la Secretaría de Energía.
         </p>
-        <p style="color:#484f58;font-size:12px">
-          ⚠ No existen modelos BIM públicos de instalaciones de Vaca Muerta. El modelo es una locación <strong>sintética</strong>
+        <p style="color:#8792a2;font-size:12px">
+          No existen modelos BIM públicos de instalaciones de Vaca Muerta. El modelo es una locación <strong>sintética</strong>
           (1 pad, 4 pozos y su batería) con errores sembrados a propósito para demostrar qué detecta cada regla.
           Las 3 cabezas de pozo válidas apuntan a pozos reales del dataset.
         </p>
@@ -584,7 +601,7 @@ canvas{display:block;max-width:100%}
 
     <div class="card" style="margin-bottom:16px">
       <h3>Hallazgos
-        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#8792a2;font-size:11px">
           — una fila por cada regla que falla en un activo
         </span>
       </h3>
@@ -646,17 +663,18 @@ const DATA = {
 };
 
 const COLORS = {
-  'YPF':'#0055A5','Shell':'#FFCC00','TotalEnergies':'#E11C24',
-  'Vista Energy':'#4dabf7','Tecpetrol':'#FF6B35','Equinor':'#EE2B31',
-  'Wintershall':'#9775fa','Pan American Energy':'#51cf66','Pluspetrol':'#ffd43b','Otra':'#868e96'
+  'YPF':'#2a78d6','Vista Energy':'#eb6834','Tecpetrol':'#1baf7a','Shell':'#eda100',
+  'Pan American Energy':'#e87ba4','TotalEnergies':'#008300','Equinor':'#4a3aa7','Wintershall':'#e34948',
+  'Pluspetrol':'#6b7a8f','Otra':'#a3acb9'
 };
-const col = e => COLORS[e] || '#868e96';
+const col = e => COLORS[e] || '#a3acb9';
 const fmt = n => {
   n = +n || 0;
   return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(Math.round(n));
 };
 const pct = n => ((+n)||0).toFixed(1)+'%';
 
+if (window.Chart) { Chart.defaults.font.family = "'IBM Plex Sans', system-ui, sans-serif"; Chart.defaults.color = '#586474'; Chart.defaults.borderColor = '#e6e9ee'; }
 const charts = {};
 function makeChart(id, cfg) {
   if (charts[id]) { charts[id].destroy(); delete charts[id]; }
@@ -699,7 +717,7 @@ function sparkline(id, data, color) {
   if (!ctx) return;
   if (charts['sp_'+id]) charts['sp_'+id].destroy();
   const trend = data[data.length-1] >= data[0];
-  const c = trend ? '#3fb950' : '#f78166';
+  const c = '#1f4e79';
   charts['sp_'+id] = new Chart(ctx, {
     type: 'line',
     data: { labels: data.map((_,i)=>i), datasets: [{ data, borderColor: color||c, borderWidth: 1.5, pointRadius: 0, fill: true, backgroundColor: (color||c)+'18', tension: 0.4 }] },
@@ -842,7 +860,7 @@ function renderP1() {
       plugins:{
         legend:{display:false},
         tooltip:{callbacks:{
-          title: t=>'📅 '+t[0].label,
+          title: t=>''+t[0].label,
           label: c=>`${c.dataset.label}: ${fmt(c.raw)} m³`,
           footer: items=>{
             const tot=items.reduce((s,i)=>s+(+i.raw||0),0);
@@ -851,8 +869,8 @@ function renderP1() {
         }}
       },
       scales:{
-        x:{ticks:{color:'#8b949e',maxTicksLimit:12,font:{size:11}},grid:{color:'#21262d'}},
-        y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:11}},grid:{color:'#21262d'}},
+        x:{ticks:{color:'#586474',maxTicksLimit:12,font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{ticks:{color:'#586474',callback:v=>fmt(v),font:{size:11}},grid:{color:'#e6e9ee'}},
       }
     }
   });
@@ -865,7 +883,7 @@ function renderP1() {
     type:'doughnut',
     data:{labels:msEmps, datasets:[{data:msPct,backgroundColor:msEmps.map(col),borderWidth:0,hoverOffset:8}]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'right',labels:{color:'#8b949e',font:{size:11},boxWidth:12,padding:8}},
+      plugins:{legend:{position:'right',labels:{color:'#586474',font:{size:11},boxWidth:12,padding:8}},
                tooltip:{callbacks:{label:c=>`${c.label}: ${(+c.raw).toFixed(1)}%`}}}}
   });
 
@@ -877,14 +895,14 @@ function renderP1() {
   makeChart('chart-np',{
     type:'bar',
     data:{labels:npMes, datasets:[
-      {label:'Nuevos pozos',data:npVal,backgroundColor:npVal.map(v=>v>npAvg?'#1f6febcc':'#1f6feb55'),borderColor:'#1f6feb',borderWidth:1},
-      {label:'Media',data:npVal.map(()=>Math.round(npAvg)),type:'line',borderColor:'#f78166',borderWidth:1.5,pointRadius:0,borderDash:[4,3]},
+      {label:'Nuevos pozos',data:npVal,backgroundColor:npVal.map(v=>v>npAvg?'#1f5fa6cc':'#1f5fa655'),borderColor:'#1f5fa6',borderWidth:1},
+      {label:'Media',data:npVal.map(()=>Math.round(npAvg)),type:'line',borderColor:'#8792a2',borderWidth:1.5,pointRadius:0,borderDash:[4,3]},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${c.raw}`}}},
       scales:{
-        x:{ticks:{color:'#8b949e',maxTicksLimit:8,font:{size:10}},grid:{color:'#21262d'}},
-        y:{ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
+        x:{ticks:{color:'#586474',maxTicksLimit:8,font:{size:10}},grid:{color:'#e6e9ee'}},
+        y:{ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
       }
     }
   });
@@ -931,8 +949,8 @@ function renderP2() {
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${fmt(c.raw)} m³`}}},
       scales:{
-        x:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:11}},grid:{color:'#21262d'}},
-        y:{ticks:{color:'#8b949e',font:{size:12}},grid:{display:false}},
+        x:{ticks:{color:'#586474',callback:v=>fmt(v),font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{ticks:{color:'#586474',font:{size:12}},grid:{display:false}},
       }
     }
   });
@@ -948,10 +966,10 @@ function renderP2() {
       borderColor:col(e),backgroundColor:'transparent',borderWidth:2,pointRadius:3,tension:0.3,
     }))},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:8}}},
+      plugins:{legend:{position:'bottom',labels:{color:'#586474',font:{size:11},boxWidth:10,padding:8}}},
       scales:{
-        x:{ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
-        y:{ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:11}},grid:{color:'#21262d'}},
+        x:{ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{ticks:{color:'#586474',callback:v=>v+'%',font:{size:11}},grid:{color:'#e6e9ee'}},
       }
     }
   });
@@ -964,11 +982,11 @@ function renderP2() {
       {label:'Gas (Mm³×100)',data:byEmp.map(r=>r.gas*100),backgroundColor:byEmp.map(r=>col(r.e)+'44'),borderWidth:0},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:8}},
+      plugins:{legend:{position:'bottom',labels:{color:'#586474',font:{size:11},boxWidth:10,padding:8}},
                tooltip:{callbacks:{label:c=>c.datasetIndex===0?`Petróleo: ${fmt(c.raw)} m³`:`Gas: ${fmt(c.raw/100)} Mm³`}}},
       scales:{
-        x:{ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
-        y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:10}},grid:{color:'#21262d'}},
+        x:{ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{ticks:{color:'#586474',callback:v=>fmt(v),font:{size:10}},grid:{color:'#e6e9ee'}},
       }
     }
   });
@@ -976,13 +994,13 @@ function renderP2() {
   // Tabla con m³/pozo
   document.getElementById('tb-empresas').innerHTML = byEmp.map((r,i)=>`
     <tr>
-      <td style="color:#8b949e;font-size:12px">${i+1}</td>
-      <td><span class="emp-badge" style="background:${col(r.e)}22;color:${col(r.e)}">${r.e}</span></td>
+      <td style="color:#586474;font-size:12px">${i+1}</td>
+      <td><span class="emp-badge" style="background:#f3f5f8;color:#14202e;border-left:3px solid ${col(r.e)}">${r.e}</span></td>
       <td>${fmt(r.pet)}</td>
       <td>${fmt(r.gas)}</td>
       <td>${fmt(r.boe)}</td>
       <td>${r.pozos>0?r.pozos.toLocaleString():'—'}</td>
-      <td style="color:${r.pozos>0?'#e6edf3':'#484f58'}">${r.pozos>0?fmt(r.pet/r.pozos):'—'}</td>
+      <td style="color:${r.pozos>0?'#14202e':'#8792a2'}">${r.pozos>0?fmt(r.pet/r.pozos):'—'}</td>
     </tr>`).join('');
   _allPozosRows = '';
 }
@@ -1020,10 +1038,10 @@ function renderP3() {
   const maxBoe = +(tp[0]?.boe_acumulado)||1;
   document.getElementById('tb-pozos').innerHTML = tp.map(r=>`
     <tr>
-      <td style="color:#8b949e;font-size:12px">${r.rank}</td>
+      <td style="color:#586474;font-size:12px">${r.rank}</td>
       <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
-      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
-      <td style="font-size:12px;color:#8b949e">${r.yacimiento||'—'}</td>
+      <td><span class="emp-badge" style="background:#f3f5f8;color:#14202e;border-left:3px solid ${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#586474">${r.yacimiento||'—'}</td>
       <td>${fmt(r.boe_acumulado)}<span class="bar-inline" style="width:${Math.round((+r.boe_acumulado/maxBoe)*60)}px;background:${col(r.empresa_grupo)}88"></span></td>
       <td>${fmt(r.petroleo_total_m3)}</td>
       <td>${r.meses_activo} m</td>
@@ -1047,14 +1065,14 @@ function renderScatter() {
     data:{datasets},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{
-        legend:{position:'bottom',labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:8}},
+        legend:{position:'bottom',labels:{color:'#586474',font:{size:11},boxWidth:10,padding:8}},
         tooltip:{callbacks:{
           label:c=>[`Pozo: ${c.raw.pozo}`,`Yacimiento: ${c.raw.yac}`,`Meses activo: ${c.raw.x}`,`BOE acum: ${fmt(c.raw.y)}`]
         }}
       },
       scales:{
-        x:{title:{display:true,text:'Meses activo',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
-        y:{title:{display:true,text:'BOE acumulado',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:11}},grid:{color:'#21262d'}},
+        x:{title:{display:true,text:'Meses activo',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{title:{display:true,text:'BOE acumulado',color:'#586474',font:{size:11}},ticks:{color:'#586474',callback:v=>fmt(v),font:{size:11}},grid:{color:'#e6e9ee'}},
       },
       layout:{padding:20}
     }
@@ -1081,9 +1099,9 @@ function renderP4() {
   wcs.forEach(r=>{if(etapas[r.etapa_pozo]!==undefined)etapas[r.etapa_pozo]++;});
   makeChart('chart-etapa',{
     type:'doughnut',
-    data:{labels:Object.keys(etapas),datasets:[{data:Object.values(etapas),backgroundColor:['#3fb950','#e3b341','#f78166'],borderWidth:0,hoverOffset:6}]},
+    data:{labels:Object.keys(etapas),datasets:[{data:Object.values(etapas),backgroundColor:['#067647','#b54708','#b42318'],borderWidth:0,hoverOffset:6}]},
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:8}},
+      plugins:{legend:{position:'bottom',labels:{color:'#586474',font:{size:11},boxWidth:10,padding:8}},
                tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw} pozos (${(c.raw/wcs.length*100).toFixed(1)}%)`}}}}
   });
 
@@ -1093,11 +1111,11 @@ function renderP4() {
   makeChart('chart-wc-emp',{
     type:'bar',
     data:{labels:wcByEmp.map(r=>r.e),datasets:[{data:wcByEmp.map(r=>+r.wc.toFixed(1)),
-      backgroundColor:wcByEmp.map(r=>+r.wc>60?'#f7816688':+r.wc>30?'#e3b34188':'#3fb95088'),
-      borderColor:wcByEmp.map(r=>+r.wc>60?'#f78166':+r.wc>30?'#e3b341':'#3fb950'),borderWidth:1}]},
+      backgroundColor:wcByEmp.map(r=>+r.wc>60?'#b4231888':+r.wc>30?'#b5470888':'#06764788'),
+      borderColor:wcByEmp.map(r=>+r.wc>60?'#b42318':+r.wc>30?'#b54708':'#067647'),borderWidth:1}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${(+c.raw).toFixed(1)}%`}}},
-      scales:{x:{ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:10}},grid:{color:'#21262d'},max:100},y:{ticks:{color:'#8b949e',font:{size:11}},grid:{display:false}}}}
+      scales:{x:{ticks:{color:'#586474',callback:v=>v+'%',font:{size:10}},grid:{color:'#e6e9ee'},max:100},y:{ticks:{color:'#586474',font:{size:11}},grid:{display:false}}}}
   });
 
   // GOR por empresa
@@ -1108,7 +1126,7 @@ function renderP4() {
       backgroundColor:gorByEmp.map(r=>col(r.e)+'88'),borderColor:gorByEmp.map(r=>col(r.e)),borderWidth:1}]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`GOR: ${c.raw}`}}},
-      scales:{x:{ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',font:{size:11}},grid:{display:false}}}}
+      scales:{x:{ticks:{color:'#586474',font:{size:10}},grid:{color:'#e6e9ee'}},y:{ticks:{color:'#586474',font:{size:11}},grid:{display:false}}}}
   });
 
   // Scatter WC vs GOR
@@ -1122,13 +1140,13 @@ function renderP4() {
     data:{datasets:scDatasets},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{
-        legend:{position:'bottom',labels:{color:'#8b949e',font:{size:10},boxWidth:8,padding:6}},
+        legend:{position:'bottom',labels:{color:'#586474',font:{size:10},boxWidth:8,padding:6}},
         tooltip:{callbacks:{label:c=>`${c.dataset.label} — WC:${c.raw.x}% GOR:${c.raw.y}`}},
-        annotation:{annotations:{line1:{type:'line',xMin:60,xMax:60,borderColor:'#f78166',borderWidth:1,borderDash:[4,3]}}}
+        annotation:{annotations:{line1:{type:'line',xMin:60,xMax:60,borderColor:'#b42318',borderWidth:1,borderDash:[4,3]}}}
       },
       scales:{
-        x:{title:{display:true,text:'Water cut %',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:10}},grid:{color:'#21262d'},min:0,max:100},
-        y:{title:{display:true,text:'GOR',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},
+        x:{title:{display:true,text:'Water cut %',color:'#586474',font:{size:11}},ticks:{color:'#586474',callback:v=>v+'%',font:{size:10}},grid:{color:'#e6e9ee'},min:0,max:100},
+        y:{title:{display:true,text:'GOR',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:10}},grid:{color:'#e6e9ee'}},
       },
       layout:{padding:10}
     }
@@ -1140,12 +1158,12 @@ function renderP4() {
     const wc=+r.water_cut_prom, cls=wc>80?'status-danger':'status-warn';
     return `<tr>
       <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
-      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
-      <td style="font-size:12px;color:#8b949e">${r.yacimiento||'—'}</td>
+      <td><span class="emp-badge" style="background:#f3f5f8;color:#14202e;border-left:3px solid ${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#586474">${r.yacimiento||'—'}</td>
       <td class="${cls}" style="font-weight:600">${wc.toFixed(1)}%</td>
       <td style="font-size:12px">${(+r.gor_prom||0).toFixed(0)}</td>
       <td style="font-size:12px">${r.meses||'—'}</td>
-      <td class="${cls}">${wc>80?'⚠ Crítico':'⚡ Atención'}</td>
+      <td class="${cls}">${wc>80?'Crítico':'Atención'}</td>
     </tr>`;
   }).join('');
 }
@@ -1225,15 +1243,15 @@ function renderDeclinacion() {
   makeChart('chart-declinacion',{
     type:'line',
     data:{labels, datasets:[
-      {label:'Banda superior',data:stdCurve.map(v=>v.hi),borderColor:'transparent',backgroundColor:'#1f6feb18',fill:'+1',pointRadius:0,tension:0.4},
-      {label:'Declinación promedio',data:normCurve,borderColor:'#f78166',backgroundColor:'#f7816622',borderWidth:2.5,pointRadius:0,fill:false,tension:0.4},
-      {label:'Banda inferior',data:stdCurve.map(v=>v.lo),borderColor:'transparent',backgroundColor:'#1f6feb18',fill:'-1',pointRadius:0,tension:0.4},
-      {label:'Referencia 50%',data:labels.map(()=>50),borderColor:'#484f58',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+      {label:'Banda superior',data:stdCurve.map(v=>v.hi),borderColor:'transparent',backgroundColor:'#1f5fa618',fill:'+1',pointRadius:0,tension:0.4},
+      {label:'Declinación promedio',data:normCurve,borderColor:'#1f4e79',backgroundColor:'#1f4e7922',borderWidth:2.5,pointRadius:0,fill:false,tension:0.4},
+      {label:'Banda inferior',data:stdCurve.map(v=>v.lo),borderColor:'transparent',backgroundColor:'#1f5fa618',fill:'-1',pointRadius:0,tension:0.4},
+      {label:'Referencia 50%',data:labels.map(()=>50),borderColor:'#8792a2',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
-        legend:{position:'bottom',labels:{color:'#8b949e',font:{size:11},boxWidth:10,padding:8,
+        legend:{position:'bottom',labels:{color:'#586474',font:{size:11},boxWidth:10,padding:8,
           filter:l=>l.text!=='Banda superior'&&l.text!=='Banda inferior'}},
         tooltip:{callbacks:{
           label:c=>c.datasetIndex===1?`Producción: ${c.raw}% del pico`:null,
@@ -1241,9 +1259,9 @@ function renderDeclinacion() {
         }}
       },
       scales:{
-        x:{ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
-        y:{min:0,max:110,ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:11}},grid:{color:'#21262d'},
-           title:{display:true,text:'% del pico (mes 1 = 100%)',color:'#8b949e',font:{size:11}}},
+        x:{ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
+        y:{min:0,max:110,ticks:{color:'#586474',callback:v=>v+'%',font:{size:11}},grid:{color:'#e6e9ee'},
+           title:{display:true,text:'% del pico (mes 1 = 100%)',color:'#586474',font:{size:11}}},
       }
     }
   });
@@ -1262,15 +1280,15 @@ function renderDeclinacion() {
     data:{labels:ret6ByEmp.map(r=>r.e), datasets:[{
       label:'Retención a 6m (%)',
       data:ret6ByEmp.map(r=>r.ret),
-      backgroundColor:ret6ByEmp.map(r=>r.ret>40?'#3fb95088':r.ret>25?'#e3b34188':'#f7816688'),
-      borderColor:ret6ByEmp.map(r=>r.ret>40?'#3fb950':r.ret>25?'#e3b341':'#f78166'),
+      backgroundColor:ret6ByEmp.map(r=>r.ret>40?'#06764788':r.ret>25?'#b5470888':'#b4231888'),
+      borderColor:ret6ByEmp.map(r=>r.ret>40?'#067647':r.ret>25?'#b54708':'#b42318'),
       borderWidth:1,
     }]},
     options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`Retención 6m: ${c.raw}%`}}},
       scales:{
-        x:{ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:11}},grid:{color:'#21262d'},min:0,max:100},
-        y:{ticks:{color:'#8b949e',font:{size:12}},grid:{display:false}},
+        x:{ticks:{color:'#586474',callback:v=>v+'%',font:{size:11}},grid:{color:'#e6e9ee'},min:0,max:100},
+        y:{ticks:{color:'#586474',font:{size:12}},grid:{display:false}},
       }
     }
   });
@@ -1283,13 +1301,13 @@ function renderDeclinacion() {
     type:'bar',
     data:{labels:bins.map(b=>b.label), datasets:[{
       label:'Pozos',data:bins.map(b=>b.v),
-      backgroundColor:'#1f6feb88',borderColor:'#1f6feb',borderWidth:1,
+      backgroundColor:'#1f5fa688',borderColor:'#1f5fa6',borderWidth:1,
     }]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw} pozos`}}},
       scales:{
-        x:{title:{display:true,text:'Tasa declinación mensual',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}},
-        y:{title:{display:true,text:'N° de pozos',color:'#8b949e',font:{size:11}},ticks:{color:'#8b949e',font:{size:11}},grid:{color:'#21262d'}},
+        x:{title:{display:true,text:'Tasa declinación mensual',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:10}},grid:{color:'#e6e9ee'}},
+        y:{title:{display:true,text:'N° de pozos',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:11}},grid:{color:'#e6e9ee'}},
       }
     }
   });
@@ -1300,10 +1318,12 @@ function renderDeclinacion() {
 // ════════════════════════════════════════════
 let _cohortes = [], _chartCohortes = null, _chartPico = null, _chartDecl = null;
 
-const COHORT_PALETTE = [
-  '#f78166','#79c0ff','#3fb950','#e3b341','#d2a8ff',
-  '#ffa657','#56d364','#58a6ff','#ff7b72','#a5d6ff'
-];
+const COHORT_RAMP = ['#b9d0ec','#9dbde4','#80a9da','#6595cf','#4c81c2','#376eb2','#265c9f','#1a4b89','#123c72','#0b2e59'];
+function cohortColor(c) {
+  const all = [...new Set(_cohortes.map(r => +r.cohorte))].sort((a,b)=>a-b);
+  const k = all.length > 1 ? all.indexOf(+c) / (all.length - 1) : 1;
+  return COHORT_RAMP[Math.round(k * (COHORT_RAMP.length - 1))];
+}
 
 function renderCohortes() {
   if (!_cohortes.length) return;
@@ -1355,7 +1375,7 @@ function renderCohortes() {
   // ── Leyenda ────────────────────────────────
   const legEl = document.getElementById('cohortes-legend');
   legEl.innerHTML = cohortes.map((c, i) =>
-    `<span><span class="legend-dot" style="background:${COHORT_PALETTE[i % COHORT_PALETTE.length]}"></span>${c}</span>`
+    `<span><span class="legend-dot" style="background:${cohortColor(c)}"></span>${c}</span>`
   ).join('');
 
   // ── Gráfico principal ──────────────────────
@@ -1365,7 +1385,7 @@ function renderCohortes() {
       const r = _cohortes.find(x => +x.cohorte === c && +x.mes_vida === m);
       return r ? +r[metrica] : null;
     }),
-    borderColor: COHORT_PALETTE[i % COHORT_PALETTE.length],
+    borderColor: cohortColor(c),
     backgroundColor: 'transparent',
     borderWidth: 2,
     pointRadius: 0,
@@ -1391,10 +1411,10 @@ function renderCohortes() {
         }
       },
       scales: {
-        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', maxTicksLimit: 20 } },
+        x: { grid: { color: '#e6e9ee' }, ticks: { color: '#586474', maxTicksLimit: 20 } },
         y: {
-          grid: { color: '#21262d' }, ticks: { color: '#8b949e' },
-          title: { display: true, text: label[metrica], color: '#8b949e', font: { size: 11 } }
+          grid: { color: '#e6e9ee' }, ticks: { color: '#586474' },
+          title: { display: true, text: label[metrica], color: '#586474', font: { size: 11 } }
         }
       }
     }
@@ -1412,14 +1432,14 @@ function renderCohortes() {
     data: {
       labels: cohortes.map(String),
       datasets: [{ label: 'BOE mes 0', data: picosData,
-        backgroundColor: cohortes.map((_, i) => COHORT_PALETTE[i % COHORT_PALETTE.length] + 'cc') }]
+        backgroundColor: cohortes.map(c => cohortColor(c)) }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
-        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } }
+        x: { grid: { color: '#e6e9ee' }, ticks: { color: '#586474' } },
+        y: { grid: { color: '#e6e9ee' }, ticks: { color: '#586474' } }
       }
     }
   });
@@ -1437,7 +1457,7 @@ function renderCohortes() {
     data: {
       labels: cohortes.map(String),
       datasets: [{ label: '% declinación', data: declData,
-        backgroundColor: declData.map(v => v === null ? '#30363d' : v > 70 ? '#f7816699' : v > 55 ? '#e3b34199' : '#3fb95099') }]
+        backgroundColor: declData.map(v => v === null ? '#d3d8df' : v > 70 ? '#b4231899' : v > 55 ? '#b5470899' : '#06764799') }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
@@ -1446,8 +1466,8 @@ function renderCohortes() {
         tooltip: { callbacks: { label: i => (i.raw !== null ? i.raw + '% de caída' : 'Sin datos mes 12') } }
       },
       scales: {
-        x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e' } },
-        y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', callback: v => v + '%' }, max: 100 }
+        x: { grid: { color: '#e6e9ee' }, ticks: { color: '#586474' } },
+        y: { grid: { color: '#e6e9ee' }, ticks: { color: '#586474', callback: v => v + '%' }, max: 100 }
       }
     }
   });
@@ -1474,9 +1494,9 @@ let _quality = [], _chartQualSev = null;
 function renderQuality() {
   if (!_quality.length) return;
 
-  const sevColor = { alta: '#f78166', media: '#e3b341', baja: '#3fb950' };
-  const sevBg    = { alta: '#f7816615', media: '#e3b34115', baja: '#3fb95015' };
-  const sevBord  = { alta: '#f7816640', media: '#e3b34140', baja: '#3fb95040' };
+  const sevColor = { alta: '#b42318', media: '#b54708', baja: '#067647' };
+  const sevBg    = { alta: '#b4231815', media: '#b5470815', baja: '#06764715' };
+  const sevBord  = { alta: '#b4231840', media: '#b5470840', baja: '#06764740' };
 
   const total      = _quality.reduce((s, r) => s + (+r.registros_afectados || 0), 0);
   const conProb    = _quality.filter(r => +r.registros_afectados > 0).length;
@@ -1487,7 +1507,7 @@ function renderQuality() {
   document.getElementById('quality-kpis').innerHTML = `
     <div class="kpi">
       <div class="kpi-label">Estado general</div>
-      <div class="kpi-value" style="font-size:20px;color:${todoOk?'#3fb950':'#e3b341'}">${todoOk ? '✅ OK' : '⚠ Revisar'}</div>
+      <div class="kpi-value" style="font-size:20px;color:${todoOk?'#067647':'#b54708'}">${todoOk ? 'OK' : 'Revisar'}</div>
       <div class="kpi-sub">${todoOk ? 'Todos los chequeos pasaron' : conProb + ' chequeo(s) con hallazgos'}</div>
     </div>
     <div class="kpi">
@@ -1497,12 +1517,12 @@ function renderQuality() {
     </div>
     <div class="kpi">
       <div class="kpi-label">Alertas críticas</div>
-      <div class="kpi-value" style="color:${criticos > 0 ? '#f78166' : '#3fb950'}">${criticos}</div>
+      <div class="kpi-value" style="color:${criticos > 0 ? '#b42318' : '#067647'}">${criticos}</div>
       <div class="kpi-sub">chequeos de severidad alta</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Chequeos OK</div>
-      <div class="kpi-value" style="color:#3fb950">${_quality.length - conProb}</div>
+      <div class="kpi-value" style="color:#067647">${_quality.length - conProb}</div>
       <div class="kpi-sub">de ${_quality.length} totales</div>
     </div>
   `;
@@ -1511,18 +1531,18 @@ function renderQuality() {
   document.getElementById('tb-quality').innerHTML = _quality.map(r => {
     const n   = +r.registros_afectados || 0;
     const sev = r.severidad || 'baja';
-    const ico = n === 0 ? '✅' : sev === 'alta' ? '🔴' : sev === 'media' ? '🟡' : '🟢';
+    const ico = '';
     return `<tr>
       <td><strong>${r.chequeo}</strong></td>
-      <td style="color:${n > 0 ? sevColor[sev] : '#3fb950'}">${n.toLocaleString()}</td>
-      <td style="color:${n > 0 ? sevColor[sev] : '#3fb950'}">${(+r.pct_del_total || 0).toFixed(3)}%</td>
+      <td style="color:${n > 0 ? sevColor[sev] : '#067647'}">${n.toLocaleString()}</td>
+      <td style="color:${n > 0 ? sevColor[sev] : '#067647'}">${(+r.pct_del_total || 0).toFixed(3)}%</td>
       <td>
         <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;
           background:${sevBg[sev]};border:1px solid ${sevBord[sev]};color:${sevColor[sev]}">
           ${ico} ${sev}
         </span>
       </td>
-      <td style="color:#8b949e;font-size:12px">${r.descripcion}</td>
+      <td style="color:#586474;font-size:12px">${r.descripcion}</td>
     </tr>`;
   }).join('');
 
@@ -1539,15 +1559,15 @@ function renderQuality() {
       labels: ['Alta', 'Media', 'Baja'],
       datasets: [{
         data: [sevCounts.alta, sevCounts.media, sevCounts.baja],
-        backgroundColor: ['#f7816680', '#e3b34180', '#3fb95080'],
-        borderColor:     ['#f78166',   '#e3b341',   '#3fb950'],
+        backgroundColor: ['#b4231880', '#b5470880', '#06764780'],
+        borderColor:     ['#b42318',   '#b54708',   '#067647'],
         borderWidth: 1,
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#8b949e' } },
+        legend: { labels: { color: '#586474' } },
         tooltip: { callbacks: { label: i => i.label + ': ' + i.raw.toLocaleString() + ' registros' } }
       }
     }
@@ -1562,13 +1582,13 @@ function renderMetadata(meta) {
     : '—';
   el.innerHTML = `
     <table style="width:100%;font-size:13px;border-collapse:collapse">
-      <tr><td style="color:#8b949e;padding:4px 0;width:50%">Ejecutado</td><td style="color:#e6edf3">${fecha}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Período</td><td style="color:#e6edf3">${meta.periodo_desde || '—'} → ${meta.periodo_hasta || '—'}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Registros</td><td style="color:#e6edf3">${(meta.registros||0).toLocaleString()}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Pozos</td><td style="color:#e6edf3">${(meta.pozos||0).toLocaleString()}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Empresas</td><td style="color:#e6edf3">${meta.empresas || '—'}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Yacimientos</td><td style="color:#e6edf3">${meta.yacimientos || '—'}</td></tr>
-      <tr><td style="color:#8b949e;padding:4px 0">Fuente</td><td style="color:#e6edf3;font-size:11px">${meta.fuente || '—'}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0;width:50%">Ejecutado</td><td style="color:#14202e">${fecha}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Período</td><td style="color:#14202e">${meta.periodo_desde || '—'} → ${meta.periodo_hasta || '—'}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Registros</td><td style="color:#14202e">${(meta.registros||0).toLocaleString()}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Pozos</td><td style="color:#14202e">${(meta.pozos||0).toLocaleString()}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Empresas</td><td style="color:#14202e">${meta.empresas || '—'}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Yacimientos</td><td style="color:#14202e">${meta.yacimientos || '—'}</td></tr>
+      <tr><td style="color:#586474;padding:4px 0">Fuente</td><td style="color:#14202e;font-size:11px">${meta.fuente || '—'}</td></tr>
     </table>
   `;
   // Actualizar badge de período en el header
@@ -1607,12 +1627,12 @@ async function fetchCSVQuoted(url) {
 }
 
 const BIM_SEV = {
-  CRITICA: { label: 'Crítica', color: '#f78166' },
-  MAYOR:   { label: 'Mayor',   color: '#e3b341' },
-  MENOR:   { label: 'Menor',   color: '#79c0ff' },
+  CRITICA: { label: 'Crítica', color: '#b42318' },
+  MAYOR:   { label: 'Mayor',   color: '#b54708' },
+  MENOR:   { label: 'Menor',   color: '#1f5fa6' },
 };
 const bimSevBadge = sev => {
-  const s = BIM_SEV[sev] || { label: sev, color: '#8b949e' };
+  const s = BIM_SEV[sev] || { label: sev, color: '#586474' };
   return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;
     background:${s.color}15;border:1px solid ${s.color}40;color:${s.color}">${s.label}</span>`;
 };
@@ -1632,32 +1652,32 @@ function renderBIM() {
     <div class="kpi">
       <div class="kpi-label">Activos en el modelo</div>
       <div class="kpi-value">${total}</div>
-      <div class="kpi-sub" style="color:#8b949e">${Object.keys(TIPO_LABEL).filter(t => _bimInv.some(a => a.tipo_activo === t)).length} tipos de activo</div>
+      <div class="kpi-sub" style="color:#586474">${Object.keys(TIPO_LABEL).filter(t => _bimInv.some(a => a.tipo_activo === t)).length} tipos de activo</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Sin observaciones</div>
-      <div class="kpi-value" style="color:#3fb950">${limpios}</div>
-      <div class="kpi-sub" style="color:#8b949e">${total ? (limpios/total*100).toFixed(0) : 0}% del modelo listo para usar</div>
+      <div class="kpi-value" style="color:#067647">${limpios}</div>
+      <div class="kpi-sub" style="color:#586474">${total ? (limpios/total*100).toFixed(0) : 0}% del modelo listo para usar</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Hallazgos críticos</div>
-      <div class="kpi-value" style="color:${criticos ? '#f78166' : '#3fb950'}">${criticos}</div>
+      <div class="kpi-value" style="color:${criticos ? '#b42318' : '#067647'}">${criticos}</div>
       <div class="kpi-sub ${criticos ? 'neg' : ''}">de ${_bimHall.length} hallazgos totales</div>
     </div>
     <div class="kpi">
       <div class="kpi-label">Cruce con producción (R07)</div>
       <div class="kpi-value">${r07 ? (+r07.evaluados - +r07.fallas) + '/' + r07.evaluados : '—'}</div>
-      <div class="kpi-sub" style="color:#8b949e">cabezas de pozo halladas en el dataset</div>
+      <div class="kpi-sub" style="color:#586474">cabezas de pozo halladas en el dataset</div>
     </div>`;
 
   // ── Tabla de reglas ───────────────────────
   document.getElementById('tb-bim-reglas').innerHTML = _bimRes.map(r => {
     const n = +r.fallas;
     return `<tr>
-      <td><strong>${r.regla_id}</strong> <span style="color:#8b949e">${r.regla}</span></td>
+      <td><strong>${r.regla_id}</strong> <span style="color:#586474">${r.regla}</span></td>
       <td>${bimSevBadge(r.severidad)}</td>
-      <td style="color:${n ? (BIM_SEV[r.severidad]||{}).color : '#3fb950'}">${n} / ${r.evaluados}</td>
-      <td>${n ? (+r.cumplimiento_pct).toFixed(1) + '%' : '✅ 100%'}</td>
+      <td style="color:${n ? (BIM_SEV[r.severidad]||{}).color : '#067647'}">${n} / ${r.evaluados}</td>
+      <td>${n ? (+r.cumplimiento_pct).toFixed(1) + '%' : '100%'}</td>
     </tr>`;
   }).join('');
 
@@ -1668,8 +1688,8 @@ function renderBIM() {
       labels: _bimRes.map(r => window.innerWidth < 600 ? r.regla_id : r.regla_id + ' · ' + r.regla),
       datasets: [{
         data: _bimRes.map(r => +r.cumplimiento_pct),
-        backgroundColor: _bimRes.map(r => ((BIM_SEV[r.severidad]||{}).color || '#8b949e') + '88'),
-        borderColor:     _bimRes.map(r => (BIM_SEV[r.severidad]||{}).color || '#8b949e'),
+        backgroundColor: _bimRes.map(r => ((BIM_SEV[r.severidad]||{}).color || '#586474') + '88'),
+        borderColor:     _bimRes.map(r => (BIM_SEV[r.severidad]||{}).color || '#586474'),
         borderWidth: 1, borderRadius: 3,
       }]
     },
@@ -1683,8 +1703,8 @@ function renderBIM() {
         } } }
       },
       scales: {
-        x: { min: 0, max: 100, ticks: { color: '#8b949e', callback: v => v + '%', font: { size: 10 } }, grid: { color: '#21262d' } },
-        y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { display: false } }
+        x: { min: 0, max: 100, ticks: { color: '#586474', callback: v => v + '%', font: { size: 10 } }, grid: { color: '#e6e9ee' } },
+        y: { ticks: { color: '#586474', font: { size: 11 } }, grid: { display: false } }
       }
     }
   });
@@ -1699,11 +1719,11 @@ function renderBIM() {
     return `<tr>
       <td style="font-family:monospace;font-size:12px">${a.TagActivo || '<span class="status-danger">(sin tag)</span>'}</td>
       <td style="font-size:12px">${TIPO_LABEL[a.tipo_activo] || a.tipo_activo}</td>
-      <td style="font-size:12px;color:#8b949e">${a.nombre}</td>
+      <td style="font-size:12px;color:#586474">${a.nombre}</td>
       <td style="font-size:12px">${a.sector || '<span class="status-warn">sin sector</span>'}</td>
       <td style="font-size:12px">${a.Estado || '—'}</td>
       <td style="font-family:monospace;font-size:12px">${a.PozoId || '—'}</td>
-      <td style="font-size:12px">${obs.length ? '<span class="status-warn">⚠ ' + [...new Set(obs)].join(', ') + '</span>' : '<span class="status-ok">✅ OK</span>'}</td>
+      <td style="font-size:12px">${obs.length ? '<span class="status-warn">' + [...new Set(obs)].join(', ') + '</span>' : '<span class="status-ok">OK</span>'}</td>
     </tr>`;
   }).join('');
 }
@@ -1712,13 +1732,13 @@ function renderBimHallazgos() {
   const f = document.getElementById('bim-filtro-sev').value;
   const rows = _bimHall.filter(h => !f || h.severidad === f);
   document.getElementById('tb-bim-hallazgos').innerHTML = rows.length ? rows.map(h => `<tr>
-      <td><strong>${h.regla_id}</strong> <span style="color:#8b949e;font-size:12px">${h.regla}</span></td>
+      <td><strong>${h.regla_id}</strong> <span style="color:#586474;font-size:12px">${h.regla}</span></td>
       <td>${bimSevBadge(h.severidad)}</td>
       <td style="font-family:monospace;font-size:12px">${h.tag}</td>
       <td style="font-size:12px">${h.nombre}</td>
-      <td style="color:#8b949e;font-size:12px">${h.detalle}</td>
+      <td style="color:#586474;font-size:12px">${h.detalle}</td>
     </tr>`).join('')
-    : '<tr><td colspan="5" style="color:#3fb950">✅ Sin hallazgos para este filtro</td></tr>';
+    : '<tr><td colspan="5" style="color:#067647">Sin hallazgos para este filtro</td></tr>';
 }
 
 async function initBIM() {
@@ -1732,7 +1752,7 @@ async function initBIM() {
   } catch (err) {
     console.error(err);
     document.getElementById('p9-loading').innerHTML =
-      `<span style="color:#f78166">⚠ No se pudieron cargar los datos BIM.<br><small>${err.message}</small></span>`;
+      `<span style="color:#b42318">No se pudieron cargar los datos BIM.<br><small>${err.message}</small></span>`;
   }
 }
 
@@ -1746,7 +1766,7 @@ function setEstado(txt, tipo='') {
 }
 
 async function init() {
-  setEstado('⏳ Cargando datos...');
+  setEstado('Cargando datos...');
   try {
     const [prod, ms, topPozos, efic, nuevos, yac, cohortes, quality] = await Promise.all([
       fetchCSV(DATA.prod), fetchCSV(DATA.ms), fetchCSV(DATA.topPozos),
@@ -1796,12 +1816,12 @@ async function init() {
     document.getElementById('p8-loading').style.display='none';
     document.getElementById('p8-content').style.display='block';
 
-    setEstado('✅ Datos cargados', 'ok');
+    setEstado('Datos cargados', 'ok');
   } catch(err) {
     console.error(err);
-    setEstado('⚠ Error al cargar datos','warn');
+    setEstado('Error al cargar datos','warn');
     document.querySelectorAll('[id$="-loading"]').forEach(el=>{
-      el.innerHTML=`<span style="color:#f78166">⚠ No se pudieron cargar los datos.<br><small>${err.message}</small></span>`;
+      el.innerHTML=`<span style="color:#b42318">No se pudieron cargar los datos.<br><small>${err.message}</small></span>`;
     });
   }
 }
@@ -1866,40 +1886,40 @@ function renderSITREP() {
      desc:byEmp.filter(e=>e.crecYoY>0).length+' empresas con crecimiento interanual'},
   ];
 
-  const colorSem={ok:'#3fb950',warn:'#e3b341',danger:'#f78166'};
-  const bgSem   ={ok:'#3fb95015',warn:'#e3b34115',danger:'#f7816615'};
-  const bordSem ={ok:'#3fb95040',warn:'#e3b34140',danger:'#f7816640'};
+  const colorSem={ok:'#067647',warn:'#b54708',danger:'#b42318'};
+  const bgSem   ={ok:'#06764715',warn:'#b5470815',danger:'#b4231815'};
+  const bordSem ={ok:'#06764740',warn:'#b5470840',danger:'#b4231840'};
 
   document.getElementById('sitrep-semaforo').innerHTML = semaforos.map(s=>`
     <div style="background:${bgSem[s.estado]};border:1px solid ${bordSem[s.estado]};border-radius:8px;padding:14px 16px">
-      <div style="font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px">${s.label}</div>
+      <div style="font-size:11px;color:#586474;margin-bottom:4px">${s.label}</div>
       <div style="font-size:22px;font-weight:600;color:${colorSem[s.estado]};margin-bottom:4px">${s.valor}</div>
-      <div style="font-size:12px;color:#8b949e">${s.desc}</div>
+      <div style="font-size:12px;color:#586474">${s.desc}</div>
     </div>`).join('');
 
   const nDanger=semaforos.filter(s=>s.estado==='danger').length;
   const ab=document.getElementById('sitrep-alerta');
-  if(nDanger===0){ab.textContent='✅ Cuenca saludable';ab.className='badge ok';}
-  else if(nDanger===1){ab.textContent='⚡ Atención requerida';ab.className='badge warn';}
-  else{ab.textContent='⚠ Alerta operativa';ab.className='badge warn';}
+  if(nDanger===0){ab.textContent='Cuenca saludable';ab.className='badge ok';}
+  else if(nDanger===1){ab.textContent='Atención requerida';ab.className='badge warn';}
+  else{ab.textContent='Alerta operativa';ab.className='badge warn';}
 
   const top8=byEmp.slice(0,8);
   const maxScore=top8[0]?.score||1;
   document.getElementById('sitrep-ranking').innerHTML=top8.map((e,i)=>{
-    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
-    const bc=e.score>=70?'#3fb950':e.score>=45?'#e3b341':'#f78166';
+    const medal=`${i+1}.`;
+    const bc=e.score>=70?'#067647':e.score>=45?'#b54708':'#b42318';
     return `<div style="margin-bottom:12px">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:13px;min-width:24px">${medal}</span>
-          <span class="emp-badge" style="background:${col(e.e)}22;color:${col(e.e)}">${e.e}</span>
+          <span class="emp-badge" style="background:#f3f5f8;color:#14202e;border-left:3px solid ${col(e.e)}">${e.e}</span>
         </div>
         <span style="font-size:13px;font-weight:600;color:${bc}">${e.score}/100</span>
       </div>
-      <div style="height:4px;background:#21262d;border-radius:2px">
+      <div style="height:4px;background:#e6e9ee;border-radius:2px">
         <div style="height:4px;width:${Math.round(e.score/maxScore*100)}%;background:${bc};border-radius:2px"></div>
       </div>
-      <div style="font-size:11px;color:#484f58;margin-top:3px">
+      <div style="font-size:11px;color:#8792a2;margin-top:3px">
         WC ${e.wcProm.toFixed(1)}% · ${(e.crecYoY>=0?'+':'')+e.crecYoY.toFixed(1)}% YoY · ${e.share.toFixed(1)}% mercado
       </div>
     </div>`;
@@ -1912,25 +1932,25 @@ function renderSITREP() {
 
   document.getElementById('sitrep-recomendacion').innerHTML=`
     <div style="display:flex;flex-direction:column;gap:12px">
-      <div style="padding:12px;background:#3fb95010;border:1px solid #3fb95030;border-radius:6px">
-        <div style="font-size:11px;color:#3fb950;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">▲ Mayor potencial</div>
-        <div style="font-size:13px;color:#e6edf3;font-weight:500">${lider.e}</div>
-        <div style="font-size:12px;color:#8b949e;margin-top:2px">Score ${lider.score}/100 · Líder con ${lider.share.toFixed(1)}% del mercado</div>
+      <div style="padding:12px;background:#06764710;border:1px solid #06764730;border-radius:6px">
+        <div style="font-size:11px;color:#067647;margin-bottom:4px">Mayor potencial</div>
+        <div style="font-size:13px;color:#14202e;font-weight:500">${lider.e}</div>
+        <div style="font-size:12px;color:#586474;margin-top:2px">Score ${lider.score}/100 · Líder con ${lider.share.toFixed(1)}% del mercado</div>
       </div>
-      <div style="padding:12px;background:#1f6feb10;border:1px solid #1f6feb30;border-radius:6px">
-        <div style="font-size:11px;color:#79c0ff;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">⚡ Más eficiente</div>
-        <div style="font-size:13px;color:#e6edf3;font-weight:500">${eficiente.e}</div>
-        <div style="font-size:12px;color:#8b949e;margin-top:2px">Water cut ${eficiente.wcProm.toFixed(1)}% — mejor calidad de fluido</div>
+      <div style="padding:12px;background:#1f5fa610;border:1px solid #1f5fa630;border-radius:6px">
+        <div style="font-size:11px;color:#1f5fa6;margin-bottom:4px">Más eficiente</div>
+        <div style="font-size:13px;color:#14202e;font-weight:500">${eficiente.e}</div>
+        <div style="font-size:12px;color:#586474;margin-top:2px">Water cut ${eficiente.wcProm.toFixed(1)}% — mejor calidad de fluido</div>
       </div>
-      <div style="padding:12px;background:#e3b34110;border:1px solid #e3b34130;border-radius:6px">
-        <div style="font-size:11px;color:#e3b341;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">📈 Mayor crecimiento</div>
-        <div style="font-size:13px;color:#e6edf3;font-weight:500">${creciente.e}</div>
-        <div style="font-size:12px;color:#8b949e;margin-top:2px">${creciente.crecYoY>=0?'+':''}${creciente.crecYoY.toFixed(1)}% vs año anterior</div>
+      <div style="padding:12px;background:#b5470810;border:1px solid #b5470830;border-radius:6px">
+        <div style="font-size:11px;color:#b54708;margin-bottom:4px">Mayor crecimiento</div>
+        <div style="font-size:13px;color:#14202e;font-weight:500">${creciente.e}</div>
+        <div style="font-size:12px;color:#586474;margin-top:2px">${creciente.crecYoY>=0?'+':''}${creciente.crecYoY.toFixed(1)}% vs año anterior</div>
       </div>
-      <div style="padding:12px;background:#f7816610;border:1px solid #f7816630;border-radius:6px">
-        <div style="font-size:11px;color:#f78166;margin-bottom:4px;text-transform:uppercase;letter-spacing:.6px">⚠ Mayor riesgo operativo</div>
-        <div style="font-size:13px;color:#e6edf3;font-weight:500">${riesgosa.e}</div>
-        <div style="font-size:12px;color:#8b949e;margin-top:2px">Water cut ${riesgosa.wcProm.toFixed(1)}% — requiere intervención</div>
+      <div style="padding:12px;background:#b4231810;border:1px solid #b4231830;border-radius:6px">
+        <div style="font-size:11px;color:#b42318;margin-bottom:4px">Mayor riesgo operativo</div>
+        <div style="font-size:13px;color:#14202e;font-weight:500">${riesgosa.e}</div>
+        <div style="font-size:12px;color:#586474;margin-top:2px">Water cut ${riesgosa.wcProm.toFixed(1)}% — requiere intervención</div>
       </div>
     </div>`;
 
@@ -1942,14 +1962,14 @@ function renderSITREP() {
     const cls=wc>80?'status-danger':'status-warn';
     const accion=wc>85?'Workover urgente':wc>70&&gor>500?'Evaluar cierre + reinyección':wc>70?'Workover programado':meses<24?'Tratamiento temprano':'Monitoreo intensivo';
     return `<tr>
-      <td style="font-weight:600;color:${wc>80?'#f78166':'#e3b341'}">${i+1}</td>
+      <td style="font-weight:600;color:${wc>80?'#b42318':'#b54708'}">${i+1}</td>
       <td style="font-family:monospace;font-size:12px">${r.pozo_id}</td>
-      <td><span class="emp-badge" style="background:${col(r.empresa_grupo)}22;color:${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
-      <td style="font-size:12px;color:#8b949e">${r.yacimiento||'—'}</td>
+      <td><span class="emp-badge" style="background:#f3f5f8;color:#14202e;border-left:3px solid ${col(r.empresa_grupo)}">${r.empresa_grupo}</span></td>
+      <td style="font-size:12px;color:#586474">${r.yacimiento||'—'}</td>
       <td class="${cls}" style="font-weight:600">${wc.toFixed(1)}%</td>
       <td style="font-size:12px">${gor>0?gor.toFixed(0):'—'}</td>
       <td style="font-size:12px">${meses>0?meses:'—'} m</td>
-      <td style="font-size:12px;color:${wc>85?'#f78166':'#e3b341'}">${accion}</td>
+      <td style="font-size:12px;color:${wc>85?'#b42318':'#b54708'}">${accion}</td>
     </tr>`;
   }).join('');
 
@@ -1958,30 +1978,30 @@ function renderSITREP() {
   makeChart('chart-bench-prod',{type:'bar',
     data:{labels:bench8.map(e=>e.e),datasets:[
       {label:'m³/pozo',data:bench8.map(e=>Math.round(e.m3Pozo)),
-       backgroundColor:bench8.map(e=>e.m3Pozo>avgM3?'#3fb95088':'#f7816688'),
-       borderColor:bench8.map(e=>e.m3Pozo>avgM3?'#3fb950':'#f78166'),borderWidth:1},
+       backgroundColor:bench8.map(e=>e.m3Pozo>avgM3?'#06764788':'#b4231888'),
+       borderColor:bench8.map(e=>e.m3Pozo>avgM3?'#067647':'#b42318'),borderWidth:1},
       {label:'Promedio',data:bench8.map(()=>Math.round(avgM3)),type:'line',
-       borderColor:'#e3b341',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
+       borderColor:'#b54708',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?fmt(c.raw)+' m³/pozo':'Prom: '+fmt(c.raw)}}},
-      scales:{x:{ticks:{color:'#8b949e',font:{size:9},maxRotation:35},grid:{color:'#21262d'}},
-              y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:10}},grid:{color:'#21262d'}}}}
+      scales:{x:{ticks:{color:'#586474',font:{size:9},maxRotation:35},grid:{color:'#e6e9ee'}},
+              y:{ticks:{color:'#586474',callback:v=>fmt(v),font:{size:10}},grid:{color:'#e6e9ee'}}}}
   });
 
   const avgWC=bench8.reduce((s,e)=>s+e.wcProm,0)/bench8.length;
   makeChart('chart-bench-wc',{type:'bar',
     data:{labels:bench8.map(e=>e.e),datasets:[
       {label:'Water cut %',data:bench8.map(e=>+e.wcProm.toFixed(1)),
-       backgroundColor:bench8.map(e=>e.wcProm>60?'#f7816688':e.wcProm>30?'#e3b34188':'#3fb95088'),
-       borderColor:bench8.map(e=>e.wcProm>60?'#f78166':e.wcProm>30?'#e3b341':'#3fb950'),borderWidth:1},
+       backgroundColor:bench8.map(e=>e.wcProm>60?'#b4231888':e.wcProm>30?'#b5470888':'#06764788'),
+       borderColor:bench8.map(e=>e.wcProm>60?'#b42318':e.wcProm>30?'#b54708':'#067647'),borderWidth:1},
       {label:'Promedio',data:bench8.map(()=>+avgWC.toFixed(1)),type:'line',
-       borderColor:'#79c0ff',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
+       borderColor:'#1f5fa6',borderWidth:1.5,borderDash:[4,3],pointRadius:0,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?'WC: '+c.raw+'%':'Prom: '+c.raw+'%'}}},
-      scales:{x:{ticks:{color:'#8b949e',font:{size:9},maxRotation:35},grid:{color:'#21262d'}},
-              y:{ticks:{color:'#8b949e',callback:v=>v+'%',font:{size:10}},grid:{color:'#21262d'},max:100}}}
+      scales:{x:{ticks:{color:'#586474',font:{size:9},maxRotation:35},grid:{color:'#e6e9ee'}},
+              y:{ticks:{color:'#586474',callback:v=>v+'%',font:{size:10}},grid:{color:'#e6e9ee'},max:100}}}
   });
 
   const meses24=[...new Set(prod.map(r=>r.anio_mes))].sort().slice(-24);
@@ -1989,32 +2009,32 @@ function renderSITREP() {
   const avgVM=totVM.reduce((s,v)=>s+v,0)/totVM.length;
   makeChart('chart-sitrep-trend',{type:'line',
     data:{labels:meses24,datasets:[
-      {label:'Producción VM',data:totVM,borderColor:'#f78166',backgroundColor:'#f7816622',borderWidth:2,pointRadius:0,fill:true,tension:0.3},
-      {label:'Media 24m',data:totVM.map(()=>Math.round(avgVM)),borderColor:'#484f58',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+      {label:'Producción VM',data:totVM,borderColor:'#1f4e79',backgroundColor:'#1f4e7918',borderWidth:2,pointRadius:0,fill:true,tension:0.3},
+      {label:'Media 24m',data:totVM.map(()=>Math.round(avgVM)),borderColor:'#8792a2',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.datasetIndex===0?fmt(c.raw)+' m³':'Media: '+fmt(c.raw)}}},
-      scales:{x:{ticks:{color:'#8b949e',maxTicksLimit:6,font:{size:10}},grid:{color:'#21262d'}},
-              y:{ticks:{color:'#8b949e',callback:v=>fmt(v),font:{size:10}},grid:{color:'#21262d'}}}}
+      scales:{x:{ticks:{color:'#586474',maxTicksLimit:6,font:{size:10}},grid:{color:'#e6e9ee'}},
+              y:{ticks:{color:'#586474',callback:v=>fmt(v),font:{size:10}},grid:{color:'#e6e9ee'}}}}
   });
 
   const tendencia=crecTotal>=5?'expansión sostenida':crecTotal>=-5?'estabilización':'contracción leve';
   document.getElementById('sitrep-conclusion').innerHTML=`
     <p style="margin-bottom:10px">
-      Vaca Muerta muestra una tendencia de <strong style="color:#e6edf3">${tendencia}</strong>
-      con una variación interanual de <strong style="color:${crecTotal>=0?'#3fb950':'#f78166'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</strong>
+      Vaca Muerta muestra una tendencia de <strong style="color:#14202e">${tendencia}</strong>
+      con una variación interanual de <strong style="color:${crecTotal>=0?'#067647':'#b42318'}">${crecTotal>=0?'+':''}${crecTotal.toFixed(1)}%</strong>
       en producción de petróleo al cierre de ${anioRef}.
-      El mercado está concentrado: <strong style="color:${col(lider.e)}">${lider.e}</strong> lidera con el ${lider.share.toFixed(1)}% del total en BOE.
+      El mercado está concentrado: <strong style="color:#14202e">${lider.e}</strong> lidera con el ${lider.share.toFixed(1)}% del total en BOE.
     </p>
     <p style="margin-bottom:10px">
-      En términos de eficiencia operativa, <strong style="color:${col(eficiente.e)}">${eficiente.e}</strong> opera con el menor water cut
+      En términos de eficiencia operativa, <strong style="color:#14202e">${eficiente.e}</strong> opera con el menor water cut
       (${eficiente.wcProm.toFixed(1)}%), mientras que el promedio general se ubica en
-      <strong style="color:${wcTotal>50?'#f78166':wcTotal>30?'#e3b341':'#3fb950'}">${wcTotal.toFixed(1)}%</strong>.
-      Existen <strong style="color:#f78166">${nCriticos} pozos con water cut superior al 60%</strong>
+      <strong style="color:${wcTotal>50?'#b42318':wcTotal>30?'#b54708':'#067647'}">${wcTotal.toFixed(1)}%</strong>.
+      Existen <strong style="color:#b42318">${nCriticos} pozos con water cut superior al 60%</strong>
       que representan candidatos prioritarios para workover o intervención.
     </p>
-    <p style="color:#484f58;font-size:12px">
-      ⚠ Análisis basado en datos abiertos de la Secretaría de Energía Argentina. No constituye asesoramiento de inversión.
+    <p style="color:#8792a2;font-size:12px">
+      Análisis basado en datos abiertos de la Secretaría de Energía Argentina. No constituye asesoramiento de inversión.
       Los datos de ${ultAnio} son parciales (${mesesUlt} meses disponibles).
     </p>`;
 }
