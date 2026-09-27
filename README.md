@@ -1,147 +1,138 @@
 # Vaca Muerta Analytics
 
-**ETL pipeline + interactive dashboard for unconventional well production in Argentina's Vaca Muerta shale play.**
+**Production analytics and data-quality validation for unconventional wells in Argentina's Vaca Muerta shale play — built on public data, refreshed every week.**
 
-Data source: [Secretaría de Energía — datos.energia.gob.ar](https://datos.energia.gob.ar)  
-Live dashboard: [chavobutassi.github.io/vaca-muerta-analytics](https://chavobutassi.github.io/vaca-muerta-analytics)
+**Live dashboard:** [chavobutassi.github.io/vaca-muerta-analytics](https://chavobutassi.github.io/vaca-muerta-analytics)  
+**Source data:** Secretaría de Energía — Capítulo IV ([datos.energia.gob.ar](https://datos.energia.gob.ar))
 
 ---
 
 ## What this project does
 
-Argentina's well production data is published as raw, inconsistent CSV files split across multiple annual sources — different column names each year, overlapping periods, mixed separators, and no unified company identifiers.
+The project has two parts that share one pipeline:
 
-This pipeline downloads those files, normalizes and deduplicates them, filters for Vaca Muerta specifically, and produces 9 analysis-ready tables consumed by an interactive HTML dashboard published via GitHub Pages.
+| | Production analytics | Data validation |
+|---|---|---|
+| **Question** | How is Vaca Muerta producing, who produces it, and how do wells behave over time? | Can the asset information that operators report to the regulator be trusted? |
+| **Output** | Production trends, market share, well efficiency, Arps decline curves, vintage type curves | Rule-based validation of 3,600+ wells, six data-quality dimensions, a verdict on each delivery, and a weekly trend |
+| **Dashboard tabs** | Visión General · Por Empresa · Pozos · Eficiencia · Declinación · SITREP · Cohortes | Registro de activos · Calidad del pipeline · Validación IFC |
 
-The dashboard tracks production trends, market share, well efficiency, drilling activity, vintage decline curves, and data quality — all without any paid tools or infrastructure.
-
-A companion module, `bim_validacion.py`, applies the same rule-based validation approach to **BIM asset data** (IFC models of well pads and production facilities), and cross-checks the wellheads in the model against the production dataset. See [README_BIM.md](README_BIM.md).
+A GitHub Action downloads the source every Monday, runs the pipeline and the validation, and publishes the results. No servers, no paid tools.
 
 ---
 
-## Pipeline architecture
+## Data validation: the asset register
+
+Every month, operators report each well's attributes to the Secretaría de Energía along with its production: identifier, status, well type, lift system, depth, field, formation and coordinates. Together, those attributes form the sector's **asset register**, an asset information model without 3D geometry.
+
+`validacion_activos.py` validates that register against explicit information requirements, following the **IRAM-ISO 19650** approach: requirements → checks → findings → a decision on the delivery.
+
+**Rules**
+
+| Rule | Checks | Severity |
+|---|---|---|
+| A01 | One identifier per well and one well per identifier | Critical |
+| A02 | Mandatory attributes present (status, type, lift, depth, field, formation…) | Major |
+| A03 | Values within valid domains (depth range, non-negative production, producing days ≤ days in month) | Major |
+| A04 | Coordinates inside the Neuquén Basin | Major |
+| A05 | Abandoned wells reporting production | Major |
+| A06 | Depth and field stable over time | Minor |
+| A07 | Same well-month reported with different values in different files | Major |
+| A08 | Producing wells with missing months (source-wide gaps excluded) | Minor |
+| A09 | Well status inconsistent with the month reported (usually a change within the month) | Minor |
+
+**Quality dimensions:** completeness, validity, uniqueness, consistency, timeliness and positional accuracy. There is also a quality index (% of wells with no critical or major findings), a ranking by operator, and a history of every run.
+
+**Findings from the September 2026 run:**
+- Quality index **94.1%** across 3,655 wells; verdict: *accepted with observations*.
+- Depth is the main missing attribute. One operator group concentrates most of the gaps.
+- **September 2024 is incomplete at the source:** 139 wells are missing that month at once. That also means basin production for that month is understated.
+- The official data dictionary documents `coordenadax` as latitude, but **latitude is actually in `coordenaday`**. The validator detects the orientation from the data instead of trusting the documentation.
+
+---
+
+## Production analytics
+
+- **Company grouping:** raw operator names ("YPF S.A.", "YSUR…") are mapped to their parent holding. Without it, market share is meaningless.
+- **BOE conversion:** oil 6.2898 boe/m³; gas 5.886 boe per thousand m³. The source's `gas` column is in *thousands* of m³, and an earlier factor inflated gas ~1000×.
+- **Efficiency:** water cut and GOR are computed as ratios of totals, not averages of monthly ratios, which blow up in months with almost no oil. Wells above 3,000 m³/m³ are flagged as gas wells.
+- **Decline curves:** modified hyperbolic Arps fit per well, with 8%/yr terminal decline, EUR and fit quality graded by R².
+- **Vintage type curves:** production averaged per well by month of life for each start-year cohort. First-year decline is measured from the peak month, not month 0, because month 0 is usually partial.
+
+---
+
+## Pipeline
 
 ```
 Secretaría de Energía (4 CSV sources)
-        ↓  download with local cache
-        ↓  auto-detect separator + column normalization
-        ↓  filter: Cuenca Neuquina + Formación Vaca Muerta
-        ↓  deduplicate by (well_id, date)
-        ↓  enrich: company grouping, BOE, water cut, GOR
-        ↓  data quality validation (7 checks)
-        ↓
-   9 analytical tables + _metadata.json
-        ↓
-   docs/data/  →  GitHub Pages  →  Live dashboard
+  ↓ download with local cache
+  ↓ separator detection + column normalization
+  ↓ filter: Neuquén Basin + Vaca Muerta formation
+  ↓ deduplicate by (well, month)
+  ↓ enrich: company group, BOE, water cut, GOR
+  ├─→ vaca_muerta_pipeline.py   production tables 01–09 + _metadata.json
+  └─→ validacion_activos.py     asset-register validation 11_*
+  ↓
+docs/data/ → GitHub Pages → dashboard
 ```
 
----
-
-## Output tables
-
-| File | Description |
-|------|-------------|
-| `01_vm_produccion_mensual.csv` | Monthly production by company group |
-| `02_vm_por_yacimiento.csv` | Annual production by field and company |
-| `03_vm_top_pozos.csv` | Top 200 wells by cumulative BOE |
-| `04_vm_eficiencia_pozos.csv` | Water cut and GOR per well (efficiency flags) |
-| `05_vm_market_share.csv` | Annual market share by company in BOE |
-| `06_vm_nuevos_pozos.csv` | New wells per month (drilling activity proxy) |
-| `07_vm_raw_filtrado.csv` | Full filtered dataset (all Vaca Muerta records) |
-| `08_vm_declinacion_cohortes.csv` | Decline curves by vintage (type curves) |
-| `09_vm_data_quality.csv` | Data quality report: 7 rule-based checks |
-| `_metadata.json` | Run traceability: date, period covered, row counts |
-| `10_bim_inventario.csv` | BIM asset inventory: one row per asset with its properties |
-| `10_bim_hallazgos.csv` | BIM validation findings: one row per failed rule |
-| `10_bim_resumen.csv` | BIM compliance % per rule |
+| Output | Content |
+|---|---|
+| `01`–`06` | Monthly production, fields, top wells, efficiency, market share, new wells |
+| `08_vm_declinacion*.csv` | Arps fits per well and vintage type curves |
+| `09_vm_data_quality.csv` | Pipeline checks on the consolidated dataset |
+| `10_bim_*.csv` | IFC validation on a test model (see below) |
+| `11_activos_*.csv` / `.json` | Asset-register validation: register, rules, findings, operators, history, verdict |
+| `_metadata.json` | Run traceability: date, period, row counts |
 
 ---
 
-## Key analyses
+## IFC validation (test model)
 
-### Vintage decline curves (type curves)
-Wells are grouped by the year they started producing (cohort/vintage). Production is averaged per well per month-of-life — not summed — so curves reflect the *typical* well of each cohort regardless of how many were drilled. Comparing cohorts answers the core shale question: **are new wells genuinely better, or just more of them?**
+`bim_validacion.py` reads IFC models with IfcOpenShell, extracts every asset, and applies seven rules: tags, naming, uniqueness, required properties, value domains, spatial assignment, and a cross-check of each wellhead against the production dataset.
 
-Vaca Muerta unconventional wells typically decline 60–70% in the first year, characteristic of the shale production profile. Rising peak rates in newer cohorts indicate improvements in lateral length, fracture stage design, or target zone selection.
-
-### Market share & company grouping
-Raw operator names vary across sources ("YPF S.A.", "YPF SA", "YSUR Américas"). A canonical grouping dictionary maps all variants to their parent holding. Without this, market share analysis would be meaningless — YPF alone would appear fragmented across multiple "companies."
-
-### Data quality report
-Before exporting, the pipeline runs 7 explicit business-rule checks: negative production values, future dates, invalid date parsing, records without operator, records without well ID, water cut outside [0,100], and abrupt monthly jumps (>±50%) that signal incomplete data loads from the source. Results are published as a table — quality is measured, not assumed.
-
-### Efficiency flagging
-Each well is classified by water cut stage: Early (<30%), Intermediate (30–60%), Mature (>60%). Rising water cut over time increases treatment costs per barrel and is a standard intervention trigger in field operations.
-
-### BIM asset data validation
-A BIM model is not just 3D geometry: every object (wellhead, separator, tank, pump, pipeline) carries data such as tag, manufacturer, status and design pressure. `bim_validacion.py` reads IFC models with IfcOpenShell and runs 7 rules: mandatory tag, tag naming convention, tag uniqueness, required properties per asset type, valid value domains, spatial assignment, and a **cross-check between each wellhead's `PozoId` and the production dataset** — the bridge between the asset model and the production pipeline.
-
-No public BIM models of Vaca Muerta facilities exist, so the module generates a synthetic well pad with deliberately seeded errors (8 seeded, 8 detected). Any real `.ifc` file can be validated instead. Full explanation in [README_BIM.md](README_BIM.md).
+No public BIM models of Vaca Muerta facilities exist. The module therefore generates a **synthetic well pad with deliberately seeded errors** (8 seeded, 8 detected). Any real `.ifc` file can be validated without code changes. Details: [guias/validacion_ifc.md](guias/validacion_ifc.md).
 
 ---
 
-## Running the pipeline locally
+## Run it locally
 
 ```bash
-# Install dependencies
-pip install pandas requests tqdm openpyxl
+pip install -r requirements.txt
 
-# Run (downloads ~500MB on first run, cached afterwards)
-python vaca_muerta_pipeline.py
-
-# Optional: BIM validation module (run after the pipeline so the
-# wellhead cross-check uses real well IDs)
-pip install ifcopenshell
-python bim_validacion.py              # synthetic demo model
-python bim_validacion.py model.ifc    # your own IFC model
+python vaca_muerta_pipeline.py     # downloads ~500 MB on first run (cached afterwards)
+python validacion_activos.py       # asset-register validation (uses the cache)
+python bim_validacion.py           # IFC validation on the test model
+python bim_validacion.py model.ifc # …or on your own model
 ```
 
-Output files are written to `./output/`. The pipeline copies them to `./docs/data/` automatically for GitHub Pages publishing.
-
-**First run:** downloads all source files to `cache_csv/` (~500 MB total). Subsequent runs reuse the cache — only the current year's file should be refreshed periodically.
-
----
-
-## Project structure
+## Repository structure
 
 ```
 vaca-muerta-analytics/
-├── vaca_muerta_pipeline.py   # ETL pipeline (single file, no dependencies beyond pandas)
-├── TUTORIAL_PIPELINE.md      # Full code walkthrough: what each function does and why
-├── bim_validacion.py         # BIM (IFC) asset data validation module
-├── README_BIM.md             # BIM module explanation, rules and glossary
-├── modelos_bim/              # IFC models (synthetic demo generated by the module)
-├── docs/
-│   ├── index.html            # Main interactive dashboard
-│   ├── report.html           # Extended analytical report
-│   └── data/                 # CSV outputs served by GitHub Pages
-├── cache_csv/                # Downloaded source files (gitignored)
-└── output/                   # Generated tables (gitignored)
+├── vaca_muerta_pipeline.py     ETL + production analytics
+├── validacion_activos.py       asset-register validation (real data)
+├── bim_validacion.py           IFC validation (test model)
+├── modelos_bim/                synthetic IFC model
+├── docs/                       dashboard (GitHub Pages) + published data
+├── guias/                      code walkthrough and module guides (Spanish)
+├── .github/workflows/          weekly refresh
+├── CHANGELOG.md
+└── requirements.txt
 ```
-
----
 
 ## Design decisions
 
-- **Local cache** — avoids hammering the public API on every dev run; invalid/partial downloads are deleted automatically so they don't persist as corrupted cache.
-- **Canonical column mapping** — the government changes column names between annual files. Adding a new variant is one line in a dictionary; no code changes needed.
-- **Deduplication by `(well_id, date)`** — the historical and annual sources overlap. Without deduplication, production would be double-counted and all downstream metrics inflated.
-- **Pre-aggregated tables instead of one large CSV** — Power BI and the HTML dashboard consume small, purpose-built tables. Business logic lives in Python (versioned, testable), not hidden in DAX formulas.
-- **Validation that reports, not silently filters** — problematic records are flagged and counted in a published report. The decision of what to do with them is explicit and auditable.
-- **Average (not sum) in decline curves** — isolates per-well quality from cohort size effects.
-- **Run metadata** — every execution writes a JSON with timestamp, period covered, and row counts per table. The dashboard reads it to display "data updated as of..." and it enables basic pipeline observability.
-
----
+- **Validation reports, it doesn't silently filter:** every finding is published with its rule and severity, and what to do with it stays explicit.
+- **Source problems are separated from operator problems:** months missing for many wells at once are attributed to the source, not to the operator.
+- **Specifications are checked against the data:** coordinate orientation is detected from the data, not taken from the documentation.
+- **Business logic lives in Python:** it is versioned and testable. The dashboard only reads small, purpose-built tables.
+- **Weekly history, no database:** each run appends one row of KPIs to a CSV that the Action commits.
 
 ## Tech stack
 
-- **Python 3.10+** with pandas, requests, tqdm
-- **IfcOpenShell** for reading and generating BIM (IFC) models
-- **GitHub Pages** for zero-infrastructure dashboard hosting
-- **Vanilla HTML/JS** dashboard (no framework dependencies)
-
-Data covers Vaca Muerta unconventional production from the Neuquén Basin. All source data is public and refreshed periodically by Argentina's Secretaría de Energía.
+Python 3.11 (pandas, NumPy, SciPy, IfcOpenShell) · GitHub Actions · GitHub Pages · vanilla HTML/JS with Chart.js and Leaflet.
 
 ---
 
-*Built by [Claudio Butassi](https://github.com/chavobutassi)*
+*Built by [Claudio Butassi](https://github.com/chavobutassi) — data analyst. All source data is public.*
