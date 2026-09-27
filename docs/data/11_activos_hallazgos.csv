@@ -1,0 +1,711 @@
+﻿regla_id,regla,severidad,pozo_id,sigla,empresa,yacimiento,tipoestado,detalle
+A02,Atributos obligatorios,MAYOR,114255,YPF.Md.NLCu.x-1,VENOIL S.A.,LIU CULLIN,En Espera de Reparación,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114277,YPF.Md.NLCa-88,YPF S.A.,LOS CAVAOS,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114293,YPF.Md.NLCa.a-100,YPF S.A.,LOS CAVAOS,A Abandonar,Faltan: clasificacion
+A02,Atributos obligatorios,MAYOR,114320,YPF.Md.NLCa-115,YPF S.A.,LOS CAVAOS,En Reserva de Gas,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114326,YPF.Md.NLCa-118,YPF S.A.,LOS CAVAOS,Abandonado,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114359,YPF.Md.NLCa.a-136(I),YPF S.A.,LOS CAVAOS,Abandonado,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114440,YPF.Md.NLCa-6,YPF S.A.,LOS CAVAOS,En Estudio,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114455,YPF.Md.NLCa-15,YPF S.A.,LOS CAVAOS,En Estudio,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114582,YPF.Md.NALM.x-1,VENOIL S.A.,ARROYO LOS MENUCOS,Abandono Temporario,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114638,YPF.Md.NMDM-37,YPF S.A.,MALAL DEL MEDIO,En Estudio,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114673,YPF.Md.NMDM.a-63,YPF S.A.,MALAL DEL MEDIO,En Reserva para Recup. Sec./Asist.,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114691,YPF.Md.NMDM-76,YPF S.A.,MALAL DEL MEDIO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,114724,YPF.Md.NPP.a-11,YPF S.A.,PAMPA PALAUCO,Abandonado,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,119912,YPF.Nq.F.x-2,BENTIA ENERGY S.A.,VOLCAN AUCA MAHUIDA,A Abandonar,Faltan: clasificacion
+A02,Atributos obligatorios,MAYOR,128021,YPF.Md.NLCa-69,YPF S.A.,LOS CAVAOS,En Espera de Reparación,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,145244,YPF.Md.NLCa-68,YPF S.A.,LOS CAVAOS,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,146470,YPF.Md.NLCa-97,YPF S.A.,LOS CAVAOS,En Estudio,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,155821,YPF.Nq.BAñ.x-8(d),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,En Reserva de Gas,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162230,PAE.Nq.APO-204(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162231,PAE.Nq.APO-203(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162239,PAE.Nq.APO-205(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162268,PAE.Nq.ECh-120(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162275,PAE.Nq.ECh-118(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162362,PAE.Nq.ECh-108(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162371,PAE.Nq.ECh-110(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162407,YPF.Nq.RDMN-16(h),YPF S.A.,RINCON DEL MANGRULLO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162430,PAE.Nq.ECh-107(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162431,PAE.Nq.ECh-109(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162486,YPF.Nq.LCav-96(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162568,YPF.Nq.LLL-1590(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162599,PAE.Nq.APO-107(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162600,PAE.Nq.APO-108(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162711,YPF.Nq.LACh-178(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162712,YPF.Nq.LACh-179(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162722,PAE.Nq.CASE-508(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162723,PAE.Nq.ECh-111(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162725,PAE.Nq.CASE-510(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162727,PAE.Nq.CASE-506(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162730,PAE.Nq.ECh-113(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162790,YPF.Nq.LACh-372(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162812,PAE.Nq.ECh-134(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162815,PAE.Nq.ECh-132(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162817,PAE.Nq.ACas-105(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162822,PAE.Nq.ECh-130(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Parado Transitoriamente,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162823,PAE.Nq.ECh-138(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162824,PAE.Nq.ACas-106(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162826,PAE.Nq.ACas-104(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162879,YPF.Nq.LCav-49(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162889,YPF.Nq.LLL-1464(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162895,YPF.Nq.SOil-368(h),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162908,PAE.Nq.APO-110(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162914,PAE.Nq.APO-109(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162939,YPF.Nq.LACh-194(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162942,YPF.Nq.LACh-197(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162974,PAE.Nq.ACa-104(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,162975,PAE.Nq.ACa-103(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163087,PAE.Nq.ECh-123(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163094,PAE.Nq.ECh-121(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163101,PAE.Nq.ECh-125(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163164,YPF.Nq.LCav-69(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163170,YPF.Nq.RDMN-83(h),YPF S.A.,RINCON DEL MANGRULLO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163182,PAE.Nq.APO-206(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163188,PAE.Nq.APO-207(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163189,PAE.Nq.APO-208(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163234,YPF.Nq.SOil-371(h)(I),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163235,YPF.Nq.SOil-443(h),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163253,PAE.Nq.APO-106(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163256,PAE.Nq.APO-125(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163257,PAE.Nq.ECh-136(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163265,PAE.Nq.APO-123(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163269,PAE.Nq.APO-124(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163322,YPF.Nq.AdlA-1014(h),YPF S.A.,AGUADA DE LA ARENA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163333,YPF.Nq.SOil-362(h),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163421,YPF.Nq.LCav-100(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163453,PAE.Nq.APO-122(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163454,PAE.Nq.APO-121(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163458,PAE.Nq.APO-120(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163540,PAE.Nq.ECh-114(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163694,YPF.Nq.LLL-1677(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,163942,YPF.Nq.LACh-103(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164021,YPF.Nq.AdlA-1027(h),YPF S.A.,AGUADA DE LA ARENA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164066,PAE.Nq.APO-115(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164071,PAE.Nq.APO-114(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164075,PAE.Nq.APO-116(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164111,YPF.Nq.LLL-1673(h),YPF S.A.,LOMA CAMPANA-LLL,En Estudio,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164277,YPF.Nq.LLL-1683(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164399,YPF.Nq.LACh-627(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164403,YPF.Nq.LACh-635(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164415,YPF.Nq.RDMN-258(h),YPF S.A.,RINCON DEL MANGRULLO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164569,YPF.Nq.LCav-56(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164578,YPF.Nq.LoAmS-7(h),YPF S.A.,LOMA AMARILLA SUR,Parado Transitoriamente,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164723,YPF.Nq.AdCh-1231(h),YPF S.A.,LOMA COLORADA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164731,YPF.Nq.LACh-248(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164795,YPF.Nq.LLL-1586(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164796,YPF.Nq.LLL-1587(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164798,YPF.Nq.LLL-1635(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164806,YPF.Nq.LLL-1714(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164809,YPF.Nq.LLL-1723(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164882,YPF.Nq.LACh-116(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164969,YPF.Nq.LCav-185(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164970,YPF.Nq.LCav-186(h),YPF S.A.,BANDURRIA SUR,Parado Transitoriamente,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,164971,YPF.Nq.LCav-187(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165043,YPF.MdN.PBN.x-101(h),YPF S.A.,PASO DE LAS BARDAS NORTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165305,PAE.Nq.CASE-512(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165315,PAE.Nq.CASE-514(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165321,PAE.Nq.CASE-516(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Parado Transitoriamente,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165451,PAE.Nq.ACas-107(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165452,PAE.Nq.ACas-109(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165455,PAE.Nq.ACas-108(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165571,YPF.Nq.LACh-464(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165573,YPF.Nq.LACh-466(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165607,PAE.Nq.CASE-345(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165609,PAE.Nq.CASE-347(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165680,YPF.Nq.LLL-1796(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165681,YPF.Nq.LLL-1797(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165718,YPF.Nq.LACh-145(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165721,YPF.Nq.LACh-148(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165726,YPF.Nq.LLL-1496(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165728,YPF.Nq.LajE-6(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165730,YPF.Nq.LajE-8(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165780,YPF.Nq.AdCh-1063(h)(I),YPF S.A.,LOMA COLORADA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165781,YPF.Nq.AdCh-1064(h),YPF S.A.,LOMA COLORADA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165785,YPF.Nq.LCav-158(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,165789,YPF.Nq.LCav-162(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166125,YPF.Nq.AdCh-1240(h),YPF S.A.,LOMA COLORADA,Parado Transitoriamente,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166127,YPF.Nq.AdCh-1242(h)(I),YPF S.A.,LOMA COLORADA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166162,PAE.Nq.CASE-519(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166209,PAE.Nq.ACa-206(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166210,PAE.Nq.ACa-205(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166211,PAE.Nq.ACa-204(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166273,PAE.Nq.ACa-326(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166284,PAE.Nq.ACa-328(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166288,PAE.Nq.ACa-327(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166840,PAE.Nq.ACa-406(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166844,PAE.Nq.ACa-405(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166880,YPF.Nq.LCav-415(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166881,YPF.Nq.LCav-416(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166892,YPF.Nq.LajE-193(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166969,YPF.Nq.AdCh-1116(h),YPF S.A.,LOMA COLORADA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166971,YPF.Nq.BaG-3(h),YPF S.A.,SIERRA BARROSA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,166989,YPF.Nq.LajE-78(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167040,YPF.Nq.LACh-710(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167081,YPF.Nq.LACh-382(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167094,YPF.Nq.LajE-94(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167096,YPF.Nq.LajE-96(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167133,YPF.Nq.LACh-379(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167136,YPF.Nq.LCav-724(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167141,YPF.Nq.LLL-1825(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167144,YPF.Nq.LajE-153(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167147,YPF.Nq.LajE-66(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167214,YPF.Nq.LLL-1961(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167219,YPF.Nq.LajE-56(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167293,PAE.Nq.LA-362(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167312,YPF.Nq.LACh-397(h),YPF S.A.,LA AMARGA CHICA,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167323,YPF.Nq.LajE-171(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167372,YPF.Nq.LCav-184(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167373,YPF.Nq.LCav-426(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167441,YPF.Nq.LCav-394(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167443,YPF.Nq.LCav-796(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167444,YPF.Nq.LCav-797(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167445,YPF.Nq.LCav-851(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167446,YPF.Nq.LCav-852(h),YPF S.A.,BANDURRIA SUR,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167454,YPF.Nq.LLL-1997(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167455,YPF.Nq.LLL-1998(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167456,YPF.Nq.LLL-1999(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167459,YPF.Nq.LajE-70(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167461,YPF.Nq.LajE-72(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167463,YPF.Nq.LajE-74(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167464,YPF.Nq.LajE-75(h),YPF S.A.,LA ANGOSTURA SUR I,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167476,PAE.Nq.CASE-198(h)(I),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,Faltan: profundidad
+A02,Atributos obligatorios,MAYOR,167527,VIS.Nq.BPO-2621(h),VISTA ENERGY ARGENTINA SAU,BAJADA DEL PALO OESTE,,"Faltan: tipoestado, tipopozo, tipoextraccion"
+A02,Atributos obligatorios,MAYOR,167528,VIS.Nq.BPO-2622(h),VISTA ENERGY ARGENTINA SAU,BAJADA DEL PALO OESTE,,"Faltan: tipoestado, tipopozo, tipoextraccion"
+A02,Atributos obligatorios,MAYOR,167529,VIS.Nq.BPO-2623(h),VISTA ENERGY ARGENTINA SAU,BAJADA DEL PALO OESTE,,"Faltan: tipoestado, tipopozo, tipoextraccion"
+A02,Atributos obligatorios,MAYOR,167530,VIS.Nq.BPO-2624(h),VISTA ENERGY ARGENTINA SAU,BAJADA DEL PALO OESTE,,"Faltan: tipoestado, tipopozo, tipoextraccion"
+A02,Atributos obligatorios,MAYOR,34769,BRI.Nq.AB.LA-74,PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,A Abandonar,Faltan: clasificacion
+A02,Atributos obligatorios,MAYOR,51120,PNR.NQ.NdM-50,OILSTONE ENERGIA S.A.,NEUQUEN DEL MEDIO,En Estudio,Faltan: clasificacion
+A02,Atributos obligatorios,MAYOR,78805,YPF.Nq.NA-104,OILSTONE ENERGIA S.A.,CHALLACO,En Estudio,Faltan: clasificacion
+A03,Dominio de valores,MAYOR,162122,TPT.Nq.FP-1256(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 99 mes(es)"
+A03,Dominio de valores,MAYOR,162123,TPT.Nq.FP-1311(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 100 mes(es)"
+A03,Dominio de valores,MAYOR,162124,TPT.Nq.FP-1312(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 100 mes(es)"
+A03,Dominio de valores,MAYOR,162126,TPT.Nq.FP-1314(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 100 mes(es)"
+A03,Dominio de valores,MAYOR,162357,TPT.Nq.FP-1257(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 96 mes(es)"
+A03,Dominio de valores,MAYOR,162595,TPT.Nq.FP-1121(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 93 mes(es)"
+A03,Dominio de valores,MAYOR,162596,TPT.Nq.FP-1122(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 93 mes(es)"
+A03,Dominio de valores,MAYOR,162627,TPT.Nq.FP-1137(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 92 mes(es)"
+A03,Dominio de valores,MAYOR,162628,TPT.Nq.FP-1136(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 92 mes(es)"
+A03,Dominio de valores,MAYOR,162933,TPT.Nq.FP-1196(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 88 mes(es)"
+A03,Dominio de valores,MAYOR,162992,TPT.Nq.FP-1195(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 88 mes(es)"
+A03,Dominio de valores,MAYOR,163371,TPT.Nq.FP-1442(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,"Profundidad 5 m fuera de rango plausible (300–9,000 m) en 83 mes(es)"
+A03,Dominio de valores,MAYOR,166666,TPT.Nq.PPar-122(h),TECPETROL S.A.,PUESTO PARADA NC,Extracción Efectiva,"Profundidad 6 m fuera de rango plausible (300–9,000 m) en 28 mes(es)"
+A03,Dominio de valores,MAYOR,109930,YPF.Md.NCLi.x-2,QUINTANA E&P ARGENTINA S.R.L.,CERRO LIUPUCA,Extracción Efectiva,5 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,120022,YPF.Md.NCoN-4,QUINTANA E&P ARGENTINA S.R.L.,CERRO NEGRO,Extracción Efectiva,5 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,125143,YPF.Md.NCoN-8,QUINTANA E&P ARGENTINA S.R.L.,CERRO NEGRO,Extracción Efectiva,5 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,137564,PLU.Nq.PSO.x-1005,GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,143959,PLU.Nq.PSO.x-1007,GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,144007,APA.Nq.BBG-59(h),BENTIA ENERGY S.A.,BAJO BARDA GONZALEZ,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,145032,AMP.Nq.ALL.x-1,PLUSPETROL CUENCA NEUQUINA S.R.L.,AGUADA LOS LOROS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,145043,SHE.Nq.SB.x-1002(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Parado Transitoriamente,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,147190,XOM.Nq.BdC.x-2(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,152794,PLU.Nq.PSO.x-1009(h),GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,154790,SHE.Nq.SB.x-1005(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,158087,AME.Nq.ALL.x-3(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,AGUADA LOS LOROS,Parado Transitoriamente,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,158686,XOM.Nq.BdC-4(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,158923,XOM.Nq.BdC-3(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,159203,XOM.Nq.ALL.x-4(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,AGUADA LOS LOROS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,159809,PTRE.MdN.CDM-3023,PETROQUIMICA COMODORO RIVADAVIA S.A.,PUESTO ROJAS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,160193,XOM.Nq.PdY-1003(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,PAMPA DE LAS YEGUAS I,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,160846,YPF.Nq.BGM.x-1(h),BENTIA ENERGY S.A.,BARDA GONZALEZ,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,161531,SHE.Nq.SB-1022(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,161532,SHE.Nq.SB-1021(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,165767,PAE.Nq.ECh-141(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A03,Dominio de valores,MAYOR,165768,PAE.Nq.ECh-145(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) con días efectivos (TEF) mayores a los días del mes
+A05,Abandonado con producción,MAYOR,157224,SHE.Nq.SB.e-1004(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Abandonado' declarando producción
+A05,Abandonado con producción,MAYOR,158470,SHE.Nq.SB.e-1010(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Abandonado' declarando producción
+A05,Abandonado con producción,MAYOR,158471,SHE.Nq.SB.e-1011(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Abandonado' declarando producción
+A05,Abandonado con producción,MAYOR,160533,TPT.Nq.LRa.x-2(r)(h),TECPETROL S.A.,LOMA RANQUELES,Abandono Temporario,1 mes(es) en estado 'A Abandonar' declarando producción
+A05,Abandonado con producción,MAYOR,165327,SHE.Nq.SB-1065(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'A Abandonar' declarando producción
+A05,Abandonado con producción,MAYOR,34769,BRI.Nq.AB.LA-74,PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,A Abandonar,1 mes(es) en estado 'A Abandonar' declarando producción
+A08,Continuidad de reporte,MENOR,135480,YPF.Nq.LLL.x-475,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,29 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,135484,YPF.Nq.SOil.x-1,YPF S.A.,LOMA CAMPANA,Extracción Efectiva,29 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,135803,YPF.Nq.LLL.x-485,YPF S.A.,LOMA LA LATA,Extracción Efectiva,31 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136060,YPF.Nq.LGus.x-1,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,33 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136203,YPF.Nq.LGus.x-2,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,34 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136381,YPF.Nq.LCue.x-1,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,35 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136469,YPF.Nq.LLL-516,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,36 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136589,YPF.Nq.LLL.a-513,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,37 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136735,YPF.Nq.LLL-511,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,38 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136895,YPF.Nq.LLL-496,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,39 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,136897,YPF.Nq.LLL-495,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,39 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137238,YPF.Nq.LLL-541,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,42 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137475,YPF.Nq.LLL-562,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,44 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137564,PLU.Nq.PSO.x-1005,GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137610,YPF.Nq.LLL-554(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,45 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137742,YPF.Nq.LLL-536,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,46 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,137745,YPF.Nq.LLL-566(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,46 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,143869,YPF.Nq.LLL-563(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,48 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,143870,YPF.Nq.LLL-564(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,48 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,143959,PLU.Nq.PSO.x-1007,GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144263,YPF.Nq.LLL-567(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,51 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144264,YPF.Nq.LLL-568(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,51 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144386,YPF.Nq.LLL-539,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,52 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144388,YPF.Nq.LLL.a-481,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,52 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144521,YPF.Nq.LLL-573(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,53 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144522,YPF.Nq.LLL-578(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,53 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144634,SHE.Nq.SB.x-1001(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144652,YPF.Nq.LLL-546(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,54 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144653,YPF.Nq.LLL-547(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,54 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144655,YPF.Nq.LLL-556(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,54 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144850,YPF.Nq.LCav.e-6,YPF S.A.,BANDURRIA SUR,Extracción Efectiva,55 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144852,YPF.Nq.LLL-598,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,55 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144853,YPF.Nq.LLL-600,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,55 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144940,YPF.Nq.LLL-588,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,56 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,144946,YPF.Nq.LLL-628(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,56 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145032,AMP.Nq.ALL.x-1,PLUSPETROL CUENCA NEUQUINA S.R.L.,AGUADA LOS LOROS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145082,YPF.Nq.LLL-626(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145083,YPF.Nq.LLL-627(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145084,YPF.Nq.LLL-629,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145085,YPF.Nq.LLL-630(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145086,YPF.Nq.LLL-631(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145087,YPF.Nq.LLL-632(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145088,YPF.Nq.LLL-633,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145089,YPF.Nq.LLL-634(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145090,YPF.Nq.LLL-635(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145091,YPF.Nq.LLL-636,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145092,YPF.Nq.LLL-637(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,57 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145256,YPF.Nq.LLL-586,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,58 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145263,YPF.Nq.LLL-654(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,58 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145386,YPF.Nq.LLL-638(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,59 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145387,YPF.Nq.LLL-639(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,59 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145388,YPF.Nq.LLL-640,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,59 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145389,YPF.Nq.LLL-641(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,59 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145390,YPF.Nq.LLL-657(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,59 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145543,YPF.Nq.LLL-606(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,60 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145545,YPF.Nq.LLL-647(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,60 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,145546,YPF.Nq.LLL-648(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,60 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147021,SHE.Nq.CdL.x-1(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147292,YPF.Nq.LLL-687(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147293,YPF.Nq.LLL-710(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147296,YPF.Nq.LLL-713(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147297,YPF.Nq.LLL-718(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147300,YPF.Nq.LLL-721(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147302,YPF.Nq.LLL-725(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147312,YPF.Nq.SOil-35(d),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147317,YPF.Nq.SOil-65(d),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147318,YPF.Nq.SOil-66,YPF S.A.,LOMA CAMPANA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147327,TPT.Nq.FP.x-1003,TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147463,YPF.Nq.LLL-686,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147465,YPF.Nq.LLL-722(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147470,YPF.Nq.LLL-733(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147618,YPF.Nq.LLL-726(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147619,YPF.Nq.LLL-727(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147621,YPF.Nq.LLL-729(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147622,YPF.Nq.LLL-742(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147625,YPF.Nq.LLL-745(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147631,YPF.Nq.LLL-763(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,147642,YPF.Nq.SOil-61(d),YPF S.A.,LOMA CAMPANA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152794,PLU.Nq.PSO.x-1009(h),GEOPARK ARGENTINA S.A.,PUESTO SILVA OESTE,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152850,YPF.Nq.LLL-667(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152853,YPF.Nq.LLL-716(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152857,YPF.Nq.LLL-750(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152986,YPF.Nq.LLL-755(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152987,YPF.Nq.LLL-756(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152988,YPF.Nq.LLL-834(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152990,YPF.Nq.LLL-836(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152991,YPF.Nq.LLL-837(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,152994,YPF.Nq.LLL-991(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153074,TAU.Nq.RCza.e-5(h),VACA MUERTA INVERSIONES SAU,RINCON LA CENIZA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153154,YPF.Nq.LLL-838(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153155,YPF.Nq.LLL-839(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153156,YPF.Nq.LLL-841(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153157,YPF.Nq.LLL-911(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153158,YPF.Nq.LLL-912(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153159,YPF.Nq.LLL-926(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153162,YPF.Nq.LLL-929(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153164,YPF.Nq.LLL-975(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153322,YPF.Nq.LLL-754(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153323,YPF.Nq.LLL-820(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153324,YPF.Nq.LLL-821(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153325,YPF.Nq.LLL-822(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153326,YPF.Nq.LLL-823(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153327,YPF.Nq.LLL-824(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153329,YPF.Nq.LLL-846(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153330,YPF.Nq.LLL-847(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153331,YPF.Nq.LLL-900(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153333,YPF.Nq.LLL-913(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153336,YPF.Nq.LLL-972(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153338,YPF.Nq.LLL-973(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153389,YPF.Md.VG-x 1,G Y G OIL SERVICE SRL,VEGA GRANDE,Extracción Efectiva,27 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153468,YPF.Nq.LLL-832(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153469,YPF.Nq.LLL-914(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153470,YPF.Nq.LLL-915(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153471,YPF.Nq.LLL-916(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153472,YPF.Nq.LLL-917,YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153473,YPF.Nq.LLL-978(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153474,YPF.Nq.LLL-988(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153540,TAU.Nq.APGe-112(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153597,YPF.Nq.LLL-829(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153598,YPF.Nq.LLL-830(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153600,YPF.Nq.LLL-833(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153601,YPF.Nq.LLL-931(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153603,YPF.Nq.LLL-956(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153604,YPF.Nq.LLL-957(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153607,YPF.Nq.LLL-979(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153705,TAU.Nq.APGe-111(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153752,YPF.Nq.LLL-903(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153764,YPF.Nq.LRi.x-1,YPF S.A.,LA RIBERA BLOQUE I,Extracción Efectiva,4 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,153867,YPF.Nq.LLL-1147(d),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,5 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,154790,SHE.Nq.SB.x-1005(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,154791,SHE.Nq.SB.x-1006(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155095,WIN.Nq.AF.x-1,VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,55 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155096,WIN.Nq.AF.x-2,VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,55 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155451,TAU.Nq.APGe-311(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155452,TAU.Nq.APGe-312(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155453,TAU.Nq.APGe-313(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,155713,SHE.Nq.CdL.e-4(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,156379,SHE.Nq.CdL.e-7(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,4 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,157224,SHE.Nq.SB.e-1004(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,157567,WIN.Nq.AF-4(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,72 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,157733,WIN.Nq.AF-9(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,73 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,157986,SHE.Nq.CdL.e-6(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158080,SHE.Nq.CdL.e-5(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158177,WIN.Nq.AF-3(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,77 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158178,WIN.Nq.AF-7(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,77 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158305,PTRE.MdN.CP-1017,PETROQUIMICA COMODORO RIVADAVIA S.A.,PUESTO ROJAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158469,SHE.Nq.SB.e-1009(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158470,SHE.Nq.SB.e-1010(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158471,SHE.Nq.SB.e-1011(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158802,PLU.Nq.LCa.x-3001(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158973,SHE.Nq.CdL.e-9(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158974,SHE.Nq.CdL.e-10(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,158975,SHE.Nq.CdL.e-11(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159044,TAU.Nq.APGe-712(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159168,SHE.Nq.CASO.x-1(h),SHELL ARGENTINA S.A.,COIRON AMARGO SUR OESTE,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159634,TAU.Nq.RCza.e-21(h),VACA MUERTA INVERSIONES SAU,RINCON LA CENIZA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159635,TAU.Nq.RCza.e-22(h),VACA MUERTA INVERSIONES SAU,RINCON LA CENIZA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159705,YPF.Nq.EOr-161(h),YPF S.A.,EL OREJANO,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159707,YPF.Nq.EOr-163(h),YPF S.A.,EL OREJANO,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,159843,YPF.Nq.LLL-1563(h),YPF S.A.,LOMA CAMPANA-LLL,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,160023,TPT.Nq.FP-1051(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,160024,TPT.Nq.FP-1052(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,160026,TPT.Nq.FP-1053(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,160027,TPT.Nq.FP-1054(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,160950,TPT.Nq.FP-1336(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,3 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162748,SHE.Nq.CdL-40(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162749,SHE.Nq.CdL-41(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162750,SHE.Nq.CdL-42(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162809,SHE.Nq.CdL-43(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162810,SHE.Nq.CdL-44(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162811,SHE.Nq.CdL-45(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162843,SHE.Nq.CASO-12(h),SHELL ARGENTINA S.A.,COIRON AMARGO SUR OESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162844,SHE.Nq.CASO-13(h),SHELL ARGENTINA S.A.,COIRON AMARGO SUR OESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162845,SHE.Nq.CASO-14(h),SHELL ARGENTINA S.A.,COIRON AMARGO SUR OESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,162846,SHE.Nq.CASO-15(h),SHELL ARGENTINA S.A.,COIRON AMARGO SUR OESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165238,PLU.Nq.LCa-3211(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165253,PLU.Nq.LCa-3209(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165293,PLU.Nq.MBE.x-3001(h),YPF S.A.,MESETA BUENA ESPERANZA I,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165373,PLU.Nq.LCa-3043(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165402,PLU.Nq.LCa-3045(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165403,PLU.Nq.LJE-1023(h),GEOPARK ARGENTINA S.A.,LOMA JARILLOSA ESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165404,PLU.Nq.LCa-3291(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165405,PLU.Nq.LJE-1024(h),GEOPARK ARGENTINA S.A.,LOMA JARILLOSA ESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165443,PLU.Nq.LCa-3292(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,5 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165444,PLU.Nq.LCa-3044(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,5 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165464,PLU.Nq.LJE-1025(h),GEOPARK ARGENTINA S.A.,LOMA JARILLOSA ESTE,Extracción Efectiva,1 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165471,PLU.Nq.LCa-3293(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,6 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165472,PLU.Nq.LCa-3046(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,6 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165538,PLU.Nq.LCa-3294(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,6 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165631,PLU.Nq.LCa-3092(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,7 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165634,PLU.Nq.LCa-3206(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,7 mes(es) sin informar entre su primer y último reporte
+A08,Continuidad de reporte,MENOR,165808,PLU.Nq.LJE-1032(h),GEOPARK ARGENTINA S.A.,LOMA JARILLOSA ESTE,Extracción Efectiva,2 mes(es) sin informar entre su primer y último reporte
+A09,Estado vs. mes informado,MENOR,136085,ROC.NQ.CAS.x-1,PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,En Estudio,21 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,137416,PAE.Nq.LA.x-137,PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,137534,PAE.Nq.LA.x-138,PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO ORIENTAL,Otras Situación Inactivo,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,137592,TAU.Nq.AP.xp-1001,TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Parado Transitoriamente,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,137789,PLU.Nq.Ce.x-1485,FLXS OGE S.A,CENTENARIO CENTRO,En Espera de Reparación,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,143963,AME.Nq.LTE. x-1,TECPETROL S.A.,LOS TOLDOS ESTE,Parado Transitoriamente,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,144107,TAU.Nq.SR.xp-1001,TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Otras Situación Activo,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,144701,TAU.Nq.RCza.x-1,VACA MUERTA INVERSIONES SAU,RINCON LA CENIZA,En Estudio,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145001,PBE.Nq.RDA.x-1001,PAMPA ENERGIA S.A.,RINCON DE ARANDA,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145032,AMP.Nq.ALL.x-1,PLUSPETROL CUENCA NEUQUINA S.R.L.,AGUADA LOS LOROS,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145199,TAU.Nq.SR.xp-1010,TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Otras Situación Activo,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145752,AME.Nq.ADA.x-1,CONTINENTAL RESOURCES ARGENTINA SAU.,AGUA DE AFUERA,Parado Transitoriamente,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145808,GYP.Nq.ACOc.x-1,VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145976,TAU.Nq.SR.xp-1008,TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Otras Situación Activo,21 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,145984,TAU.Nq.AP.x-1007,TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Parado Transitoriamente,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,146274,TAU.Nq.AP.e-1002(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Parado Transitoriamente,16 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,146278,CHA.Nq.ET.xp-2003,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,En Estudio,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,146887,TAU.Nq.SR.e-1005(h),TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Parado Transitoriamente,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,147021,SHE.Nq.CdL.x-1(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,147190,XOM.Nq.BdC.x-2(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,147327,TPT.Nq.FP.x-1003,TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,25 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153074,TAU.Nq.RCza.e-5(h),VACA MUERTA INVERSIONES SAU,RINCON LA CENIZA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153076,XOM.Nq.LaI.x-3(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,LA INVERNADA,Otras Situación Inactivo,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,153540,TAU.Nq.APGe-112(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153541,TAU.Nq.APGe-113(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Otras Situación Activo,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153644,ROC.NQ.CAS.x-16,PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,En Estudio,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153705,TAU.Nq.APGe-111(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,153806,TAU.Nq.APGe-211(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,154190,YPF.Nq.LCav.x-7,PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,154220,TAU.Nq.APGe-212(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,154554,YPF.Nq.LCav.x-8,VISTA ENERGY ARGENTINA SAU,BANDURRIA NORTE,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155095,WIN.Nq.AF.x-1,VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155451,TAU.Nq.APGe-311(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155452,TAU.Nq.APGe-312(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155453,TAU.Nq.APGe-313(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155721,TAU.Nq.APFe-112h,TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,En Estudio,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,155785,APS.Nq.ADC-1026,CAPEX S.A.,AGUA DEL CAJON,Extracción Efectiva,1 mes(es) en estado 'En Espera de Reparación' con producción
+A09,Estado vs. mes informado,MENOR,156714,TAU.Nq.APIg-112(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Parado Transitoriamente,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157224,SHE.Nq.SB.e-1004(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,157364,TPT.Nq.FP.x-1004,TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157516,PAE.Nq.BCeCf-101(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157552,AME.Nq.LTE.x-2(h),TECPETROL S.A.,LOS TOLDOS ESTE,Parado Transitoriamente,23 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157567,WIN.Nq.AF-4(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157570,Pi.Nq.BBG-39ST,BENTIA ENERGY S.A.,BAJO BARDA GONZALEZ,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157733,WIN.Nq.AF-9(h),VISTA ENERGY ARGENTINA SAU,AGUADA FEDERAL,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157884,TPT.Nq.FP.x-1006(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157903,YPF.Nq.LCav.x-11(h),VISTA ENERGY ARGENTINA SAU,BANDURRIA NORTE,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157905,AME.Nq.LRa.x-2,TECPETROL S.A.,LOMA RANQUELES,Abandonado,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,157907,TPT.Nq.FP-1011(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,16 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158171,PAE.Nq.CAS.x-15(r)(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158288,TPT.Nq.FP-1014(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158333,TPT.Nq.FP-1015(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,7 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158334,TPT.Nq.FP-1016(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158469,SHE.Nq.SB.e-1009(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,158471,SHE.Nq.SB.e-1011(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158513,PAE.Nq.BCeCf-106(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158514,PAE.Nq.BCeCf-107(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158686,XOM.Nq.BdC-4(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158802,PLU.Nq.LCa.x-3001(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158807,TAU.Nq.APGe-711(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158833,PAE.Nq.BCeCg-111(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158920,TPT.Nq.FP-1062(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158921,TPT.Nq.FP-1063(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,16 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158922,TPT.Nq.FP-1064(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158923,XOM.Nq.BdC-3(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158928,TPT.Nq.FP-1031(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,24 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158929,TPT.Nq.FP-1032(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158930,TPT.Nq.FP-1033(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158931,TPT.Nq.FP-1034(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158953,TPT.Nq.FP-1046(h)(ST1),TECPETROL S.A.,FORTIN DE PIEDRA,En Estudio,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158961,TPT.Nq.FP-1036(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158962,TPT.Nq.FP-1037(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,18 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158963,TPT.Nq.FP-1038(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158967,TPT.Nq.FP-1043(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,16 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158968,TPT.Nq.FP-1044(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,158975,SHE.Nq.CdL.e-11(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159005,PAE.Nq.BCeAe-113(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159044,TAU.Nq.APGe-712(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159045,TAU.Nq.APHe-311(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159046,TAU.Nq.APHe-312(h).T1,TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159065,TPT.Nq.FP-1041(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,22 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159075,PAE.Nq.BCeDi-120(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159086,PAE.Nq.CAS.x-14(r)(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159184,TPT.Nq.FP-1042(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159193,PAE.Nq.APO-102(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159239,TAU.Nq.APGe-511(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159240,TAU.Nq.APGe-512(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159307,WIN.Nq.BN-1(h),VISTA ENERGY ARGENTINA SAU,BANDURRIA NORTE,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159308,WIN.Nq.BN-2(h),VISTA ENERGY ARGENTINA SAU,BANDURRIA NORTE,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159309,WIN.Nq.BN-3(h),VISTA ENERGY ARGENTINA SAU,BANDURRIA NORTE,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159314,PAE.Nq.BCeBh-117(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159329,PAE.Nq.APO.x-201(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159336,TPT.Nq.FP-1025(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159337,TPT.Nq.FP-1026(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159338,TPT.Nq.FP-1027(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,7 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159339,TPT.Nq.FP-1028(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159351,TPT.Nq.FP-1072(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159353,TPT.Nq.FP-1073(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159354,TPT.Nq.FP-1074(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159398,TPT.Nq.FP-1075(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159399,TPT.Nq.FP-1076(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159403,TPT.Nq.FP-1077(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159404,TPT.Nq.FP-1078(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159411,PAE.Nq.APO.x-101(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159463,TAU.Nq.SRBe-111(h),TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Otras Situación Activo,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159464,TAU.Nq.SRBe-112(h),TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Parado Transitoriamente,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159512,PAE.Nq.APO-202(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159527,PAE.Nq.BCeDg-123(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159529,TPT.Nq.FP-1071(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159530,TPT.Nq.FP-1092(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159531,TPT.Nq.FP-1093(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,27 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159532,TPT.Nq.FP-1094(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159559,AME.Nq.CLN.x-1001(h),TECPETROL S.A.,CERRO LAS NIÑAS,Parado Transitoriamente,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159561,TPT.Nq.FP-1067(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159565,TPT.Nq.FP-1065(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,7 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159566,TPT.Nq.FP-1066(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159607,PAE.Nq.BCeAg-130(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159629,TPT.Nq.FP-1068(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159669,TPT.Nq.FP-1082(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,28 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159670,TPT.Nq.FP-1083(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159673,TPT.Nq.FP-1111(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159674,TPT.Nq.FP-1112(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159675,TPT.Nq.FP-1113(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,17 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159739,PAE.Nq.BCeCf-128(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159748,PAE.Nq.BCeCf-127(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,7 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159769,TPT.Nq.FP-1203(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,21 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159770,TPT.Nq.FP-1204(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159873,TAU.Nq.APHe-111(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159874,TAU.Nq.APHe-112(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159921,TPT.Nq.FP-1095(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159922,TPT.Nq.FP-1096(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,22 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159942,PAE.Nq.ECh.x-101(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159957,TPT.Nq.FP-1097(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,27 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159958,TPT.Nq.FP-1022(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,22 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159959,TPT.Nq.FP-1023(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,28 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159960,TPT.Nq.FP-1024(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159961,TPT.Nq.FP-1101(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,23 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159962,TPT.Nq.FP-1102(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,24 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159963,TPT.Nq.FP-1103(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,159964,TPT.Nq.FP-1104(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160023,TPT.Nq.FP-1051(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,38 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160024,TPT.Nq.FP-1052(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,35 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160026,TPT.Nq.FP-1053(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,44 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160027,TPT.Nq.FP-1054(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,44 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160164,PAE.Nq.ECh-102(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160169,PAE.Nq.ACas-101(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,4 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,160180,PAE.Nq.ACas-102(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160191,XOM.Nq.PdY-1001(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,PAMPA DE LAS YEGUAS I,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160205,TPT.Nq.FP-1323(h)(ST1),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,29 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160207,TPT.Nq.FP-1322(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,29 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160306,TPT.Nq.FP-1241(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,18 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160307,TPT.Nq.FP-1242(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,16 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160308,TPT.Nq.FP-1243(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,27 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160447,PAE.Nq.BCeCh-135(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160455,PAE.Nq.BCeCh-136(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160462,TAU.Nq.AP-1009(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160463,TPT.Nq.FP-1265(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,19 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160464,TPT.Nq.FP-1266(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160466,TPT.Nq.FP-1267(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160533,TPT.Nq.LRa.x-2(r)(h),TECPETROL S.A.,LOMA RANQUELES,Abandono Temporario,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160534,TAU.Nq.AP-1016(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160536,TAU.Nq.SR-1012(h),TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160537,TAU.Nq.SR-1013(h),TOTAL AUSTRAL S.A.,SAN ROQUE VACA MUERTA,Parado Transitoriamente,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160557,SHE.Nq.BAñ-1008(h),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160577,TPT.Nq.FP-1216(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,25 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160578,TPT.Nq.FP-1215(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,39 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160752,SHE.Nq.BAñ-1004(h),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160786,PAE.Nq.ECh-105(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160789,PAE.Nq.ECh-103(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160810,PLU.Nq.LCa-3008(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160812,PLU.Nq.LCa-3010(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160813,PLU.Nq.LCa-3012(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160866,SHE.Nq.SB-1014(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160888,PLU.Nq.LCa-3005(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160897,PAE.Nq.BCeCh-137(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160909,PAE.Nq.BCeCh-138(h),PAN AMERICAN ENERGY SL,BANDURRIA CENTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160911,PAE.Nq.CASE-101(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160941,XOM.Nq.BdC-5(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160943,XOM.Nq.BdC-7(h),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,6 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,160945,TPT.Nq.FP-1335(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,21 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160950,TPT.Nq.FP-1336(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,160951,TPT.Nq.FP-1337(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161222,PAE.Nq.ECh-104(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161223,PAE.Nq.ACa.x-101(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161229,PAE.Nq.ECh-106(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161451,PAE.Nq.CASE-501(h)(st),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161460,SHE.Nq.SB-1023(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161483,PAE.Nq.LA.e-302(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161485,PAE.Nq.LA.e-303(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161525,TAU.Nq.AP-1024(h).T1,TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161526,TAU.Nq.AP-1025(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161527,TAU.Nq.AP-1026(h),TOTAL AUSTRAL S.A.,AGUADA PICHANA ESTE VACA MUERTA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161531,SHE.Nq.SB-1022(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161567,PAE.Nq.APO-104(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161568,PAE.Nq.APO-103(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161577,PAE.Nq.ACa.x-1(r)(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161581,PAE.Nq.CASE-401(h)(st),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161641,PAE.Nq.LA.e-306(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161654,PAE.Nq.CASE-301(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161759,PAE.Nq.ACas-103(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161774,PAE.Nq.CASE-102(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161847,SHE.Nq.CdL-19(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161872,CHA.Nq.ET.xp-2021st,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,12 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,161873,CHA.Nq.ET-2022h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161874,CHA.Nq.ET-2023h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,161875,CHA.Nq.ET-2024h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,18 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162073,PLU.Nq.LCa.a-3107(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162121,TPT.Nq.FP-1255(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162122,TPT.Nq.FP-1256(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162123,TPT.Nq.FP-1311(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,23 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162124,TPT.Nq.FP-1312(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162125,TPT.Nq.FP-1313(h)(ST1),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162126,TPT.Nq.FP-1314(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,22 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162172,SHE.Nq.CdL-23(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162182,PLU.Nq.LCa-3168(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162230,PAE.Nq.APO-204(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162231,PAE.Nq.APO-203(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162239,PAE.Nq.APO-205(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162268,PAE.Nq.ECh-120(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162275,PAE.Nq.ECh-118(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162314,CHA.Nq.ET-2032h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162315,CHA.Nq.ET-2033h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162316,CHA.Nq.ET-2034h,CHEVRON ARGENTINA S.R.L.,EL TRAPIAL,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162319,TPT.Nq.FP-1291(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162320,TPT.Nq.FP-1292(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,21 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162321,TPT.Nq.FP-1293(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,14 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162322,TPT.Nq.FP-1296(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162323,TPT.Nq.FP-1297(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162357,TPT.Nq.FP-1257(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162390,TPT.Nq.FP-1326(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162391,TPT.Nq.FP-1327(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,23 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162430,PAE.Nq.ECh-107(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162431,PAE.Nq.ECh-109(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162594,TPT.Nq.FP-1316(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,10 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162595,TPT.Nq.FP-1121(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162596,TPT.Nq.FP-1122(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162597,TPT.Nq.FP-1317(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,24 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162599,PAE.Nq.APO-107(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162600,PAE.Nq.APO-108(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162627,TPT.Nq.FP-1137(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162628,TPT.Nq.FP-1136(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,9 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162680,SHE.Nq.CdL-37(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162681,SHE.Nq.CdL-38(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162691,SHE.Nq.BAñ-1012(h),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162692,SHE.Nq.BAñ-1013(h),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162693,SHE.Nq.BAñ-1014(h),SHELL ARGENTINA S.A.,BAJADA DE AÑELO,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162722,PAE.Nq.CASE-508(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162725,PAE.Nq.CASE-510(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162727,PAE.Nq.CASE-506(h),PAN AMERICAN ENERGY SL,COIRON AMARGO SUR ESTE,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162730,PAE.Nq.ECh-113(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162735,TPT.Nq.PPar.x-2(h),TECPETROL S.A.,PUESTO PARADA,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162748,SHE.Nq.CdL-40(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162749,SHE.Nq.CdL-41(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162750,SHE.Nq.CdL-42(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,1 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,162812,PAE.Nq.ECh-134(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162817,PAE.Nq.ACas-105(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162822,PAE.Nq.ECh-130(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Parado Transitoriamente,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162824,PAE.Nq.ACas-106(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162826,PAE.Nq.ACas-104(h),PAN AMERICAN ENERGY SL,AGUADA DE CASTRO,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162908,PAE.Nq.APO-110(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162914,PAE.Nq.APO-109(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162933,TPT.Nq.FP-1196(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,28 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162934,TPT.Nq.FP-1197(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,25 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162974,PAE.Nq.ACa-104(h),PAN AMERICAN ENERGY SL,AGUADA CÁNEPA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,162992,TPT.Nq.FP-1195(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,35 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163014,SHE.Nq.CdL-28(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,8 mes(es) en estado 'Otras Situación Inactivo' con producción
+A09,Estado vs. mes informado,MENOR,163016,SHE.Nq.CdL-30(h),SHELL ARGENTINA S.A.,CRUZ DE LORENA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163051,TPT.Nq.FP-1185(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,26 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163052,TPT.Nq.FP-1186(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,25 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163053,TPT.Nq.FP-1187(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,28 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163087,PAE.Nq.ECh-123(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163094,PAE.Nq.ECh-121(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163101,PAE.Nq.ECh-125(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163122,TPT.Nq.PVe.x-1,TECPETROL S.A.,PUESTO VERA,En Espera de Reparación,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163135,PLU.Nq.LCa-3003(h),PLUSPETROL S.A.,LA CALERA,Extracción Efectiva,2 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163150,TPT.Nq.FP-1281(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163151,TPT.Nq.FP-1283(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,11 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163152,TPT.Nq.FP-1285(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,5 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163153,TPT.Nq.FP-1286(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163154,TPT.Nq.FP-1287(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163155,TPT.Nq.FP-1284(h)(ST1),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163182,PAE.Nq.APO-206(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163188,PAE.Nq.APO-207(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163189,PAE.Nq.APO-208(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163253,PAE.Nq.APO-106(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,13 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163257,PAE.Nq.ECh-136(h),PAN AMERICAN ENERGY SL,LINDERO ATRAVESADO OCCIDENTAL,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163265,PAE.Nq.APO-123(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163269,PAE.Nq.APO-124(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,4 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163293,TPT.Nq.FP-1425(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,23 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163294,TPT.Nq.FP-1426(h),TECPETROL S.A.,FORTIN DE PIEDRA,Parado Transitoriamente,25 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163295,TPT.Nq.FP-1427(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,20 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163298,SHE.Nq.SB-1041(h),SHELL ARGENTINA S.A.,SIERRAS BLANCAS,Extracción Efectiva,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163371,TPT.Nq.FP-1442(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163399,TPT.Nq.FP-1441(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,7 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163400,TPT.Nq.FP-1443(h),TECPETROL S.A.,FORTIN DE PIEDRA,Extracción Efectiva,15 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163437,TPT.Nq.LAnch.x-2(h),TECPETROL S.A.,LOMA ANCHA,Parado Transitoriamente,1 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163453,PAE.Nq.APO-122(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,12 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163454,PAE.Nq.APO-121(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,6 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163458,PAE.Nq.APO-120(h),PAN AMERICAN ENERGY SL,AGUADA PICHANA OESTE,Extracción Efectiva,8 mes(es) en estado 'Parado Transitoriamente' con producción
+A09,Estado vs. mes informado,MENOR,163527,XOM.Nq.BdC-50(h)(I),PLUSPETROL CUENCA NEUQUINA S.R.L.,BAJO DEL CHOIQUE,Extracción Efectiva,3 mes(es) en estado 'Parado Transitoriamente' con producción

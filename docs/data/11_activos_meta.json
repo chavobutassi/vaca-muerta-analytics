@@ -1,0 +1,31 @@
+{
+  "ejecutado_utc": "2026-09-27T14:44:31+00:00",
+  "pozos": 3655,
+  "registros_pozo_mes": 315951,
+  "periodo_desde": "2006-01",
+  "periodo_hasta": "2026-08",
+  "entregas": [
+    "no_conv_historico",
+    "prod_2024",
+    "prod_2025",
+    "prod_2026"
+  ],
+  "pozos_con_algun_hallazgo": 1006,
+  "hallazgos_totales": 1196,
+  "hallazgos_publicados": 710,
+  "veredicto": {
+    "estado": "ACEPTADA CON OBSERVACIONES",
+    "texto": "Utilizable con salvedades: los hallazgos mayores deben corregirse en la próxima entrega.",
+    "reglas_criticas_con_hallazgo": [],
+    "reglas_mayores_con_hallazgo": [
+      "A02",
+      "A03",
+      "A05"
+    ]
+  },
+  "huecos_fuente": [
+    "2024-09"
+  ],
+  "marco": "Requisitos de información y flujo de entrega según IRAM-ISO 19650-1/-2",
+  "fuente": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)"
+}

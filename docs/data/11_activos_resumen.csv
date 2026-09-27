@@ -1,0 +1,10 @@
+﻿regla_id,regla,severidad,evaluados,pozos_con_hallazgo,cumplimiento_pct,nota
+A01,Identificador único,CRITICA,3655,0,100.0,
+A02,Atributos obligatorios,MAYOR,3655,177,95.2,
+A03,Dominio de valores,MAYOR,3655,35,99.0,
+A04,Coordenadas,MAYOR,3417,0,100.0,"Las entregas prod_2024, prod_2025, prod_2026 no incluyen coordenadas: solo se evalúan pozos presentes en archivos que sí las traen. Orientación detectada: coordenaday = latitud."
+A05,Abandonado con producción,MAYOR,3655,6,99.8,
+A06,Estabilidad de atributos,MENOR,3655,0,100.0,"Puede tener explicación operativa (reentrada, profundización, reasignación de área)."
+A07,Consistencia entre entregas,MAYOR,3407,0,100.0,"El pipeline conserva el primer valor leído; si difieren, cuál es el vigente queda sin trazabilidad."
+A08,Continuidad de reporte,MENOR,2949,192,93.5,"Meses sin datos para muchos pozos a la vez (posible carga incompleta de la fuente, excluidos de esta regla): 2024-09."
+A09,Estado vs. mes informado,MENOR,3655,730,80.0,"Suele reflejar un cambio de estado dentro del mes (el pozo produjo y luego paró, o viceversa): observación, no error."
