@@ -52,7 +52,6 @@ CAMBIOS v2.3:
 
 from __future__ import annotations
 
-import os
 import sys
 import json
 from datetime import datetime, timezone

@@ -41,7 +41,7 @@ body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color
 .badge.warn::before{background:#f5a524}
 
 /* Navegación */
-.nav{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;display:flex;overflow-x:auto}
+.nav{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;display:flex;flex-wrap:wrap}
 .nav button{background:none;border:none;color:var(--ink-2);font:inherit;font-size:13px;padding:12px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
 .nav-sep{width:1px;background:#d3d8df;margin:10px 10px;flex-shrink:0}
 .nav button.active{color:var(--navy);font-weight:600;border-bottom-color:var(--navy-2)}
@@ -135,7 +135,7 @@ canvas{display:block;max-width:100%}
   <span class="nav-sep" aria-hidden="true"></span>
   <button onclick="showPage('p10',this)">Registro de activos</button>
   <button onclick="showPage('p8',this)">Calidad del pipeline</button>
-  <button onclick="showPage('p9',this)">Validación BIM (demo)</button>
+  <button onclick="showPage('p9',this)">Validación IFC (modelo de prueba)</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
