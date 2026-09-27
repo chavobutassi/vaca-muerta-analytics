@@ -172,7 +172,7 @@ canvas{display:block;max-width:100%}
 
     <div class="chart-grid">
       <div class="card">
-        <h3>Market share BOE — último año</h3>
+        <h3>Market share BOE — último año <span style="font-weight:400;color:#8792a2;font-size:11px">— 8 principales operadoras; el resto agrupado en "Otras"</span></h3>
         <div class="chart-wrap" style="height:250px">
           <canvas id="chart-ms" role="img" aria-label="Market share por empresa en BOE"></canvas>
         </div>
@@ -664,8 +664,8 @@ const DATA = {
 
 const COLORS = {
   'YPF':'#2a78d6','Vista Energy':'#eb6834','Tecpetrol':'#1baf7a','Shell':'#eda100',
-  'Pan American Energy':'#e87ba4','TotalEnergies':'#008300','Equinor':'#4a3aa7','Wintershall':'#e34948',
-  'Pluspetrol':'#6b7a8f','Otra':'#a3acb9'
+  'Pan American Energy':'#e87ba4','TotalEnergies':'#008300','Pluspetrol':'#4a3aa7','Pampa Energía':'#e34948',
+  'Otra':'#a3acb9','Otras':'#a3acb9'
 };
 const col = e => COLORS[e] || '#a3acb9';
 const fmt = n => {
@@ -876,15 +876,28 @@ function renderP1() {
   });
 
   // Market share donut
-  const msUlt  = ms.filter(r=>+r.anio===ult);
-  const msEmps = msUlt.map(r=>r.empresa_grupo);
-  const msPct  = msUlt.map(r=>+(r.market_share_pct)||0);
+  // Top 8 operadoras + "Otras": con 30+ empresas la dona se vuelve ilegible
+  const TOP_MS = 8;
+  const msUlt  = ms.filter(r=>+r.anio===ult)
+                   .map(r=>({e:r.empresa_grupo, p:+(r.market_share_pct)||0}))
+                   .sort((a,b)=>b.p-a.p);
+  const msTop  = msUlt.slice(0, TOP_MS);
+  const msRest = msUlt.slice(TOP_MS);
+  const msOtras = msRest.reduce((s,r)=>s+r.p,0);
+  if (msRest.length) msTop.push({e:'Otras', p:msOtras, n:msRest.length});
   makeChart('chart-ms',{
     type:'doughnut',
-    data:{labels:msEmps, datasets:[{data:msPct,backgroundColor:msEmps.map(col),borderWidth:0,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{position:'right',labels:{color:'#586474',font:{size:11},boxWidth:12,padding:8}},
-               tooltip:{callbacks:{label:c=>`${c.label}: ${(+c.raw).toFixed(1)}%`}}}}
+    data:{labels:msTop.map(r=>r.e==='Otras' ? `Otras (${r.n})` : r.e),
+          datasets:[{data:msTop.map(r=>r.p),backgroundColor:msTop.map(r=>col(r.e)),
+                     borderColor:'#ffffff',borderWidth:2,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'right',labels:{color:'#14202e',font:{size:12},boxWidth:12,padding:9,
+                 generateLabels:ch=>ch.data.labels.map((l,i)=>({text:`${l}  ${(+ch.data.datasets[0].data[i]).toFixed(1)}%`,
+                   fillStyle:ch.data.datasets[0].backgroundColor[i],strokeStyle:'#ffffff',lineWidth:0,index:i,fontColor:'#14202e'}))}},
+               tooltip:{callbacks:{label:c=>{
+                 const r=msTop[c.dataIndex];
+                 return r.e==='Otras' ? `${r.n} operadoras: ${r.p.toFixed(1)}%` : `${r.e}: ${r.p.toFixed(1)}%`;
+               }}}}}
   });
 
   // Nuevos pozos
