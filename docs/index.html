@@ -104,6 +104,7 @@ code,.mono,td[style*="monospace"]{font-family:'IBM Plex Mono',ui-monospace,monos
 canvas{display:block;max-width:100%}
 .leaflet-container canvas{max-width:none}
 .leaflet-container{font-family:inherit}
+.leaflet-control-layers{font-size:12px;border-radius:2px}
 #p9 .card,#p10 .card{min-width:0}
 .page .badge{color:var(--ink);border:1px solid var(--line);padding:4px 10px}
 
@@ -253,12 +254,18 @@ canvas{display:block;max-width:100%}
         <select id="mapa-estado" onchange="renderMapa()">
           <option value="">Todos</option>
           <option value="Extracción Efectiva">En extracción efectiva</option>
-          <option value="__inactivo">Inactivos / abandonados</option>
+          <option value="__otro">Todos los demás estados</option>
+          <option value="__inactivo">Solo inactivos / abandonados</option>
         </select>
         <span id="mapa-conteo" style="font-size:12px;color:#586474"></span>
       </div>
       <div id="mapa-pozos" style="height:520px;border:1px solid #d3d8df;background:#eef1f4"></div>
-      <div class="legend" id="mapa-leyenda" style="margin-top:12px;margin-bottom:0"></div>
+      <div class="legend" id="mapa-leyenda" style="margin-top:12px;margin-bottom:6px"></div>
+      <div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#586474;align-items:center">
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:11px;height:11px;border-radius:50%;background:#586474;display:inline-block"></span>Relleno = extracción efectiva</span>
+        <span style="display:flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;border:2px solid #586474;display:inline-block"></span>Anillo = inactivo, abandonado u otro estado</span>
+        <span>Color = operadora</span>
+      </div>
     </div>
   </div>
 </div>
@@ -2004,7 +2011,7 @@ async function initActivos() {
 // ════════════════════════════════════════════
 // MAPA DE POZOS POR OPERADORA (pestaña Por Empresa)
 // ════════════════════════════════════════════
-let _mapa = null, _mapaCapa = null, _mapaPozos = null;
+let _mapa = null, _mapaCapa = null, _mapaPozos = null, _mapaSat = true;
 const MAPA_INACTIVOS = ['Abandonado','A Abandonar','Parado Transitoriamente','En Espera de Reparación',
                         'Otras Situación Inactivo','Abandono Temporario'];
 
@@ -2022,10 +2029,20 @@ async function initMapa() {
     return;
   }
   _mapa = L.map('mapa-pozos', { preferCanvas: true, scrollWheelZoom: false }).setView([-38.3, -69.0], 8);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 16, subdomains: 'abcd',
+  const claro = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 17, subdomains: 'abcd',
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  }).addTo(_mapa);
+  });
+  const esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/';
+  const satelite = L.layerGroup([
+    L.tileLayer(esri + 'World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18,
+      attribution: 'Imágenes &copy; Esri, Maxar, Earthstar Geographics' }),
+    L.tileLayer(esri + 'Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, opacity: 0.8 }),
+    L.tileLayer(esri + 'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18 }),
+  ]);
+  satelite.addTo(_mapa);
+  L.control.layers({ 'Satelital híbrido': satelite, 'Mapa claro': claro }, null, { position: 'topright', collapsed: false }).addTo(_mapa);
+  _mapa.on('baselayerchange', e => { _mapaSat = e.name.startsWith('Satelital'); renderMapa(false); });
   _mapaCapa = L.layerGroup().addTo(_mapa);
 
   const porGrupo = {};
@@ -2044,7 +2061,8 @@ function renderMapa(ajustar) {
   const fe = document.getElementById('mapa-emp').value;
   const fs = document.getElementById('mapa-estado').value;
   const pozos = _mapaPozos.filter(p => (!fe || p.grupo === fe) &&
-    (!fs || (fs === '__inactivo' ? MAPA_INACTIVOS.includes(p.tipoestado) : p.tipoestado === fs)));
+    (!fs || (fs === '__inactivo' ? MAPA_INACTIVOS.includes(p.tipoestado)
+           : fs === '__otro' ? p.tipoestado !== 'Extracción Efectiva' : p.tipoestado === fs)));
   _mapa.invalidateSize();
   if (pozos.length && (ajustar || fe)) {
     // Encuadre sobre el 98% central: pocos pozos alejados no achican el núcleo
@@ -2055,8 +2073,13 @@ function renderMapa(ajustar) {
   }
   _mapaCapa.clearLayers();
   // "Otras" primero, así las operadoras principales quedan arriba
-  [...pozos].sort((a, b) => (a.grupo === 'Otras') - (b.grupo === 'Otras')).reverse().forEach(p => {
-    L.circleMarker([p.lat, p.lon], { radius: 4, weight: 0.6, color: '#ffffff', fillColor: col(p.grupo), fillOpacity: 0.85 })
+  [...pozos].sort((a, b) => ((b.grupo === 'Otras') - (a.grupo === 'Otras')) ||
+      ((a.tipoestado === 'Extracción Efectiva') - (b.tipoestado === 'Extracción Efectiva'))).forEach(p => {
+    const activo = p.tipoestado === 'Extracción Efectiva';
+    const estilo = activo
+      ? { radius: 4.5, weight: 1, color: _mapaSat ? '#ffffff' : '#ffffff', fillColor: col(p.grupo), fillOpacity: 0.95 }
+      : { radius: 4, weight: 2, color: col(p.grupo), fillColor: _mapaSat ? '#000000' : '#ffffff', fillOpacity: _mapaSat ? 0.35 : 0.9 };
+    L.circleMarker([p.lat, p.lon], estilo)
       .bindPopup(`<div style="font-family:'IBM Plex Sans',sans-serif;font-size:12px;line-height:1.6">
           <strong style="font-family:'IBM Plex Mono',monospace">${p.sigla || p.pozo_id}</strong><br>
           ${p.empresa || '—'}<br>
@@ -2066,7 +2089,9 @@ function renderMapa(ajustar) {
           Último reporte: ${p.ultimo_reporte || '—'}</div>`)
       .addTo(_mapaCapa);
   });
-  document.getElementById('mapa-conteo').textContent = `${pozos.length.toLocaleString('es-AR')} pozos con ubicación`;
+  const nAct = pozos.filter(p => p.tipoestado === 'Extracción Efectiva').length;
+  document.getElementById('mapa-conteo').textContent =
+    `${pozos.length.toLocaleString('es-AR')} pozos · ${nAct.toLocaleString('es-AR')} en extracción efectiva · ${(pozos.length - nAct).toLocaleString('es-AR')} en otro estado`;
 }
 
 // ════════════════════════════════════════════
