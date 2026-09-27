@@ -1,5 +1,5 @@
 {
-  "ejecutado_utc": "2026-09-27T16:17:09+00:00",
+  "ejecutado_utc": "2026-09-27T17:08:58+00:00",
   "pozos": 3655,
   "registros_pozo_mes": 315951,
   "periodo_desde": "2006-01",
@@ -23,6 +23,69 @@
       "A05"
     ]
   },
+  "indice_calidad": 94.1,
+  "dimensiones": [
+    {
+      "clave": "completitud",
+      "nombre": "Completitud",
+      "valor": 95.2,
+      "unidad": "%",
+      "reglas": [
+        "A02"
+      ],
+      "descripcion": "Pozos con todos los atributos obligatorios"
+    },
+    {
+      "clave": "validez",
+      "nombre": "Validez",
+      "valor": 99.0,
+      "unidad": "%",
+      "reglas": [
+        "A03"
+      ],
+      "descripcion": "Pozos con valores dentro del dominio permitido"
+    },
+    {
+      "clave": "unicidad",
+      "nombre": "Unicidad",
+      "valor": 100.0,
+      "unidad": "%",
+      "reglas": [
+        "A01"
+      ],
+      "descripcion": "Pozos con identificador único y estable"
+    },
+    {
+      "clave": "consistencia",
+      "nombre": "Consistencia",
+      "valor": 99.8,
+      "unidad": "%",
+      "reglas": [
+        "A05",
+        "A06",
+        "A07"
+      ],
+      "descripcion": "Pozos sin contradicciones de estado, atributos o entre entregas"
+    },
+    {
+      "clave": "actualidad",
+      "nombre": "Actualidad",
+      "valor": 1,
+      "unidad": "meses",
+      "reglas": [],
+      "descripcion": "Meses entre hoy y el último período publicado por la fuente"
+    },
+    {
+      "clave": "exactitud",
+      "nombre": "Exactitud posicional",
+      "valor": 100.0,
+      "unidad": "%",
+      "reglas": [
+        "A04"
+      ],
+      "descripcion": "Pozos con coordenadas dentro de la cuenca"
+    }
+  ],
   "huecos_fuente": [
     "2024-09"
   ],
