@@ -1,0 +1,8 @@
+﻿regla_id,regla,severidad,evaluados,fallas,cumplimiento_pct
+R01,Tag obligatorio,CRITICA,13,1,92.3
+R02,Nomenclatura del tag,MENOR,12,1,91.7
+R03,Tag único,CRITICA,12,2,83.3
+R04,Propiedades obligatorias,MAYOR,13,1,92.3
+R05,Dominio de valores,MAYOR,13,2,84.6
+R06,Ubicación espacial,MAYOR,13,1,92.3
+R07,Cruce con producción,CRITICA,4,1,75.0

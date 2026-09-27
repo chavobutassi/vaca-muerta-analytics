@@ -1,0 +1,14 @@
+﻿global_id,clase_ifc,tipo_activo,nombre,sector,TagActivo,Estado,Fabricante,PozoId,PresionDiseno_kPa,CapacidadNominal_m3
+11N6b$Q1H1oRoRH$nfAxD1,IfcBuildingElementProxy,CABEZA_POZO,Cabeza de pozo 1,Sector pozos,CP-001,OPERATIVO,Fab A,145330,69000.0,
+2y2$g4F8j7b9VxVoptqdkH,IfcBuildingElementProxy,CABEZA_POZO,Cabeza de pozo 2,Sector pozos,CP-002,OPERATIVO,Fab A,145329,69000.0,
+1EYN87gHv5RfLpzvyjIkk2,IfcBuildingElementProxy,CABEZA_POZO,Cabeza de pozo 3,Sector pozos,CP-003,OPERATIVO,Fab A,146982,69000.0,
+0Xanm96uHF_vCGoQhLRZLV,IfcBuildingElementProxy,CABEZA_POZO,Cabeza de pozo 4,Sector pozos,CP-004,PROYECTADO,Fab A,XX-9999,69000.0,
+1oV4cAtDvAbxuqi83qV$Mu,IfcBuildingElementProxy,SEPARADOR,Separador trifásico,Sector proceso,,OPERATIVO,Fab B,,8600.0,
+2cTYRAKH5EEvYq1h55Wb3b,IfcPump,BOMBA,Bomba de transferencia 1,Sector proceso,BM-001,OPERATIVO,Fab D,,5000.0,
+2hPtsiAKX2ZvJXF4jdy20$,IfcPump,BOMBA,Bomba de transferencia 2,Sector proceso,BM-001,OK,Fab D,,5000.0,
+2jao_UDTv0NhRzDtit5ANq,IfcPump,BOMBA,Bomba de inyección,,BM-003,OPERATIVO,Fab D,,12000.0,
+3Nx3AnECL2uhJFpmmvQvs1,IfcPipeSegment,LINEA,Línea de conducción 1,Sector proceso,LN-001,OPERATIVO,,,9900.0,
+3Ykubf8KH7a8$pm2oauNCX,IfcPipeSegment,LINEA,Línea de conducción 2,Sector proceso,LN-002,OPERATIVO,,,-9900.0,
+1TBIvSGtzBy9wpZmBHt$c4,IfcTank,TANQUE,Tanque de petróleo 1,Sector proceso,TK-001,OPERATIVO,Fab C,,,160.0
+1vOygqrUz9lOuVwYFh0ENl,IfcTank,TANQUE,Tanque de petróleo 2,Sector proceso,TK-02,OPERATIVO,Fab C,,,160.0
+1Bdv2bfg580u$YUYWd2qqd,IfcTank,TANQUE,Tanque de agua,Sector proceso,TK-003,OPERATIVO,Fab C,,,

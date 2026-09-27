@@ -1,0 +1,10 @@
+﻿regla_id,regla,severidad,tag,tipo_activo,nombre,global_id,detalle
+R01,Tag obligatorio,CRITICA,(sin tag),SEPARADOR,Separador trifásico,1oV4cAtDvAbxuqi83qV$Mu,El activo no tiene TagActivo
+R02,Nomenclatura del tag,MENOR,TK-02,TANQUE,Tanque de petróleo 2,1vOygqrUz9lOuVwYFh0ENl,'TK-02' no cumple el formato TK-NNN
+R03,Tag único,CRITICA,BM-001,BOMBA,Bomba de transferencia 1,2cTYRAKH5EEvYq1h55Wb3b,Tag 'BM-001' repetido en 2 activos
+R03,Tag único,CRITICA,BM-001,BOMBA,Bomba de transferencia 2,2hPtsiAKX2ZvJXF4jdy20$,Tag 'BM-001' repetido en 2 activos
+R04,Propiedades obligatorias,MAYOR,TK-003,TANQUE,Tanque de agua,1Bdv2bfg580u$YUYWd2qqd,Faltan: CapacidadNominal_m3
+R05,Dominio de valores,MAYOR,BM-001,BOMBA,Bomba de transferencia 2,2hPtsiAKX2ZvJXF4jdy20$,"Estado 'OK' no válido (usar FUERA_DE_SERVICIO, OPERATIVO, PROYECTADO)"
+R05,Dominio de valores,MAYOR,LN-002,LINEA,Línea de conducción 2,3Ykubf8KH7a8$pm2oauNCX,PresionDiseno_kPa = -9900.0 (debe ser > 0)
+R06,Ubicación espacial,MAYOR,BM-003,BOMBA,Bomba de inyección,2jao_UDTv0NhRzDtit5ANq,El activo no está asignado a ningún sector del modelo
+R07,Cruce con producción,CRITICA,CP-004,CABEZA_POZO,Cabeza de pozo 4,0Xanm96uHF_vCGoQhLRZLV,PozoId 'XX-9999' no existe en el dataset de producción
