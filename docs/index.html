@@ -16,6 +16,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root{
   --bg:#f3f4f6; --surface:#ffffff; --line:#d3d8df; --line-soft:#e6e9ee;
@@ -100,6 +102,8 @@ code,.mono,td[style*="monospace"]{font-family:'IBM Plex Mono',ui-monospace,monos
 .source{font-size:11.5px;color:var(--ink-3);margin-top:24px;text-align:center;padding:16px 0 24px;border-top:1px solid var(--line);max-width:1200px;margin-left:auto;margin-right:auto}
 @media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}.header{padding:12px 16px}.page{padding:16px}}
 canvas{display:block;max-width:100%}
+.leaflet-container canvas{max-width:none}
+.leaflet-container{font-family:inherit}
 #p9 .card,#p10 .card{min-width:0}
 .page .badge{color:var(--ink);border:1px solid var(--line);padding:4px 10px}
 
@@ -236,6 +240,25 @@ canvas{display:block;max-width:100%}
         </thead>
         <tbody id="tb-empresas"></tbody>
       </table>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h3>Mapa de pozos por operadora
+        <span style="font-weight:400;color:#8792a2;font-size:11px">— ubicación declarada en el Capítulo IV · último estado informado</span>
+      </h3>
+      <div class="filter-bar">
+        <label>Operadora:</label>
+        <select id="mapa-emp" onchange="renderMapa()"><option value="">Todas</option></select>
+        <label>Estado:</label>
+        <select id="mapa-estado" onchange="renderMapa()">
+          <option value="">Todos</option>
+          <option value="Extracción Efectiva">En extracción efectiva</option>
+          <option value="__inactivo">Inactivos / abandonados</option>
+        </select>
+        <span id="mapa-conteo" style="font-size:12px;color:#586474"></span>
+      </div>
+      <div id="mapa-pozos" style="height:520px;border:1px solid #d3d8df;background:#eef1f4"></div>
+      <div class="legend" id="mapa-leyenda" style="margin-top:12px;margin-bottom:0"></div>
     </div>
   </div>
 </div>
@@ -732,6 +755,7 @@ const DATA = {
   actRes:   './data/11_activos_resumen.csv',
   actHall:  './data/11_activos_hallazgos.csv',
   actMeta:  './data/11_activos_meta.json',
+  actReg:   './data/11_activos_registro.csv',
 };
 
 const COLORS = {
@@ -764,6 +788,7 @@ function showPage(id, btn) {
   document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'p2') initMapa();
 }
 
 function parseCSV(text) {
@@ -1971,6 +1996,69 @@ async function initActivos() {
     document.getElementById('p10-loading').innerHTML =
       `<span style="color:#586474">La validación del registro de activos todavía no se ejecutó.<br><small>Correr <code>python validacion_activos.py</code> y publicar docs/data/.</small></span>`;
   }
+}
+
+
+// ════════════════════════════════════════════
+// MAPA DE POZOS POR OPERADORA (pestaña Por Empresa)
+// ════════════════════════════════════════════
+let _mapa = null, _mapaCapa = null, _mapaPozos = null;
+const MAPA_INACTIVOS = ['Abandonado','A Abandonar','Parado Transitoriamente','En Espera de Reparación',
+                        'Otras Situación Inactivo','Abandono Temporario'];
+
+async function initMapa() {
+  if (_mapa) { setTimeout(() => _mapa.invalidateSize(), 60); return; }
+  if (!window.L) { document.getElementById('mapa-pozos').innerHTML = '<div class="loading">No se pudo cargar el mapa.</div>'; return; }
+  try {
+    if (!_mapaPozos) {
+      const reg = await fetchCSVQuoted(DATA.actReg);
+      _mapaPozos = reg.filter(r => r.lat && r.lon).map(r => ({ ...r, lat: +r.lat, lon: +r.lon,
+        grupo: COLORS[r.empresa_grupo] ? r.empresa_grupo : 'Otras' }));
+    }
+  } catch (e) {
+    document.getElementById('mapa-pozos').innerHTML = '<div class="loading">El registro de activos todavía no está publicado.</div>';
+    return;
+  }
+  _mapa = L.map('mapa-pozos', { preferCanvas: true, scrollWheelZoom: false }).setView([-38.3, -69.0], 8);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 16, subdomains: 'abcd',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(_mapa);
+  _mapaCapa = L.layerGroup().addTo(_mapa);
+
+  const porGrupo = {};
+  _mapaPozos.forEach(p => porGrupo[p.grupo] = (porGrupo[p.grupo] || 0) + 1);
+  const grupos = Object.keys(porGrupo).sort((a, b) => a === 'Otras' ? 1 : b === 'Otras' ? -1 : porGrupo[b] - porGrupo[a]);
+  document.getElementById('mapa-emp').innerHTML = '<option value="">Todas</option>' +
+    grupos.map(g => `<option value="${g}">${g} (${porGrupo[g].toLocaleString('es-AR')})</option>`).join('');
+  document.getElementById('mapa-leyenda').innerHTML = grupos.map(g =>
+    `<span onclick="document.getElementById('mapa-emp').value='${g}';renderMapa()">
+       <span class="legend-dot" style="background:${col(g)};border-radius:50%"></span>${g} · ${porGrupo[g].toLocaleString('es-AR')}</span>`).join('');
+  renderMapa(true);
+}
+
+function renderMapa(ajustar) {
+  if (!_mapa) return;
+  const fe = document.getElementById('mapa-emp').value;
+  const fs = document.getElementById('mapa-estado').value;
+  const pozos = _mapaPozos.filter(p => (!fe || p.grupo === fe) &&
+    (!fs || (fs === '__inactivo' ? MAPA_INACTIVOS.includes(p.tipoestado) : p.tipoestado === fs)));
+  _mapa.invalidateSize();
+  if (pozos.length && (ajustar || fe)) _mapa.fitBounds(L.latLngBounds(pozos.map(p => [p.lat, p.lon])).pad(0.05));
+  _mapaCapa.clearLayers();
+  // "Otras" primero, así las operadoras principales quedan arriba
+  [...pozos].sort((a, b) => (a.grupo === 'Otras') - (b.grupo === 'Otras')).reverse().forEach(p => {
+    L.circleMarker([p.lat, p.lon], { radius: 4, weight: 0.6, color: '#ffffff', fillColor: col(p.grupo), fillOpacity: 0.85 })
+      .bindPopup(`<div style="font-family:'IBM Plex Sans',sans-serif;font-size:12px;line-height:1.6">
+          <strong style="font-family:'IBM Plex Mono',monospace">${p.sigla || p.pozo_id}</strong><br>
+          ${p.empresa || '—'}<br>
+          Yacimiento: ${p.yacimiento || '—'}<br>
+          Estado: ${p.tipoestado || '—'}<br>
+          Profundidad: ${p.profundidad ? (+p.profundidad).toLocaleString('es-AR') + ' m' : '—'}<br>
+          Último reporte: ${p.ultimo_reporte || '—'}</div>`)
+      .addTo(_mapaCapa);
+  });
+  document.getElementById('mapa-conteo').textContent = `${pozos.length.toLocaleString('es-AR')} pozos con ubicación`;
 }
 
 // ════════════════════════════════════════════
