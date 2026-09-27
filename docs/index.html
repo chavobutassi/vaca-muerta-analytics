@@ -85,6 +85,7 @@ tr:hover td{background:#1c2128}
 .source{font-size:11px;color:#484f58;margin-top:24px;text-align:center;padding-bottom:24px}
 @media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}}
 canvas{display:block;max-width:100%}
+#p9 .card{min-width:0}
 </style>
 </head>
 <body>
@@ -107,6 +108,7 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p6',this)">SITREP</button>
   <button onclick="showPage('p7',this)">Cohortes</button>
   <button onclick="showPage('p8',this)">Calidad</button>
+  <button onclick="showPage('p9',this)">Validación BIM</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -536,6 +538,96 @@ canvas{display:block;max-width:100%}
 </div>
 
 
+<!-- ═══ PAGE 9 — VALIDACIÓN DE DATOS BIM ═══ -->
+<div class="page" id="p9">
+  <div id="p9-loading" class="loading"><span class="spinner"></span>Validando modelo BIM...</div>
+  <div id="p9-content" style="display:none">
+
+    <div class="card" style="margin-bottom:16px;border-left:3px solid #79c0ff">
+      <h3>¿Qué muestra esta página?</h3>
+      <div style="font-size:13px;line-height:1.7;color:#8b949e">
+        <p style="margin-bottom:8px">
+          Un modelo <strong style="color:#e6edf3">BIM</strong> (formato IFC) no es solo un dibujo 3D: cada objeto de la instalación
+          —cabeza de pozo, separador, tanque, bomba, línea— trae <strong style="color:#e6edf3">datos</strong> (tag, estado, fabricante, presión de diseño).
+          Esta página valida esos datos con 7 reglas, igual que la página <em>Calidad</em> lo hace con la producción.
+        </p>
+        <p style="margin-bottom:8px">
+          La regla <strong style="color:#e6edf3">R07</strong> es el puente entre ambos mundos: cada cabeza de pozo del modelo
+          debe corresponder a un pozo real del dataset de la Secretaría de Energía.
+        </p>
+        <p style="color:#484f58;font-size:12px">
+          ⚠ No existen modelos BIM públicos de instalaciones de Vaca Muerta. El modelo es una locación <strong>sintética</strong>
+          (1 pad, 4 pozos y su batería) con errores sembrados a propósito para demostrar qué detecta cada regla.
+          Las 3 cabezas de pozo válidas apuntan a pozos reales del dataset.
+        </p>
+      </div>
+    </div>
+
+    <div class="kpi-grid" id="bim-kpis"></div>
+
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Cumplimiento por regla</h3>
+        <div class="chart-wrap" style="height:280px">
+          <canvas id="chart-bim-reglas" role="img" aria-label="Porcentaje de cumplimiento por regla de validación BIM"></canvas>
+        </div>
+        <div class="chart-annotation">% de activos evaluados que cumplen la regla · color = severidad</div>
+      </div>
+      <div class="card">
+        <h3>Reglas de validación</h3>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>Regla</th><th>Severidad</th><th>Fallas</th><th>Cumple</th></tr></thead>
+          <tbody id="tb-bim-reglas"></tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Hallazgos
+        <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#484f58;font-size:11px">
+          — una fila por cada regla que falla en un activo
+        </span>
+      </h3>
+      <div class="filter-bar">
+        <label>Severidad:</label>
+        <select id="bim-filtro-sev" onchange="renderBimHallazgos()">
+          <option value="">Todas</option>
+          <option value="CRITICA">Crítica</option>
+          <option value="MAYOR">Mayor</option>
+          <option value="MENOR">Menor</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr>
+          <th onclick="sortTable('tb-bim-hallazgos',0)">Regla</th>
+          <th onclick="sortTable('tb-bim-hallazgos',1)">Severidad</th>
+          <th onclick="sortTable('tb-bim-hallazgos',2)">Tag</th>
+          <th onclick="sortTable('tb-bim-hallazgos',3)">Activo</th>
+          <th>Detalle</th>
+        </tr></thead>
+        <tbody id="tb-bim-hallazgos"></tbody>
+      </table></div>
+    </div>
+
+    <div class="card">
+      <h3>Inventario de activos del modelo</h3>
+      <div style="overflow-x:auto"><table>
+        <thead><tr>
+          <th onclick="sortTable('tb-bim-inv',0)">Tag</th>
+          <th onclick="sortTable('tb-bim-inv',1)">Tipo</th>
+          <th onclick="sortTable('tb-bim-inv',2)">Nombre</th>
+          <th onclick="sortTable('tb-bim-inv',3)">Sector</th>
+          <th onclick="sortTable('tb-bim-inv',4)">Estado</th>
+          <th onclick="sortTable('tb-bim-inv',5)">Pozo (producción)</th>
+          <th onclick="sortTable('tb-bim-inv',6)">Observaciones</th>
+        </tr></thead>
+        <tbody id="tb-bim-inv"></tbody>
+      </table></div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 const DATA = {
   prod:     './data/01_vm_produccion_mensual.csv',
@@ -548,6 +640,9 @@ const DATA = {
   cohortes: './data/08_vm_declinacion_cohortes.csv',
   quality:  './data/09_vm_data_quality.csv',
   metadata: './data/_metadata.json',
+  bimInv:   './data/10_bim_inventario.csv',
+  bimHall:  './data/10_bim_hallazgos.csv',
+  bimRes:   './data/10_bim_resumen.csv',
 };
 
 const COLORS = {
@@ -1481,6 +1576,166 @@ function renderMetadata(meta) {
   if (bp && meta.periodo_hasta) bp.textContent = 'Hasta ' + meta.periodo_hasta;
 }
 
+
+// ════════════════════════════════════════════
+// PÁGINA 9 — VALIDACIÓN DE DATOS BIM
+// ════════════════════════════════════════════
+// Parser propio: los detalles de hallazgos traen comas entre comillas
+// y los CSV vienen con BOM (utf-8-sig).
+function parseCSVQuoted(text) {
+  text = text.replace(/^﻿/, '');
+  const rows = []; let row = [], cur = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') q = false;
+      else cur += c;
+    } else if (c === '"') q = true;
+    else if (c === ',') { row.push(cur); cur = ''; }
+    else if (c === '\n') { row.push(cur.replace(/\r$/, '')); rows.push(row); row = []; cur = ''; }
+    else cur += c;
+  }
+  if (cur || row.length) { row.push(cur.replace(/\r$/, '')); rows.push(row); }
+  const [h, ...data] = rows.filter(r => r.some(v => v.trim() !== ''));
+  return data.map(r => Object.fromEntries(h.map((k, i) => [k.trim(), (r[i] || '').trim()])));
+}
+async function fetchCSVQuoted(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} — ${url}`);
+  return parseCSVQuoted(await r.text());
+}
+
+const BIM_SEV = {
+  CRITICA: { label: 'Crítica', color: '#f78166' },
+  MAYOR:   { label: 'Mayor',   color: '#e3b341' },
+  MENOR:   { label: 'Menor',   color: '#79c0ff' },
+};
+const bimSevBadge = sev => {
+  const s = BIM_SEV[sev] || { label: sev, color: '#8b949e' };
+  return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;
+    background:${s.color}15;border:1px solid ${s.color}40;color:${s.color}">${s.label}</span>`;
+};
+const TIPO_LABEL = { CABEZA_POZO:'Cabeza de pozo', SEPARADOR:'Separador', TANQUE:'Tanque', BOMBA:'Bomba', LINEA:'Línea' };
+
+let _bimInv = [], _bimHall = [], _bimRes = [];
+
+function renderBIM() {
+  const total    = _bimInv.length;
+  const conObs   = new Set(_bimHall.map(h => h.global_id)).size;
+  const limpios  = total - conObs;
+  const criticos = _bimHall.filter(h => h.severidad === 'CRITICA').length;
+  const r07      = _bimRes.find(r => r.regla_id === 'R07');
+
+  // ── KPIs ──────────────────────────────────
+  document.getElementById('bim-kpis').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-label">Activos en el modelo</div>
+      <div class="kpi-value">${total}</div>
+      <div class="kpi-sub" style="color:#8b949e">${Object.keys(TIPO_LABEL).filter(t => _bimInv.some(a => a.tipo_activo === t)).length} tipos de activo</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Sin observaciones</div>
+      <div class="kpi-value" style="color:#3fb950">${limpios}</div>
+      <div class="kpi-sub" style="color:#8b949e">${total ? (limpios/total*100).toFixed(0) : 0}% del modelo listo para usar</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Hallazgos críticos</div>
+      <div class="kpi-value" style="color:${criticos ? '#f78166' : '#3fb950'}">${criticos}</div>
+      <div class="kpi-sub ${criticos ? 'neg' : ''}">de ${_bimHall.length} hallazgos totales</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Cruce con producción (R07)</div>
+      <div class="kpi-value">${r07 ? (+r07.evaluados - +r07.fallas) + '/' + r07.evaluados : '—'}</div>
+      <div class="kpi-sub" style="color:#8b949e">cabezas de pozo halladas en el dataset</div>
+    </div>`;
+
+  // ── Tabla de reglas ───────────────────────
+  document.getElementById('tb-bim-reglas').innerHTML = _bimRes.map(r => {
+    const n = +r.fallas;
+    return `<tr>
+      <td><strong>${r.regla_id}</strong> <span style="color:#8b949e">${r.regla}</span></td>
+      <td>${bimSevBadge(r.severidad)}</td>
+      <td style="color:${n ? (BIM_SEV[r.severidad]||{}).color : '#3fb950'}">${n} / ${r.evaluados}</td>
+      <td>${n ? (+r.cumplimiento_pct).toFixed(1) + '%' : '✅ 100%'}</td>
+    </tr>`;
+  }).join('');
+
+  // ── Gráfico de cumplimiento ───────────────
+  makeChart('chart-bim-reglas', {
+    type: 'bar',
+    data: {
+      labels: _bimRes.map(r => window.innerWidth < 600 ? r.regla_id : r.regla_id + ' · ' + r.regla),
+      datasets: [{
+        data: _bimRes.map(r => +r.cumplimiento_pct),
+        backgroundColor: _bimRes.map(r => ((BIM_SEV[r.severidad]||{}).color || '#8b949e') + '88'),
+        borderColor:     _bimRes.map(r => (BIM_SEV[r.severidad]||{}).color || '#8b949e'),
+        borderWidth: 1, borderRadius: 3,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => {
+          const r = _bimRes[c.dataIndex];
+          return `${c.raw}% cumple · ${r.fallas} falla(s) de ${r.evaluados}`;
+        } } }
+      },
+      scales: {
+        x: { min: 0, max: 100, ticks: { color: '#8b949e', callback: v => v + '%', font: { size: 10 } }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  renderBimHallazgos();
+
+  // ── Inventario ────────────────────────────
+  const obsPorActivo = {};
+  _bimHall.forEach(h => (obsPorActivo[h.global_id] = obsPorActivo[h.global_id] || []).push(h.regla_id));
+  document.getElementById('tb-bim-inv').innerHTML = _bimInv.map(a => {
+    const obs = obsPorActivo[a.global_id] || [];
+    return `<tr>
+      <td style="font-family:monospace;font-size:12px">${a.TagActivo || '<span class="status-danger">(sin tag)</span>'}</td>
+      <td style="font-size:12px">${TIPO_LABEL[a.tipo_activo] || a.tipo_activo}</td>
+      <td style="font-size:12px;color:#8b949e">${a.nombre}</td>
+      <td style="font-size:12px">${a.sector || '<span class="status-warn">sin sector</span>'}</td>
+      <td style="font-size:12px">${a.Estado || '—'}</td>
+      <td style="font-family:monospace;font-size:12px">${a.PozoId || '—'}</td>
+      <td style="font-size:12px">${obs.length ? '<span class="status-warn">⚠ ' + [...new Set(obs)].join(', ') + '</span>' : '<span class="status-ok">✅ OK</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderBimHallazgos() {
+  const f = document.getElementById('bim-filtro-sev').value;
+  const rows = _bimHall.filter(h => !f || h.severidad === f);
+  document.getElementById('tb-bim-hallazgos').innerHTML = rows.length ? rows.map(h => `<tr>
+      <td><strong>${h.regla_id}</strong> <span style="color:#8b949e;font-size:12px">${h.regla}</span></td>
+      <td>${bimSevBadge(h.severidad)}</td>
+      <td style="font-family:monospace;font-size:12px">${h.tag}</td>
+      <td style="font-size:12px">${h.nombre}</td>
+      <td style="color:#8b949e;font-size:12px">${h.detalle}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="5" style="color:#3fb950">✅ Sin hallazgos para este filtro</td></tr>';
+}
+
+async function initBIM() {
+  try {
+    [_bimInv, _bimHall, _bimRes] = await Promise.all([
+      fetchCSVQuoted(DATA.bimInv), fetchCSVQuoted(DATA.bimHall), fetchCSVQuoted(DATA.bimRes),
+    ]);
+    renderBIM();
+    document.getElementById('p9-loading').style.display = 'none';
+    document.getElementById('p9-content').style.display = 'block';
+  } catch (err) {
+    console.error(err);
+    document.getElementById('p9-loading').innerHTML =
+      `<span style="color:#f78166">⚠ No se pudieron cargar los datos BIM.<br><small>${err.message}</small></span>`;
+  }
+}
+
 // ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
@@ -1766,6 +2021,7 @@ function renderSITREP() {
 
 
 init();
+initBIM();
 </script>
 
 <p class="source">
