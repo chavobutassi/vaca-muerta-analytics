@@ -55,7 +55,9 @@ OUTPUTS:
     output/11_activos_resumen.csv         cumplimiento por regla
     output/11_activos_hallazgos.csv       muestra de hallazgos (hasta 300 por regla)
     output/completo/11_activos_hallazgos_completo.csv   todos los hallazgos
-    output/11_activos_meta.json           veredicto de la entrega y trazabilidad
+    output/11_activos_operadoras.csv      índice de calidad por operadora
+    output/11_activos_historial.csv       KPIs de cada corrida (tendencia)
+    output/11_activos_meta.json           veredicto, 6 dimensiones de calidad y trazabilidad
     (los 4 primeros se copian a docs/data/ para el dashboard)
 =============================================================
 """
@@ -377,6 +379,69 @@ def validar(d: pd.DataFrame, reg: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFr
     return todos, pd.DataFrame(resumen)
 
 
+# ─── KPIs DE CALIDAD (6 dimensiones) ─────────────────────────────────────────
+
+DIMENSIONES = [
+    # (clave, nombre, reglas que la componen, descripción)
+    ("completitud",  "Completitud",  ["A02"],               "Pozos con todos los atributos obligatorios"),
+    ("validez",      "Validez",      ["A03"],               "Pozos con valores dentro del dominio permitido"),
+    ("unicidad",     "Unicidad",     ["A01"],               "Pozos con identificador único y estable"),
+    ("consistencia", "Consistencia", ["A05", "A06", "A07"], "Pozos sin contradicciones de estado, atributos o entre entregas"),
+    ("exactitud",    "Exactitud posicional", ["A04"],       "Pozos con coordenadas dentro de la cuenca"),
+]
+
+
+def kpis_calidad(reg: pd.DataFrame, hallazgos: pd.DataFrame, resumen: pd.DataFrame,
+                 periodo_hasta: pd.Timestamp) -> tuple[dict, pd.DataFrame]:
+    """Calcula las 6 dimensiones de calidad, el índice global y la calidad por operadora.
+
+    Índice de calidad = % de pozos sin hallazgos críticos ni mayores. Las
+    observaciones menores (A06, A08, A09) no descalifican un pozo.
+    """
+    total = len(reg)
+    dims = []
+    for clave, nombre, reglas, desc in DIMENSIONES:
+        ev = resumen[resumen["regla_id"].isin(reglas)]["evaluados"].max()
+        malos = hallazgos[hallazgos["regla_id"].isin(reglas)]["pozo_id"].nunique() if len(hallazgos) else 0
+        pct = round((ev - malos) / ev * 100, 1) if ev else None
+        dims.append({"clave": clave, "nombre": nombre, "valor": pct, "unidad": "%",
+                     "reglas": reglas, "descripcion": desc})
+    hoy = pd.Timestamp.now().to_period("M")
+    atraso = (hoy - periodo_hasta.to_period("M")).n
+    dims.insert(4, {"clave": "actualidad", "nombre": "Actualidad", "valor": int(atraso), "unidad": "meses",
+                    "reglas": [], "descripcion": "Meses entre hoy y el último período publicado por la fuente"})
+
+    graves = hallazgos[hallazgos["severidad"].isin(["CRITICA", "MAYOR"])] if len(hallazgos) else hallazgos
+    pozos_graves = set(graves["pozo_id"]) if len(graves) else set()
+    indice = round((total - len(pozos_graves)) / total * 100, 1) if total else None
+
+    r = reg[["pozo_id", "empresa_grupo"]].copy()
+    r["ok"] = ~r["pozo_id"].isin(pozos_graves)
+    ops = (r.groupby("empresa_grupo").agg(pozos=("pozo_id", "size"), pozos_ok=("ok", "sum"))
+             .reset_index())
+    ops["indice_pct"] = (ops["pozos_ok"] / ops["pozos"] * 100).round(1)
+    ops = ops.sort_values(["pozos"], ascending=False).reset_index(drop=True)
+    return {"indice_calidad": indice, "dimensiones": dims}, ops
+
+
+def actualizar_historial(kpis: dict, meta_base: dict) -> pd.DataFrame:
+    """Agrega la corrida actual al historial publicado (una fila por día de corrida).
+
+    El historial vive en docs/data/ y la Action lo commitea: así la tendencia
+    se acumula semana a semana sin base de datos.
+    """
+    ruta_pub = CARPETA_DOCS / "11_activos_historial.csv"
+    previo = pd.read_csv(ruta_pub, encoding="utf-8-sig") if ruta_pub.exists() else pd.DataFrame()
+    fila = {"fecha_run": pd.Timestamp.now().strftime("%Y-%m-%d"),
+            "periodo_hasta": meta_base["periodo_hasta"], "pozos": meta_base["pozos"],
+            "indice_calidad": kpis["indice_calidad"]}
+    for dmn in kpis["dimensiones"]:
+        fila[dmn["clave"]] = dmn["valor"]
+    hist = pd.concat([previo, pd.DataFrame([fila])], ignore_index=True)
+    hist = hist.drop_duplicates("fecha_run", keep="last").sort_values("fecha_run").reset_index(drop=True)
+    return hist
+
+
 def veredicto(resumen: pd.DataFrame) -> dict:
     """Decisión sobre la entrega, siguiendo el flujo del entorno común de datos
     de IRAM-ISO 19650: si no cumple, no pasa a 'publicado' y vuelve al originador."""
@@ -427,7 +492,10 @@ def main() -> None:
     guardar(muestra, "11_activos_hallazgos.csv")
     guardar(hallazgos, "completo/11_activos_hallazgos_completo.csv", publicar=False)
 
-    log.info("[4/4] Metadata")
+    log.info("[4/4] KPIs de calidad, historial y metadata")
+    kpis, operadoras = kpis_calidad(reg, hallazgos, resumen, d["fecha"].max())
+    guardar(operadoras, "11_activos_operadoras.csv")
+    log.info("  Índice de calidad: %s%% de pozos sin hallazgos críticos ni mayores", kpis["indice_calidad"])
     meta = {
         "ejecutado_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "pozos": int(len(reg)),
@@ -439,10 +507,13 @@ def main() -> None:
         "hallazgos_totales": int(len(hallazgos)),
         "hallazgos_publicados": int(len(muestra)),
         "veredicto": ver,
+        "indice_calidad": kpis["indice_calidad"],
+        "dimensiones": kpis["dimensiones"],
         "huecos_fuente": HUECOS_FUENTE,
         "marco": "Requisitos de información y flujo de entrega según IRAM-ISO 19650-1/-2",
         "fuente": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
     }
+    guardar(actualizar_historial(kpis, meta), "11_activos_historial.csv")
     ruta = CARPETA_OUTPUT / "11_activos_meta.json"
     ruta.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     shutil.copy2(ruta, CARPETA_DOCS / ruta.name)

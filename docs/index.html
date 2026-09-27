@@ -43,6 +43,7 @@ body{font-family:'IBM Plex Sans',system-ui,sans-serif;background:var(--bg);color
 /* Navegación */
 .nav{background:var(--surface);border-bottom:1px solid var(--line);padding:0 24px;display:flex;overflow-x:auto}
 .nav button{background:none;border:none;color:var(--ink-2);font:inherit;font-size:13px;padding:12px 14px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
+.nav-sep{width:1px;background:#d3d8df;margin:10px 10px;flex-shrink:0}
 .nav button.active{color:var(--navy);font-weight:600;border-bottom-color:var(--navy-2)}
 .nav button:hover:not(.active){color:var(--ink)}
 
@@ -106,6 +107,8 @@ canvas{display:block;max-width:100%}
 .leaflet-container{font-family:inherit}
 .leaflet-control-layers{font-size:12px;border-radius:2px}
 #p9 .card,#p10 .card{min-width:0}
+.act-dims{grid-template-columns:repeat(3,1fr)}
+@media(max-width:768px){.act-dims{grid-template-columns:1fr 1fr}#p10 .chart-grid{grid-template-columns:1fr!important}}
 .page .badge{color:var(--ink);border:1px solid var(--line);padding:4px 10px}
 
 </style>
@@ -129,9 +132,10 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p5',this)">Declinación</button>
   <button onclick="showPage('p6',this)">SITREP</button>
   <button onclick="showPage('p7',this)">Cohortes</button>
-  <button onclick="showPage('p8',this)">Calidad</button>
-  <button onclick="showPage('p9',this)">Validación BIM</button>
+  <span class="nav-sep" aria-hidden="true"></span>
   <button onclick="showPage('p10',this)">Registro de activos</button>
+  <button onclick="showPage('p8',this)">Calidad del pipeline</button>
+  <button onclick="showPage('p9',this)">Validación BIM (demo)</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -698,7 +702,28 @@ canvas{display:block;max-width:100%}
     </div>
 
     <div id="act-veredicto" style="margin-bottom:16px"></div>
-    <div class="kpi-grid" id="act-kpis"></div>
+
+    <div class="chart-grid" style="grid-template-columns:1fr 2fr">
+      <div class="card">
+        <h3>Índice de calidad</h3>
+        <div id="act-indice"></div>
+      </div>
+      <div class="card">
+        <h3>Tendencia entre corridas <span style="font-weight:400;color:#8792a2;font-size:11px">— una corrida por semana (GitHub Actions)</span></h3>
+        <div class="chart-wrap" style="height:180px"><canvas id="chart-act-hist" role="img" aria-label="Evolución del índice de calidad por corrida"></canvas></div>
+        <div class="chart-annotation" id="act-hist-nota"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Dimensiones de calidad del dato <span style="font-weight:400;color:#8792a2;font-size:11px">— % de pozos que cumplen · variación contra la corrida anterior</span></h3>
+      <div class="kpi-grid act-dims" id="act-dims" style="margin-bottom:0"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h3>Calidad por operadora <span style="font-weight:400;color:#8792a2;font-size:11px">— % de pozos sin hallazgos críticos ni mayores · operadoras con 20 pozos o más</span></h3>
+      <div class="chart-wrap" id="act-ops-wrap" style="height:320px"><canvas id="chart-act-ops" role="img" aria-label="Índice de calidad por operadora"></canvas></div>
+    </div>
 
     <div class="chart-grid">
       <div class="card">
@@ -763,6 +788,8 @@ const DATA = {
   actHall:  './data/11_activos_hallazgos.csv',
   actMeta:  './data/11_activos_meta.json',
   actReg:   './data/11_activos_registro.csv',
+  actOps:   './data/11_activos_operadoras.csv',
+  actHist:  './data/11_activos_historial.csv',
 };
 
 const COLORS = {
@@ -1895,6 +1922,67 @@ async function initBIM() {
 // ════════════════════════════════════════════
 let _actRes = [], _actHall = [], _actMeta = null;
 
+let _actOps = [], _actHist = [];
+function renderActKpis(m) {
+  const dims = m.dimensiones || [];
+  const prev = _actHist.length > 1 ? _actHist[_actHist.length - 2] : null;
+  const idx = m.indice_calidad;
+  const ic = idx == null ? '#586474' : idx >= 95 ? '#067647' : idx >= 85 ? '#b54708' : '#b42318';
+  const dIdx = prev && idx != null ? idx - (+prev.indice_calidad) : null;
+  const flecha = (d, invertir) => d == null || Math.abs(d) < 0.05 ? '<span style="color:#586474">sin cambios</span>'
+    : `<span style="color:${(d > 0) !== !!invertir ? '#067647' : '#b42318'}">${d > 0 ? '▲' : '▼'} ${Math.abs(d).toFixed(1)}${invertir ? '' : ' pp'}</span>`;
+  document.getElementById('act-indice').innerHTML = idx == null
+    ? '<div style="color:#586474;font-size:13px">Disponible desde la próxima corrida de la validación.</div>'
+    : `<div style="font-size:44px;font-weight:600;color:${ic};line-height:1">${idx.toFixed(1)}%</div>
+       <div style="font-size:13px;color:#14202e;margin-top:8px">de los pozos sin hallazgos críticos ni mayores</div>
+       <div style="font-size:12px;margin-top:6px">${prev ? flecha(dIdx) + ' vs corrida del ' + prev.fecha_run : '<span style="color:#586474">primera corrida registrada</span>'}</div>
+       <div style="font-size:12px;color:#586474;margin-top:10px;line-height:1.5">${(m.pozos || 0).toLocaleString('es-AR')} pozos evaluados. Las observaciones menores no descalifican un pozo.</div>`;
+
+  document.getElementById('act-dims').innerHTML = dims.length ? dims.map(d => {
+    const esPct = d.unidad === '%';
+    const v = d.valor;
+    const color = v == null ? '#586474' : esPct ? (v >= 99 ? '#067647' : v >= 95 ? '#b54708' : '#b42318') : (v <= 2 ? '#067647' : v <= 4 ? '#b54708' : '#b42318');
+    const pv = prev && prev[d.clave] !== undefined && prev[d.clave] !== '' ? +prev[d.clave] : null;
+    const delta = pv != null && v != null ? v - pv : null;
+    return `<div class="kpi" style="border-top-color:${color}">
+      <div class="kpi-label">${d.nombre}</div>
+      <div class="kpi-value" style="color:${color}">${v == null ? '—' : esPct ? v.toFixed(1) + '%' : v + (v === 1 ? ' mes' : ' meses')}</div>
+      <div style="font-size:12px;color:#586474;margin-top:4px;line-height:1.4">${esPct ? d.descripcion : 'de atraso de la fuente'}</div>
+      <div style="font-size:11px;margin-top:6px">${prev ? (esPct ? flecha(delta) : flecha(delta == null ? null : delta, true).replace('pp','')) : ''}
+        ${d.reglas && d.reglas.length ? '<span style="color:#8792a2">' + (prev ? ' · ' : '') + 'Reglas ' + d.reglas.join(', ') + '</span>' : ''}</div>
+    </div>`;
+  }).join('') : '<div style="color:#586474;font-size:13px">Las dimensiones se calculan desde la próxima corrida de la validación.</div>';
+
+  // Tendencia
+  const h = _actHist.filter(r => r.indice_calidad !== '');
+  if (h.length) {
+    makeChart('chart-act-hist', { type: 'line',
+      data: { labels: h.map(r => r.fecha_run), datasets: [
+        { label: 'Índice de calidad', data: h.map(r => +r.indice_calidad), borderColor: '#1f4e79', backgroundColor: '#1f4e79',
+          borderWidth: 2, pointRadius: 4, tension: 0.2 },
+        { label: 'Completitud', data: h.map(r => +r.completitud), borderColor: '#8792a2', borderDash: [4, 3], borderWidth: 1.5, pointRadius: 3 } ] },
+      options: { plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } },
+                            tooltip: { callbacks: { label: c => `${c.dataset.label}: ${c.raw}%` } } },
+        scales: { y: { suggestedMin: 80, max: 100, ticks: { callback: v => v + '%', font: { size: 10 } } },
+                  x: { ticks: { font: { size: 10 } } } } } });
+  }
+  document.getElementById('act-hist-nota').textContent = h.length < 2
+    ? 'La línea se arma con cada corrida semanal de la validación; hoy hay ' + h.length + ' punto(s).' : '';
+
+  // Operadoras
+  const ops = _actOps.filter(r => +r.pozos >= 20).sort((a, b) => +a.indice_pct - +b.indice_pct);
+  if (ops.length) {
+    document.getElementById('act-ops-wrap').style.height = Math.max(180, ops.length * 26 + 40) + 'px';
+    makeChart('chart-act-ops', { type: 'bar',
+      data: { labels: ops.map(r => r.empresa_grupo), datasets: [{ data: ops.map(r => +r.indice_pct),
+        backgroundColor: ops.map(r => col(r.empresa_grupo) + 'aa'), borderColor: ops.map(r => col(r.empresa_grupo)), borderWidth: 1, borderRadius: 3 }] },
+      options: { indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => {
+          const r = ops[c.dataIndex]; return `${(+r.indice_pct).toFixed(1)}% · ${(+r.pozos_ok).toLocaleString('es-AR')} de ${(+r.pozos).toLocaleString('es-AR')} pozos`; } } } },
+        scales: { x: { min: 0, max: 100, ticks: { callback: v => v + '%', font: { size: 10 } } },
+                  y: { ticks: { font: { size: 11 } }, grid: { display: false } } } } });
+  }
+}
+
 function renderActivos() {
   const m = _actMeta || {};
   const v = m.veredicto || {};
@@ -1913,21 +2001,7 @@ function renderActivos() {
       </div>
     </div>`;
 
-  const conHall = m.pozos_con_algun_hallazgo ?? new Set(_actHall.map(h => h.pozo_id)).size;
-  const crit = _actRes.filter(r => r.severidad === 'CRITICA').reduce((s, r) => s + (+r.pozos_con_hallazgo || 0), 0);
-  document.getElementById('act-kpis').innerHTML = `
-    <div class="kpi"><div class="kpi-label">Pozos en el registro</div>
-      <div class="kpi-value">${(m.pozos || 0).toLocaleString('es-AR')}</div>
-      <div class="kpi-sub" style="color:#586474">${(m.registros_pozo_mes || 0).toLocaleString('es-AR')} registros pozo-mes</div></div>
-    <div class="kpi"><div class="kpi-label">Pozos sin observaciones</div>
-      <div class="kpi-value" style="color:#067647">${((m.pozos || 0) - conHall).toLocaleString('es-AR')}</div>
-      <div class="kpi-sub" style="color:#586474">${m.pozos ? (((m.pozos - conHall) / m.pozos) * 100).toFixed(1) : 0}% del registro</div></div>
-    <div class="kpi"><div class="kpi-label">Pozos con hallazgo crítico</div>
-      <div class="kpi-value" style="color:${crit ? '#b42318' : '#067647'}">${crit.toLocaleString('es-AR')}</div>
-      <div class="kpi-sub" style="color:#586474">identificador inconsistente</div></div>
-    <div class="kpi"><div class="kpi-label">Hallazgos totales</div>
-      <div class="kpi-value">${(m.hallazgos_totales ?? _actHall.length).toLocaleString('es-AR')}</div>
-      <div class="kpi-sub" style="color:#586474">en ${_actRes.filter(r => +r.pozos_con_hallazgo > 0).length} de ${_actRes.length} reglas</div></div>`;
+  renderActKpis(m);
 
   document.getElementById('tb-act-reglas').innerHTML = _actRes.map(r => {
     const n = +r.pozos_con_hallazgo;
@@ -1997,6 +2071,8 @@ async function initActivos() {
       fetchCSVQuoted(DATA.actRes), fetchCSVQuoted(DATA.actHall), fetch(DATA.actMeta)
     ]);
     _actRes = res; _actHall = hall; _actMeta = metaResp.ok ? await metaResp.json() : null;
+    try { _actOps = await fetchCSVQuoted(DATA.actOps); } catch (e) { _actOps = []; }
+    try { _actHist = await fetchCSVQuoted(DATA.actHist); } catch (e) { _actHist = []; }
     renderActivos();
     document.getElementById('p10-loading').style.display = 'none';
     document.getElementById('p10-content').style.display = 'block';
