@@ -42,6 +42,9 @@ CAMBIOS v2.3:
     • Mapeo de columnas: la fuente llama "areayacimiento" al yacimiento y no
       estaba mapeada; por eso la metadata mostraba yacimientos = null y el
       yacimiento no aparecía en las tablas.
+    • Eficiencia: water cut y GOR como cociente de totales (no promedio de
+      cocientes mensuales, que hacía explotar el GOR con meses de casi cero
+      petróleo) + columna tipo_fluido (gasífero / petrolífero).
     • Cohortes: agrega mes_pico por cohorte para medir la declinación desde el
       pico y no desde el mes 0 (el mes 0 suele ser parcial → caída "negativa").
 =============================================================
@@ -94,6 +97,7 @@ CARPETA_DOCS   = Path("docs/data")   # GitHub Pages sirve desde acá
 #                                            misnomer, la columna trae miles de m3)
 FACTOR_BOE_PETROLEO = 6.2898   # boe por m3
 FACTOR_BOE_GAS      = 5.886    # boe por mil m3 (unidad nativa de gas_mm3)
+GOR_GASIFERO        = 3_000    # m3/m3: por encima, el pozo es en la práctica gasífero
 
 # ─── PARÁMETROS DEL ANÁLISIS DE DECLINACIÓN (ARPS) ───────────────────────────
 MIN_MESES_AJUSTE   = 6       # mínimo de puntos post-pico para intentar el ajuste
@@ -660,16 +664,32 @@ def t_top_pozos(df: pd.DataFrame, n: int = 200) -> pd.DataFrame:
     return g
 
 def t_eficiencia(df: pd.DataFrame) -> pd.DataFrame:
-    """Water cut y GOR promedio por pozo. Identifica candidatos a intervención."""
+    """
+    Water cut y GOR por pozo. Identifica candidatos a intervención.
+
+    Ambos indicadores se calculan como COCIENTE DE TOTALES (agua total / líquido
+    total, gas total / petróleo total) y no como promedio de cocientes mensuales:
+    un solo mes con muy poco petróleo hace explotar el GOR de ese mes y arruina
+    el promedio. Se excluyen los meses con menos de 1 m3 de petróleo.
+
+    GOR en m3 de gas por m3 de petróleo. Un pozo con GOR > 3.000 m3/m3 es en la
+    práctica gasífero: se marca en tipo_fluido para no mezclarlo con los de
+    petróleo al buscar candidatos a intervención por agua.
+    """
     id_cols = [c for c in ["pozo_id", "empresa_grupo", "yacimiento"] if c in df.columns]
-    g = df[df["petroleo_m3"] > 0].groupby(id_cols, observed=True).agg(
-        water_cut_prom=("water_cut_pct", "mean"),
-        gor_prom=("gor", "mean"),
+    d = df[df["petroleo_m3"] >= 1].copy()
+    d["gas_m3_tot"] = d["gas_mm3"] * 1_000
+    g = d.groupby(id_cols, observed=True).agg(
+        pet_tot=("petroleo_m3", "sum"),
+        agua_tot=("agua_m3", "sum"),
+        gas_tot=("gas_m3_tot", "sum"),
         petroleo_prom_m3=("petroleo_m3", "mean"),
         meses=("anio_mes", "nunique"),
     ).reset_index()
-    g["water_cut_prom"] = g["water_cut_prom"].round(1)
-    g["gor_prom"]       = g["gor_prom"].round(1)
+    liquido = g["pet_tot"] + g["agua_tot"]
+    g["water_cut_prom"] = (g["agua_tot"] / liquido.where(liquido > 0) * 100).round(1)
+    g["gor_prom"] = (g["gas_tot"] / g["pet_tot"]).round(1)
+    g["tipo_fluido"] = np.where(g["gor_prom"] > GOR_GASIFERO, "Gasífero", "Petrolífero")
     g["etapa_pozo"] = g["water_cut_prom"].apply(
         lambda x: (
             "Temprano (<30%)"    if x < 30 else
@@ -677,7 +697,7 @@ def t_eficiencia(df: pd.DataFrame) -> pd.DataFrame:
             "Maduro (>60%)"
         ) if pd.notna(x) else "Sin datos"
     )
-    return g
+    return g.drop(columns=["pet_tot", "agua_tot", "gas_tot"])
 
 def t_market_share(df: pd.DataFrame) -> pd.DataFrame:
     """Participación de mercado anual por empresa expresada en BOE.

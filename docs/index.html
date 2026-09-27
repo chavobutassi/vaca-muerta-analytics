@@ -340,7 +340,7 @@ canvas{display:block;max-width:100%}
     </div>
     <div class="chart-grid full">
       <div class="card">
-        <h3>Scatter — water cut % vs GOR · color = empresa · candidatos a intervención marcados</h3>
+        <h3>Water cut vs GOR por pozo <span style="font-weight:400;color:#8792a2;font-size:11px">— GOR en escala logarítmica · arriba de 3.000 m³/m³ el pozo es gasífero · a la derecha de 60% de agua, candidato a intervención (puntos más grandes)</span></h3>
         <div class="chart-wrap" style="height:280px">
           <canvas id="chart-wc-gor" role="img" aria-label="Scatter water cut vs GOR por empresa"></canvas>
         </div>
@@ -1240,9 +1240,11 @@ function renderP4() {
   });
 
   // Scatter WC vs GOR
-  const scDatasets = emps.map(e=>({
+  const scGrupo = e => (COLORS[e] && e!=='Otra') ? e : 'Otras';
+  const scEmps = [...new Set(wcs.map(r=>scGrupo(r.empresa_grupo)))].sort((a,b)=>a==='Otras'?1:b==='Otras'?-1:0);
+  const scDatasets = scEmps.map(e=>({
     label:e,
-    data:wcs.filter(r=>r.empresa_grupo===e&&+r.gor_prom>0&&+r.water_cut_prom>0).map(r=>({x:+r.water_cut_prom,y:+r.gor_prom,r:4,pozo:r.pozo_id})),
+    data:wcs.filter(r=>scGrupo(r.empresa_grupo)===e&&+r.gor_prom>0&&r.water_cut_prom!=='').map(r=>({x:+r.water_cut_prom,y:+r.gor_prom,r:+r.water_cut_prom>60&&+r.gor_prom<=3000?5:3,pozo:r.pozo_id})),
     backgroundColor:col(e)+'66', borderColor:col(e), borderWidth:1,
   }));
   makeChart('chart-wc-gor',{
@@ -1251,12 +1253,12 @@ function renderP4() {
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{
         legend:{position:'bottom',labels:{color:'#586474',font:{size:10},boxWidth:8,padding:6}},
-        tooltip:{callbacks:{label:c=>`${c.dataset.label} — WC:${c.raw.x}% GOR:${c.raw.y}`}},
+        tooltip:{callbacks:{label:c=>`Pozo ${c.raw.pozo} · ${c.dataset.label} — WC ${c.raw.x}% · GOR ${Math.round(c.raw.y).toLocaleString('es-AR')} m³/m³${c.raw.y>3000?' (gasífero)':''}`}},
         annotation:{annotations:{line1:{type:'line',xMin:60,xMax:60,borderColor:'#b42318',borderWidth:1,borderDash:[4,3]}}}
       },
       scales:{
         x:{title:{display:true,text:'Water cut %',color:'#586474',font:{size:11}},ticks:{color:'#586474',callback:v=>v+'%',font:{size:10}},grid:{color:'#e6e9ee'},min:0,max:100},
-        y:{title:{display:true,text:'GOR',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:10}},grid:{color:'#e6e9ee'}},
+        y:{type:'logarithmic',title:{display:true,text:'GOR (m³/m³, escala log)',color:'#586474',font:{size:11}},ticks:{color:'#586474',font:{size:10},callback:v=>[1,10,100,1000,10000,100000,1000000,10000000].includes(v)?v.toLocaleString('es-AR'):''},grid:{color:'#e6e9ee'}},
       },
       layout:{padding:10}
     }
@@ -2091,7 +2093,13 @@ async function init() {
     try {
       const metaResp = await fetch(DATA.metadata);
       if (metaResp.ok) renderMetadata(await metaResp.json());
-    } catch(e) { console.warn('metadata no disponible', e); }
+      else throw new Error('HTTP ' + metaResp.status);
+    } catch(e) {
+      console.warn('metadata no disponible', e);
+      document.getElementById('metadata-content').innerHTML =
+        '<span style="color:#586474">Metadata del último run no disponible (' + (e.message || e) + '). ' +
+        'Se genera en cada ejecución del pipeline (_metadata.json).</span>';
+    }
 
     renderP1();
     document.getElementById('p1-loading').style.display='none';
