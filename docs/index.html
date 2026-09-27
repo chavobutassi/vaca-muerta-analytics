@@ -2044,7 +2044,13 @@ function renderMapa(ajustar) {
   const pozos = _mapaPozos.filter(p => (!fe || p.grupo === fe) &&
     (!fs || (fs === '__inactivo' ? MAPA_INACTIVOS.includes(p.tipoestado) : p.tipoestado === fs)));
   _mapa.invalidateSize();
-  if (pozos.length && (ajustar || fe)) _mapa.fitBounds(L.latLngBounds(pozos.map(p => [p.lat, p.lon])).pad(0.05));
+  if (pozos.length && (ajustar || fe)) {
+    // Encuadre sobre el 98% central: pocos pozos alejados no achican el núcleo
+    const q = (arr, f) => { const v = [...arr].sort((x, y) => x - y); return v[Math.min(v.length - 1, Math.max(0, Math.round(f * (v.length - 1))))]; };
+    const la = pozos.map(p => p.lat), lo = pozos.map(p => p.lon);
+    const lim = pozos.length > 20 ? [[q(la, .01), q(lo, .01)], [q(la, .99), q(lo, .99)]] : pozos.map(p => [p.lat, p.lon]);
+    _mapa.fitBounds(L.latLngBounds(lim).pad(0.08));
+  }
   _mapaCapa.clearLayers();
   // "Otras" primero, así las operadoras principales quedan arriba
   [...pozos].sort((a, b) => (a.grupo === 'Otras') - (b.grupo === 'Otras')).reverse().forEach(p => {
