@@ -39,6 +39,9 @@ CAMBIOS v2.3:
       v2.0: validación de calidad (09), type curves por cohorte (08_cohortes) y
       _metadata.json. Sin esto, esos archivos quedaban congelados en docs/data/
       con el factor de gas viejo (5886) y el dashboard los seguía mostrando.
+    • Mapeo de columnas: la fuente llama "areayacimiento" al yacimiento y no
+      estaba mapeada; por eso la metadata mostraba yacimientos = null y el
+      yacimiento no aparecía en las tablas.
     • Cohortes: agrega mes_pico por cohorte para medir la declinación desde el
       pico y no desde el mes 0 (el mes 0 suele ser parcial → caída "negativa").
 =============================================================
@@ -142,7 +145,7 @@ MAPA_COLUMNAS: dict[str, list[str]] = {
     "empresa":      ["empresa", "operadora"],
     "pozo_id":      ["idpozo", "id_pozo", "sigla", "pozoid"],
     "cuenca":       ["cuenca"],
-    "yacimiento":   ["yacimiento", "nombre_yacimiento", "yac", "campo"],
+    "yacimiento":   ["yacimiento", "areayacimiento", "nombre_yacimiento", "yac", "campo"],
     "formacion":    ["formacion", "formación"],
     "tipo_recurso": ["tiporecurso", "tipo_recurso", "subtipoderecurso", "sub_tipo_recurso"],
     "periodo":      ["periodo", "fecha", "anio_mes", "anomes"],

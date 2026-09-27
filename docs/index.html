@@ -100,7 +100,7 @@ code,.mono,td[style*="monospace"]{font-family:'IBM Plex Mono',ui-monospace,monos
 .source{font-size:11.5px;color:var(--ink-3);margin-top:24px;text-align:center;padding:16px 0 24px;border-top:1px solid var(--line);max-width:1200px;margin-left:auto;margin-right:auto}
 @media(max-width:768px){.chart-grid,.chart-grid.tri{grid-template-columns:1fr}.kpi-value{font-size:20px}.header{padding:12px 16px}.page{padding:16px}}
 canvas{display:block;max-width:100%}
-#p9 .card{min-width:0}
+#p9 .card,#p10 .card{min-width:0}
 .page .badge{color:var(--ink);border:1px solid var(--line);padding:4px 10px}
 
 </style>
@@ -126,6 +126,7 @@ canvas{display:block;max-width:100%}
   <button onclick="showPage('p7',this)">Cohortes</button>
   <button onclick="showPage('p8',this)">Calidad</button>
   <button onclick="showPage('p9',this)">Validación BIM</button>
+  <button onclick="showPage('p10',this)">Registro de activos</button>
 </nav>
 
 <!-- ═══ PAGE 1 — VISIÓN GENERAL ═══ -->
@@ -645,6 +646,73 @@ canvas{display:block;max-width:100%}
   </div>
 </div>
 
+<!-- ═══ PAGE 10 — VALIDACIÓN DEL REGISTRO DE ACTIVOS (DATOS REALES) ═══ -->
+<div class="page" id="p10">
+  <div id="p10-loading" class="loading"><span class="spinner"></span>Validando registro de activos...</div>
+  <div id="p10-content" style="display:none">
+
+    <div class="card" style="margin-bottom:16px;border-left:3px solid #1f4e79">
+      <h3>Validación de la información de activos entregada al regulador</h3>
+      <div style="font-size:13px;line-height:1.7;color:#586474">
+        <p style="margin-bottom:8px">
+          Cada mes las operadoras informan a la Secretaría de Energía los datos de cada pozo (Capítulo IV): además de la producción,
+          los <strong style="color:#14202e">atributos del activo</strong> —sigla, estado, tipo de pozo, sistema de extracción, profundidad,
+          yacimiento, coordenadas—. Ese conjunto funciona como el registro de activos del sector.
+        </p>
+        <p>
+          Esta página valida esa entrega contra requisitos de información explícitos, con el enfoque de
+          <strong style="color:#14202e">IRAM-ISO 19650</strong>: requisitos → chequeo → hallazgos → decisión sobre la entrega.
+          <strong style="color:#14202e">Datos reales</strong>, sin modificar.
+        </p>
+      </div>
+    </div>
+
+    <div id="act-veredicto" style="margin-bottom:16px"></div>
+    <div class="kpi-grid" id="act-kpis"></div>
+
+    <div class="chart-grid">
+      <div class="card">
+        <h3>Pozos con hallazgo por regla</h3>
+        <div class="chart-wrap" style="height:300px">
+          <canvas id="chart-act-reglas" role="img" aria-label="Porcentaje de pozos que cumplen cada regla del registro de activos"></canvas>
+        </div>
+        <div class="chart-annotation">% de pozos evaluados que cumplen la regla · color = severidad</div>
+      </div>
+      <div class="card">
+        <h3>Requisitos de información evaluados</h3>
+        <div style="overflow-x:auto"><table>
+          <thead><tr><th>Regla</th><th>Severidad</th><th>Pozos con hallazgo</th><th>Cumple</th></tr></thead>
+          <tbody id="tb-act-reglas"></tbody>
+        </table></div>
+        <div id="act-notas" style="font-size:12px;color:#586474;margin-top:12px;line-height:1.6"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Hallazgos <span style="font-weight:400;color:#8792a2;font-size:11px" id="act-muestra-nota"></span></h3>
+      <div class="filter-bar">
+        <label>Regla:</label>
+        <select id="act-filtro-regla" onchange="renderActHallazgos()"><option value="">Todas</option></select>
+        <label>Operadora:</label>
+        <select id="act-filtro-emp" onchange="renderActHallazgos()"><option value="">Todas</option></select>
+      </div>
+      <div style="overflow-x:auto"><table>
+        <thead><tr>
+          <th onclick="sortTable('tb-act-hall',0)">Regla</th>
+          <th onclick="sortTable('tb-act-hall',1)">Severidad</th>
+          <th onclick="sortTable('tb-act-hall',2)">Sigla</th>
+          <th onclick="sortTable('tb-act-hall',3)">Operadora</th>
+          <th onclick="sortTable('tb-act-hall',4)">Yacimiento</th>
+          <th onclick="sortTable('tb-act-hall',5)">Estado</th>
+          <th>Detalle</th>
+        </tr></thead>
+        <tbody id="tb-act-hall"></tbody>
+      </table></div>
+    </div>
+
+  </div>
+</div>
+
 <script>
 const DATA = {
   prod:     './data/01_vm_produccion_mensual.csv',
@@ -660,6 +728,9 @@ const DATA = {
   bimInv:   './data/10_bim_inventario.csv',
   bimHall:  './data/10_bim_hallazgos.csv',
   bimRes:   './data/10_bim_resumen.csv',
+  actRes:   './data/11_activos_resumen.csv',
+  actHall:  './data/11_activos_hallazgos.csv',
+  actMeta:  './data/11_activos_meta.json',
 };
 
 const COLORS = {
@@ -1783,6 +1854,116 @@ async function initBIM() {
   }
 }
 
+
+// ════════════════════════════════════════════
+// PÁGINA 10 — REGISTRO DE ACTIVOS (DATOS REALES)
+// ════════════════════════════════════════════
+let _actRes = [], _actHall = [], _actMeta = null;
+
+function renderActivos() {
+  const m = _actMeta || {};
+  const v = m.veredicto || {};
+  const vc = v.estado === 'ACEPTADA' ? '#067647' : v.estado === 'NO ACEPTADA' ? '#b42318' : '#b54708';
+  document.getElementById('act-veredicto').innerHTML = `
+    <div class="card" style="border-left:4px solid ${vc};display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+      <div style="min-width:220px">
+        <div style="font-size:12px;color:#586474">Decisión sobre la entrega</div>
+        <div style="font-size:22px;font-weight:600;color:${vc};margin-top:2px">${v.estado || '—'}</div>
+      </div>
+      <div style="flex:1;min-width:240px;font-size:13px;color:#14202e;line-height:1.6">
+        ${v.texto || ''}
+        <div style="font-size:12px;color:#586474;margin-top:4px">
+          Entregas evaluadas: ${(m.entregas || []).join(', ') || '—'} · período ${m.periodo_desde || '—'} → ${m.periodo_hasta || '—'}
+        </div>
+      </div>
+    </div>`;
+
+  const conHall = m.pozos_con_algun_hallazgo ?? new Set(_actHall.map(h => h.pozo_id)).size;
+  const crit = _actRes.filter(r => r.severidad === 'CRITICA').reduce((s, r) => s + (+r.pozos_con_hallazgo || 0), 0);
+  document.getElementById('act-kpis').innerHTML = `
+    <div class="kpi"><div class="kpi-label">Pozos en el registro</div>
+      <div class="kpi-value">${(m.pozos || 0).toLocaleString('es-AR')}</div>
+      <div class="kpi-sub" style="color:#586474">${(m.registros_pozo_mes || 0).toLocaleString('es-AR')} registros pozo-mes</div></div>
+    <div class="kpi"><div class="kpi-label">Pozos sin observaciones</div>
+      <div class="kpi-value" style="color:#067647">${((m.pozos || 0) - conHall).toLocaleString('es-AR')}</div>
+      <div class="kpi-sub" style="color:#586474">${m.pozos ? (((m.pozos - conHall) / m.pozos) * 100).toFixed(1) : 0}% del registro</div></div>
+    <div class="kpi"><div class="kpi-label">Pozos con hallazgo crítico</div>
+      <div class="kpi-value" style="color:${crit ? '#b42318' : '#067647'}">${crit.toLocaleString('es-AR')}</div>
+      <div class="kpi-sub" style="color:#586474">identificador inconsistente</div></div>
+    <div class="kpi"><div class="kpi-label">Hallazgos totales</div>
+      <div class="kpi-value">${(m.hallazgos_totales ?? _actHall.length).toLocaleString('es-AR')}</div>
+      <div class="kpi-sub" style="color:#586474">en ${_actRes.filter(r => +r.pozos_con_hallazgo > 0).length} de ${_actRes.length} reglas</div></div>`;
+
+  document.getElementById('tb-act-reglas').innerHTML = _actRes.map(r => {
+    const n = +r.pozos_con_hallazgo;
+    return `<tr>
+      <td><strong>${r.regla_id}</strong> <span style="color:#586474">${r.regla}</span></td>
+      <td>${bimSevBadge(r.severidad)}</td>
+      <td style="color:${n ? (BIM_SEV[r.severidad] || {}).color : '#067647'}">${n.toLocaleString('es-AR')} / ${(+r.evaluados).toLocaleString('es-AR')}</td>
+      <td>${r.cumplimiento_pct !== '' ? (+r.cumplimiento_pct).toFixed(1) + '%' : 'no evaluable'}</td>
+    </tr>`;
+  }).join('');
+  const notas = _actRes.filter(r => r.nota);
+  document.getElementById('act-notas').innerHTML = notas.map(r => `<div><strong>${r.regla_id}:</strong> ${r.nota}</div>`).join('');
+
+  const ev = _actRes.filter(r => r.cumplimiento_pct !== '');
+  makeChart('chart-act-reglas', {
+    type: 'bar',
+    data: {
+      labels: ev.map(r => window.innerWidth < 600 ? r.regla_id : r.regla_id + ' · ' + r.regla),
+      datasets: [{ data: ev.map(r => +r.cumplimiento_pct),
+        backgroundColor: ev.map(r => ((BIM_SEV[r.severidad] || {}).color || '#8792a2') + '88'),
+        borderColor: ev.map(r => (BIM_SEV[r.severidad] || {}).color || '#8792a2'), borderWidth: 1, borderRadius: 3 }]
+    },
+    options: { indexAxis: 'y',
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => {
+        const r = ev[c.dataIndex]; return `${c.raw}% cumple · ${(+r.pozos_con_hallazgo).toLocaleString('es-AR')} pozos con hallazgo`; } } } },
+      scales: { x: { min: 0, max: 100, ticks: { callback: v => v + '%', font: { size: 10 } } },
+                y: { ticks: { font: { size: 11 } }, grid: { display: false } } } }
+  });
+
+  const selR = document.getElementById('act-filtro-regla');
+  selR.innerHTML = '<option value="">Todas</option>' + _actRes.filter(r => +r.pozos_con_hallazgo > 0)
+    .map(r => `<option value="${r.regla_id}">${r.regla_id} · ${r.regla}</option>`).join('');
+  const emps = [...new Set(_actHall.map(h => h.empresa).filter(Boolean))].sort();
+  document.getElementById('act-filtro-emp').innerHTML = '<option value="">Todas</option>' + emps.map(e => `<option>${e}</option>`).join('');
+  const tot = m.hallazgos_totales, pub = m.hallazgos_publicados;
+  document.getElementById('act-muestra-nota').textContent = tot && pub && tot > pub
+    ? `— se muestran ${pub.toLocaleString('es-AR')} de ${tot.toLocaleString('es-AR')} (hasta 300 por regla; el listado completo queda en el repositorio)` : '';
+  renderActHallazgos();
+}
+
+function renderActHallazgos() {
+  const fr = document.getElementById('act-filtro-regla').value;
+  const fe = document.getElementById('act-filtro-emp').value;
+  const rows = _actHall.filter(h => (!fr || h.regla_id === fr) && (!fe || h.empresa === fe)).slice(0, 500);
+  document.getElementById('tb-act-hall').innerHTML = rows.length ? rows.map(h => `<tr>
+      <td><strong>${h.regla_id}</strong> <span style="color:#586474;font-size:12px">${h.regla}</span></td>
+      <td>${bimSevBadge(h.severidad)}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${h.sigla || h.pozo_id}</td>
+      <td style="font-size:12px">${h.empresa || '—'}</td>
+      <td style="font-size:12px">${h.yacimiento || '—'}</td>
+      <td style="font-size:12px">${h.tipoestado || '—'}</td>
+      <td style="color:#586474;font-size:12px">${h.detalle}</td>
+    </tr>`).join('') : '<tr><td colspan="7" class="status-ok">Sin hallazgos para este filtro</td></tr>';
+}
+
+async function initActivos() {
+  try {
+    const [res, hall, metaResp] = await Promise.all([
+      fetchCSVQuoted(DATA.actRes), fetchCSVQuoted(DATA.actHall), fetch(DATA.actMeta)
+    ]);
+    _actRes = res; _actHall = hall; _actMeta = metaResp.ok ? await metaResp.json() : null;
+    renderActivos();
+    document.getElementById('p10-loading').style.display = 'none';
+    document.getElementById('p10-content').style.display = 'block';
+  } catch (err) {
+    console.error(err);
+    document.getElementById('p10-loading').innerHTML =
+      `<span style="color:#586474">La validación del registro de activos todavía no se ejecutó.<br><small>Correr <code>python validacion_activos.py</code> y publicar docs/data/.</small></span>`;
+  }
+}
+
 // ════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════
@@ -2069,6 +2250,7 @@ function renderSITREP() {
 
 init();
 initBIM();
+initActivos();
 </script>
 
 <p class="source">
