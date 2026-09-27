@@ -676,7 +676,7 @@ canvas{display:block;max-width:100%}
         <div class="chart-wrap" style="height:300px">
           <canvas id="chart-act-reglas" role="img" aria-label="Porcentaje de pozos que cumplen cada regla del registro de activos"></canvas>
         </div>
-        <div class="chart-annotation">% de pozos evaluados que cumplen la regla · color = severidad</div>
+        <div class="chart-annotation">% de pozos evaluados que cumplen la regla · verde = sin hallazgos · otros colores = severidad</div>
       </div>
       <div class="card">
         <h3>Requisitos de información evaluados</h3>
@@ -692,9 +692,9 @@ canvas{display:block;max-width:100%}
       <h3>Hallazgos <span style="font-weight:400;color:#8792a2;font-size:11px" id="act-muestra-nota"></span></h3>
       <div class="filter-bar">
         <label>Regla:</label>
-        <select id="act-filtro-regla" onchange="renderActHallazgos()"><option value="">Todas</option></select>
+        <select id="act-filtro-regla" onchange="renderActHallazgos(false)"><option value="">Todas</option></select>
         <label>Operadora:</label>
-        <select id="act-filtro-emp" onchange="renderActHallazgos()"><option value="">Todas</option></select>
+        <select id="act-filtro-emp" onchange="renderActHallazgos(false)"><option value="">Todas</option></select>
       </div>
       <div style="overflow-x:auto"><table>
         <thead><tr>
@@ -708,6 +708,7 @@ canvas{display:block;max-width:100%}
         </tr></thead>
         <tbody id="tb-act-hall"></tbody>
       </table></div>
+      <div id="act-paginado" style="margin-top:12px;font-size:12px;color:#586474;display:flex;align-items:center;flex-wrap:wrap;gap:6px"></div>
     </div>
 
   </div>
@@ -1912,8 +1913,8 @@ function renderActivos() {
     data: {
       labels: ev.map(r => window.innerWidth < 600 ? r.regla_id : r.regla_id + ' · ' + r.regla),
       datasets: [{ data: ev.map(r => +r.cumplimiento_pct),
-        backgroundColor: ev.map(r => ((BIM_SEV[r.severidad] || {}).color || '#8792a2') + '88'),
-        borderColor: ev.map(r => (BIM_SEV[r.severidad] || {}).color || '#8792a2'), borderWidth: 1, borderRadius: 3 }]
+        backgroundColor: ev.map(r => (+r.pozos_con_hallazgo === 0 ? '#067647' : ((BIM_SEV[r.severidad] || {}).color || '#8792a2')) + '88'),
+        borderColor: ev.map(r => +r.pozos_con_hallazgo === 0 ? '#067647' : ((BIM_SEV[r.severidad] || {}).color || '#8792a2')), borderWidth: 1, borderRadius: 3 }]
     },
     options: { indexAxis: 'y',
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => {
@@ -1933,10 +1934,18 @@ function renderActivos() {
   renderActHallazgos();
 }
 
-function renderActHallazgos() {
+let _actVisibles = 25;
+function renderActHallazgos(masFilas) {
+  _actVisibles = masFilas ? _actVisibles + 25 : 25;
   const fr = document.getElementById('act-filtro-regla').value;
   const fe = document.getElementById('act-filtro-emp').value;
-  const rows = _actHall.filter(h => (!fr || h.regla_id === fr) && (!fe || h.empresa === fe)).slice(0, 500);
+  const todas = _actHall.filter(h => (!fr || h.regla_id === fr) && (!fe || h.empresa === fe));
+  const rows = todas.slice(0, _actVisibles);
+  const pie = document.getElementById('act-paginado');
+  pie.innerHTML = todas.length > rows.length
+    ? `<span>Mostrando ${rows.length} de ${todas.length.toLocaleString('es-AR')}</span>
+       <button onclick="renderActHallazgos(true)" style="margin-left:12px;background:#fff;border:1px solid #d3d8df;color:#14202e;padding:6px 14px;font:inherit;font-size:13px;cursor:pointer;border-radius:2px">Mostrar 25 más</button>`
+    : (todas.length ? `<span>${todas.length.toLocaleString('es-AR')} hallazgo(s)</span>` : '');
   document.getElementById('tb-act-hall').innerHTML = rows.length ? rows.map(h => `<tr>
       <td><strong>${h.regla_id}</strong> <span style="color:#586474;font-size:12px">${h.regla}</span></td>
       <td>${bimSevBadge(h.severidad)}</td>
