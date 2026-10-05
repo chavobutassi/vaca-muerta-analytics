@@ -1,5 +1,5 @@
 {
-  "ejecutado_utc": "2026-09-28T12:41:11+00:00",
+  "ejecutado_utc": "2026-10-05T13:22:42+00:00",
   "pozos": 3655,
   "registros_pozo_mes": 315951,
   "periodo_desde": "2006-01",
@@ -70,7 +70,7 @@
     {
       "clave": "actualidad",
       "nombre": "Actualidad",
-      "valor": 1,
+      "valor": 2,
       "unidad": "meses",
       "reglas": [],
       "descripcion": "Meses entre hoy y el último período publicado por la fuente"
