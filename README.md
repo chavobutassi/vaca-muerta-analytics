@@ -7,6 +7,12 @@
 
 ---
 
+## Relevance to my proposed endeavor
+
+My proposed U.S. endeavor centers on connecting operational records and **validating data** so organizations that operate and protect critical infrastructure can make better-informed decisions. This project demonstrates both sides of that work on public data: a reproducible pipeline that **organizes and checks** a large external dataset, and an explicit **data-validation layer** — an asset register validated against information requirements (following the IRAM-ISO 19650 approach), plus model (IFC) validation — that reports every finding with its rule and severity. The domain here is energy; the methods (consistent identifiers, controlled value domains, cross-checks, traceable findings) are the same ones I apply to personnel-readiness, equipment, and work-order data for infrastructure operators, security providers, and field-service organizations.
+
+---
+
 ## What this project does
 
 The project has two parts that share one pipeline:
