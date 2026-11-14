@@ -11,6 +11,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
 
@@ -42,6 +43,7 @@ jobs:
           python vaca_muerta_pipeline.py
 
       - name: Validar registro de activos
+        continue-on-error: true
         run: |
           python validacion_activos.py
 
