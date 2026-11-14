@@ -57,6 +57,7 @@ import json
 from datetime import datetime, timezone
 import shutil
 import logging
+import time
 import requests
 import numpy as np
 import pandas as pd
@@ -183,21 +184,32 @@ def descargar(url: str, nombre: str) -> Optional[Path]:
         return ruta
 
     log.info("↓ Descargando: %s", nombre)
-    try:
-        resp = requests.get(url, stream=True, timeout=120)
-        resp.raise_for_status()
-        total = int(resp.headers.get("content-length", 0))
-        with open(ruta, "wb") as f, tqdm(total=total, unit="B", unit_scale=True, desc=f"  {nombre[:40]}") as bar:
-            for chunk in resp.iter_content(chunk_size=65_536):
-                f.write(chunk)
-                bar.update(len(chunk))
-        log.info("✓ Guardado: %s", ruta)
-    except requests.RequestException as e:
-        log.warning("⚠ Error descargando %s: %s", nombre, e)
-        if ruta.exists():
-            ruta.unlink()
-        return None
-    return ruta
+    # La fuente a veces no responde desde los runners de GitHub: se prueba
+    # https y luego http, con timeout de conexión corto y reintentos con espera.
+    urls = [url.replace("http://", "https://", 1), url] if url.startswith("http://") else [url]
+    ultimo_error: Optional[Exception] = None
+    for intento in range(1, 4):
+        for u in urls:
+            try:
+                resp = requests.get(u, stream=True, timeout=(15, 120))
+                resp.raise_for_status()
+                total = int(resp.headers.get("content-length", 0))
+                with open(ruta, "wb") as f, tqdm(total=total, unit="B", unit_scale=True, desc=f"  {nombre[:40]}") as bar:
+                    for chunk in resp.iter_content(chunk_size=65_536):
+                        f.write(chunk)
+                        bar.update(len(chunk))
+                log.info("✓ Guardado: %s", ruta)
+                return ruta
+            except requests.RequestException as e:
+                ultimo_error = e
+                if ruta.exists():
+                    ruta.unlink()
+        if intento < 3:
+            espera = 10 * intento
+            log.info("  Reintento %d/3 en %ds…", intento + 1, espera)
+            time.sleep(espera)
+    log.warning("⚠ Error descargando %s: %s", nombre, ultimo_error)
+    return None
 
 # ─── CARGA Y NORMALIZACIÓN ───────────────────────────────────────────────────
 
@@ -876,8 +888,11 @@ def main() -> None:
     rutas = {k: v for k, v in rutas.items() if v is not None}
 
     if not rutas:
-        log.error("Sin archivos descargados. Abortando.")
-        sys.exit(1)
+        # La fuente oficial no respondió: se conservan los datos ya publicados
+        # en docs/data/ en vez de romper el workflow (el dashboard sigue online).
+        log.warning("Sin archivos descargados: se conservan los datos publicados. "
+                    "Ver _metadata.json para la fecha del último refresco exitoso.")
+        sys.exit(0)
 
     # ── 2. Carga y filtro ────────────────────────────────────
     log.info("[2/4] Cargando y filtrando Vaca Muerta")
