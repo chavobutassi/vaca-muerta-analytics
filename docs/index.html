@@ -913,21 +913,25 @@ function renderP1() {
   // Totales
   const totalPet = prod.reduce((s,r)=>s+(+r.petroleo_m3||0),0);
   const totalGas = prod.reduce((s,r)=>s+(+r.gas_mm3||0),0);
+  // Comparación interanual del MISMO período: ene–<último mes> de cada año.
+  // (El año en curso tiene menos meses que el anterior completo; compararlos
+  //  enteros daría un falso negativo.)
+  const ultMesNum = Math.max(...prod.filter(r=>+r.anio===ult).map(r=>+r.mes||0));
   const p1pet = prod.filter(r=>+r.anio===ult).reduce((s,r)=>s+(+r.petroleo_m3||0),0);
-  const p0pet = prod.filter(r=>+r.anio===ant).reduce((s,r)=>s+(+r.petroleo_m3||0),0);
+  const p0pet = prod.filter(r=>+r.anio===ant && +r.mes<=ultMesNum).reduce((s,r)=>s+(+r.petroleo_m3||0),0);
   const yoyPet = p0pet>0?((p1pet-p0pet)/p0pet*100).toFixed(1):0;
   const p1gas = prod.filter(r=>+r.anio===ult).reduce((s,r)=>s+(+r.gas_mm3||0),0);
-  const p0gas = prod.filter(r=>+r.anio===ant).reduce((s,r)=>s+(+r.gas_mm3||0),0);
+  const p0gas = prod.filter(r=>+r.anio===ant && +r.mes<=ultMesNum).reduce((s,r)=>s+(+r.gas_mm3||0),0);
   const yoyGas = p0gas>0?((p1gas-p0gas)/p0gas*100).toFixed(1):0;
 
   document.getElementById('k-pet').textContent = fmt(totalPet)+' m³';
   const subPet = document.getElementById('k-pet-sub');
-  subPet.textContent = (yoyPet>=0?'▲ +':'▼ ')+yoyPet+'% vs año anterior';
+  subPet.textContent = (yoyPet>=0?'▲ +':'▼ ')+yoyPet+'% vs igual período año anterior';
   subPet.className = 'kpi-sub'+(yoyPet<0?' neg':'');
 
   document.getElementById('k-gas').textContent = fmt(totalGas)+' Mm³';
   const subGas = document.getElementById('k-gas-sub');
-  subGas.textContent = (yoyGas>=0?'▲ +':'▼ ')+yoyGas+'% vs año anterior';
+  subGas.textContent = (yoyGas>=0?'▲ +':'▼ ')+yoyGas+'% vs igual período año anterior';
   subGas.className = 'kpi-sub'+(yoyGas<0?' neg':'');
 
   // KPI producción / pozo activo — último mes disponible
@@ -2365,7 +2369,7 @@ function renderSITREP() {
       <div style="padding:12px;background:#b5470810;border:1px solid #b5470830;border-radius:6px">
         <div style="font-size:11px;color:#b54708;margin-bottom:4px">Mayor crecimiento</div>
         <div style="font-size:13px;color:#14202e;font-weight:500">${creciente.e}</div>
-        <div style="font-size:12px;color:#586474;margin-top:2px">${creciente.crecYoY>=0?'+':''}${creciente.crecYoY.toFixed(1)}% vs año anterior</div>
+        <div style="font-size:12px;color:#586474;margin-top:2px">${creciente.crecYoY>=0?'+':''}${creciente.crecYoY.toFixed(1)}% vs igual período año anterior</div>
       </div>
       <div style="padding:12px;background:#b4231810;border:1px solid #b4231830;border-radius:6px">
         <div style="font-size:11px;color:#b42318;margin-bottom:4px">Mayor riesgo operativo</div>
