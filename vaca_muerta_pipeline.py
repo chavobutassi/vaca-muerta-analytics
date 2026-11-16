@@ -184,14 +184,25 @@ def descargar(url: str, nombre: str) -> Optional[Path]:
         return ruta
 
     log.info("↓ Descargando: %s", nombre)
-    # La fuente a veces no responde desde los runners de GitHub: se prueba
-    # https y luego http, con timeout de conexión corto y reintentos con espera.
+    # La fuente oficial (datos.energia.gob.ar) responde de forma intermitente
+    # desde los runners de GitHub: a veces rechaza la conexión por completo.
+    # Estrategia: https primero y luego http, con User-Agent de navegador
+    # (algunos WAF cortan el UA por defecto de requests), timeouts amplios y
+    # varios reintentos con backoff creciente. Si aun así no responde, el
+    # llamador conserva los datos ya publicados (el dashboard sigue online).
+    headers = {
+        "User-Agent": ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                       "(KHTML, like Gecko) Chrome/125.0 Safari/537.36"),
+        "Accept": "text/csv,application/octet-stream,*/*",
+        "Accept-Language": "es-AR,es;q=0.9,en;q=0.8",
+    }
     urls = [url.replace("http://", "https://", 1), url] if url.startswith("http://") else [url]
     ultimo_error: Optional[Exception] = None
-    for intento in range(1, 4):
+    INTENTOS = 3          # acotado para no exceder el timeout del job en ventanas malas
+    for intento in range(1, INTENTOS + 1):
         for u in urls:
             try:
-                resp = requests.get(u, stream=True, timeout=(15, 120))
+                resp = requests.get(u, stream=True, timeout=(20, 300), headers=headers)
                 resp.raise_for_status()
                 total = int(resp.headers.get("content-length", 0))
                 with open(ruta, "wb") as f, tqdm(total=total, unit="B", unit_scale=True, desc=f"  {nombre[:40]}") as bar:
@@ -202,11 +213,12 @@ def descargar(url: str, nombre: str) -> Optional[Path]:
                 return ruta
             except requests.RequestException as e:
                 ultimo_error = e
+                log.info("  · intento %d fallido (%s): %s", intento, u.split("//")[0], type(e).__name__)
                 if ruta.exists():
                     ruta.unlink()
-        if intento < 3:
-            espera = 10 * intento
-            log.info("  Reintento %d/3 en %ds…", intento + 1, espera)
+        if intento < INTENTOS:
+            espera = 15 * intento
+            log.info("  Reintento %d/%d en %ds…", intento + 1, INTENTOS, espera)
             time.sleep(espera)
     log.warning("⚠ Error descargando %s: %s", nombre, ultimo_error)
     return None

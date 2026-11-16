@@ -2,7 +2,14 @@ name: Actualizar datos Vaca Muerta
 
 on:
   schedule:
-    - cron: '0 6 * * 1'   # Cada lunes 6am UTC (3am Argentina)
+    # La fuente oficial responde de forma intermitente desde los runners de
+    # GitHub, así que se intenta en varias ventanas (lunes y martes). La
+    # primera corrida que logre bajar datos frescos commitea; el resto no
+    # encuentra cambios y no hace nada.
+    - cron: '17 6 * * 1'    # lunes 06:17 UTC (~03:17 ART)
+    - cron: '17 14 * * 1'   # lunes 14:17 UTC (~11:17 ART)
+    - cron: '17 20 * * 1'   # lunes 20:17 UTC (~17:17 ART) — ventana que funcionó antes
+    - cron: '17 14 * * 2'   # martes 14:17 UTC (respaldo)
   workflow_dispatch:
 
 permissions:
@@ -11,7 +18,7 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
 
