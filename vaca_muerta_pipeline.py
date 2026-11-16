@@ -87,6 +87,7 @@ FUENTES: dict[str, str] = {
 CARPETA_CACHE  = Path("cache_csv")
 CARPETA_OUTPUT = Path("output")
 CARPETA_DOCS   = Path("docs/data")   # GitHub Pages sirve desde acá
+UMBRAL_OBSOLETO_DIAS = 10             # si los datos superan esto sin refresco, se alerta
 
 # ─── FACTORES DE EQUIVALENCIA ENERGÉTICA (BOE) ───────────────────────────────
 # Fuente del dato: Secretaría de Energía, Capítulo IV.
@@ -889,6 +890,33 @@ TABLAS: list[tuple] = [
     (t_declinacion_cohortes, "08_vm_declinacion_cohortes.csv"),
 ]
 
+def _salir_segun_antiguedad() -> None:
+    """Decide el código de salida cuando la fuente no respondió.
+
+    Sale 0 (silencioso, dashboard sigue online con los últimos datos buenos)
+    si el último refresco exitoso es reciente; sale 1 (la corrida queda en
+    rojo y GitHub avisa por mail) si los datos ya superan UMBRAL_OBSOLETO_DIAS
+    días, para enterarse cuando realmente se quedó atrasado.
+    """
+    meta = CARPETA_DOCS / "_metadata.json"
+    try:
+        ts = json.loads(meta.read_text(encoding="utf-8")).get("ejecutado_utc")
+        ultimo = datetime.fromisoformat(ts)
+        if ultimo.tzinfo is None:
+            ultimo = ultimo.replace(tzinfo=timezone.utc)
+        edad = (datetime.now(timezone.utc) - ultimo).days
+    except Exception as exc:
+        log.error("⛔ No se pudo leer la antigüedad de los datos (%s): se alerta por las dudas.", exc)
+        sys.exit(1)
+    if edad >= UMBRAL_OBSOLETO_DIAS:
+        log.error("⛔ Datos obsoletos: %d días sin refresco exitoso (umbral %d). "
+                  "Se falla a propósito para alertar.", edad, UMBRAL_OBSOLETO_DIAS)
+        sys.exit(1)
+    log.warning("Fuente no disponible, pero los datos tienen %d día(s) (< %d): "
+                "se conservan y la corrida termina OK.", edad, UMBRAL_OBSOLETO_DIAS)
+    sys.exit(0)
+
+
 def descartar_meses_incompletos(df: pd.DataFrame,
                                 umbral: float = 0.6,
                                 ventana: int = 6) -> pd.DataFrame:
@@ -936,9 +964,8 @@ def main() -> None:
     if not rutas:
         # La fuente oficial no respondió: se conservan los datos ya publicados
         # en docs/data/ en vez de romper el workflow (el dashboard sigue online).
-        log.warning("Sin archivos descargados: se conservan los datos publicados. "
-                    "Ver _metadata.json para la fecha del último refresco exitoso.")
-        sys.exit(0)
+        log.warning("Sin archivos descargados desde la fuente oficial.")
+        _salir_segun_antiguedad()
 
     # ── 2. Carga y filtro ────────────────────────────────────
     log.info("[2/4] Cargando y filtrando Vaca Muerta")
