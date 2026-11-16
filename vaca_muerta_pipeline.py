@@ -877,6 +877,40 @@ TABLAS: list[tuple] = [
     (t_declinacion_cohortes, "08_vm_declinacion_cohortes.csv"),
 ]
 
+def descartar_meses_incompletos(df: pd.DataFrame,
+                                umbral: float = 0.6,
+                                ventana: int = 6) -> pd.DataFrame:
+    """Descarta los meses finales con carga incompleta en la fuente.
+
+    La Secretaría de Energía publica el último mes (a veces dos) con solo
+    una fracción de las operadoras reportadas, lo que hace caer la producción
+    al final de forma artificial. Esto NO es una caída real: es retraso de
+    carga. Un mes se considera incompleto cuando su número de pozos activos
+    cae por debajo de `umbral` × la mediana de los `ventana` meses previos.
+    Se recorre desde el final hacia atrás y se corta en el primer mes completo.
+    """
+    if "anio_mes" not in df.columns or df.empty:
+        return df
+    metric = (df.groupby("anio_mes")["pozo_id"].nunique().sort_index()
+              if "pozo_id" in df.columns
+              else df.groupby("anio_mes")["boe"].sum().sort_index())
+    meses = list(metric.index)
+    descartar: list[str] = []
+    i = len(meses) - 1
+    while i >= ventana:
+        ref = metric.iloc[i - ventana:i].median()
+        if ref > 0 and metric.iloc[i] < umbral * ref:
+            descartar.append(meses[i])
+            i -= 1
+        else:
+            break
+    if descartar:
+        log.warning("  Meses incompletos descartados (carga parcial en la fuente): %s",
+                    ", ".join(sorted(descartar)))
+        df = df[~df["anio_mes"].isin(descartar)].reset_index(drop=True)
+    return df
+
+
 def main() -> None:
     log.info("=" * 55)
     log.info("  VACA MUERTA — Pipeline de datos")
@@ -925,6 +959,7 @@ def main() -> None:
     # ── 3. Enriquecimiento ───────────────────────────────────
     log.info("[3/4] Enriqueciendo dataset")
     df = enriquecer(df)
+    df = descartar_meses_incompletos(df)
 
     if "fecha" in df.columns:
         log.info("  Período:     %s → %s",
