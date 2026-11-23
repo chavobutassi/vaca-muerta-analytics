@@ -14,21 +14,22 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 40
 
     steps:
 
       - name: Clonar repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
@@ -45,9 +46,18 @@ jobs:
           echo "Archivos Python:"
           ls -la *.py
 
-      - name: Correr pipeline
+      - name: Correr pipeline (hasta 3 intentos)
         run: |
-          python vaca_muerta_pipeline.py
+          for i in 1 2 3; do
+            echo "Intento $i de 3"
+            if python vaca_muerta_pipeline.py; then
+              exit 0
+            fi
+            echo "Falló el intento $i; espero 120 s antes de reintentar"
+            sleep 120
+          done
+          echo "El pipeline falló en los 3 intentos"
+          exit 1
 
       - name: Validar registro de activos
         continue-on-error: true
@@ -67,3 +77,14 @@ jobs:
             git commit -m "datos: actualización automática $(date '+%Y-%m-%d')"
             git push
           fi
+
+      # Solo avisa si falla la última ventana (martes, respaldo), para no
+      # generar ruido por las fallas esperables de las primeras ventanas.
+      - name: Abrir issue si falla la última ventana
+        if: failure() && github.event.schedule == '17 14 * * 2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create \
+            --title "Falló la actualización semanal de datos ($(date '+%Y-%m-%d'))" \
+            --body "Fallaron todas las ventanas de esta semana. Ver el run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
